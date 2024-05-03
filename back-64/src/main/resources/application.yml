@@ -1,0 +1,27 @@
+server:
+  port: 8009
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/sound-good
+    username: postgres
+    password: Harold123
+  jpa:
+    database: POSTGRESQL
+    generate-ddl: true
+    hibernate.ddl-auto: create
+    show-sql: true
+    open-in-view: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        hbm2ddl:
+          charset_name: UTF-8
+#          import_files: scripts/user.sql
+          import_files: scripts/user.sql, scripts/specialities.sql, scripts/doctors.sql, scripts/patients.sql
+
+security:
+  jwt:
+    secret: GamesFull123
+    issuer: Main
+    ttlMillis: 3600000
