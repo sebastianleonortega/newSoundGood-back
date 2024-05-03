@@ -18,7 +18,7 @@ spring:
         hbm2ddl:
           charset_name: UTF-8
 #          import_files: scripts/user.sql
-          import_files: scripts/user.sql, scripts/specialities.sql, scripts/doctors.sql, scripts/patients.sql
+          import_files: scripts/user.sql, scripts/specialities.sql, scripts/doctors.sql, scripts/patients.sql, scripts/doctor_speciality.sql
 
 security:
   jwt:

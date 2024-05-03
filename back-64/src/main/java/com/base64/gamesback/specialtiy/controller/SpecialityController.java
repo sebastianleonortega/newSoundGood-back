@@ -104,4 +104,18 @@ public class SpecialityController {
         specialityService.deleteSpeciality(specialityId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/doctor/{id}")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "404", description = "Not Found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+    })
+    @Operation(
+            security = {@SecurityRequirement(name = "bearer-key")},
+            description = "Get speciality by doctor id"
+    )
+    public ResponseEntity<List<SpecialityResponse>> getSpecialityByDoctorId(@Parameter(description = "UUID of a doctor", required = true) @PathVariable("id") UUID doctorId){
+        return new ResponseEntity<>(specialityService.getAllSpecialitiesByDoctorId(doctorId), HttpStatus.OK);
+    }
 }

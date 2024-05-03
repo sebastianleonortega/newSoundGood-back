@@ -2,8 +2,6 @@ package com.base64.gamesback.specialtiy.service.impl;
 
 import com.base64.gamesback.auth.user.entity.Doctor;
 import com.base64.gamesback.auth.user.repository.DoctorRepository;
-import com.base64.gamesback.auth.user.repository.UserRepository;
-import com.base64.gamesback.auth.user.service.DoctorService;
 import com.base64.gamesback.common.exception_handler.ResourceNotFoundException;
 import com.base64.gamesback.specialtiy.dto.SpecialityDto;
 import com.base64.gamesback.specialtiy.dto.SpecialityResponse;
@@ -79,5 +77,10 @@ public class SpecialityServiceImpl implements SpecialityService {
 
         doctor.addSpecialities(specialties);
         doctorRepository.save(doctor);
+    }
+
+    @Override
+    public List<SpecialityResponse> getAllSpecialitiesByDoctorId(UUID doctorId) {
+        return specialityRepository.getAllSpecialitiesByDoctorId(doctorId);
     }
 }
