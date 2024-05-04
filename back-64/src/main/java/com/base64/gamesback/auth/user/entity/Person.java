@@ -1,5 +1,6 @@
 package com.base64.gamesback.auth.user.entity;
 
+import com.base64.gamesback.documentType.entity.DocumentType;
 import com.base64.gamesback.hearing_loss.entity.HearingLoss;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -56,6 +57,14 @@ public class Person {
     )
     private Set<HearingLoss> hearingLosses;
 
+    @ManyToOne
+    @JoinColumn(name = "document_type_id", nullable = false)
+    private DocumentType documentType;
+
+//    @ManyToOne
+//    @JoinColumn(name = "gender_type_id", nullable = false)
+//    private GenderType genderType;
+
     public Person(String personName, String personLastName, String personDocument, String personAddress, String personPhone, String personEmail, String typeOfHearingLoss, String previousTreatments) {
         this.personName = personName;
         this.personLastName = personLastName;
@@ -89,4 +98,13 @@ public class Person {
     public void addHearingLoss(Set<HearingLoss> hearingLosses){
         this.hearingLosses = hearingLosses;
     }
+
+    public void addDocumentType(DocumentType documentType) {
+        this.documentType = documentType;
+    }
+
+//    public void addGenderType(GenderType genderType) {
+//        this.genderType = genderType;
+//
+//    }
 }

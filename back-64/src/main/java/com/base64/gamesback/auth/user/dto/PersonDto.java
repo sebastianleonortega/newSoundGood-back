@@ -26,6 +26,14 @@ public class PersonDto {
     private String lastname;
 
     @NotNull
+    @JsonProperty(value = "document_type", required = true)
+    private UUID documentType;
+
+//    @NotNull
+//    @JsonProperty(value = "gender_type", required = true)
+//    private UUID genderType;
+
+    @NotNull
     @NotEmpty
     @Size(max = 50)
     @JsonProperty(value = "person_document")

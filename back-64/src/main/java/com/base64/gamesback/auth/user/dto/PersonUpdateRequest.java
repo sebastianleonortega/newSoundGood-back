@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 public class PersonUpdateRequest {
 
@@ -21,6 +23,14 @@ public class PersonUpdateRequest {
     @Size(min = 2, max = 40)
     @JsonProperty(value = "person_last_name")
     private String personLastName;
+
+    @NotNull
+    @JsonProperty(value = "document_type_id", required = true)
+    private UUID documentType;
+
+//    @NotNull
+//    @JsonProperty(value = "gender_type_id", required = true)
+//    private UUID genderType;
 
     @NotEmpty
     @NotNull

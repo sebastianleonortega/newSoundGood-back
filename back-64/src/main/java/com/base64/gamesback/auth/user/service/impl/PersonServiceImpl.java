@@ -8,6 +8,8 @@ import com.base64.gamesback.auth.user.repository.PersonRepository;
 import com.base64.gamesback.auth.user.repository.UserRepository;
 import com.base64.gamesback.auth.user.service.PersonService;
 import com.base64.gamesback.common.exception_handler.ResourceNotFoundException;
+import com.base64.gamesback.documentType.service.DocumentTypeSharedService;
+import com.base64.gamesback.genderType.service.GenderTypeServiceShared;
 import com.base64.gamesback.hearing_loss.repository.HearingLossRepository;
 import com.base64.gamesback.hearing_loss.service.HearingLossService;
 import org.springframework.stereotype.Service;
@@ -21,11 +23,15 @@ public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository personRepository;
     private final HearingLossService hearingLossService;
+    private final DocumentTypeSharedService documentTypeSharedService;
+    private final GenderTypeServiceShared genderTypeServiceShared;
 
 
-    public PersonServiceImpl(PersonRepository personRepository, HearingLossService hearingLossService) {
+    public PersonServiceImpl(PersonRepository personRepository, HearingLossService hearingLossService, DocumentTypeSharedService documentTypeSharedService, GenderTypeServiceShared genderTypeServiceShared) {
         this.personRepository = personRepository;
         this.hearingLossService = hearingLossService;
+        this.documentTypeSharedService = documentTypeSharedService;
+        this.genderTypeServiceShared = genderTypeServiceShared;
     }
 
     @Override
@@ -51,6 +57,8 @@ public class PersonServiceImpl implements PersonService {
                request.getPreviousTreatments()
        );
         person.addUser(user);
+//        person.addGenderType(genderTypeServiceShared.getGenderTypeById(request.getGenderType()));
+        person.addDocumentType(documentTypeSharedService.getDocumentType(request.getDocumentType()));
         personRepository.save(person);
         hearingLossService.assignHearingLosses(Arrays.asList(request.getHearingLosses()), person.getPersonId());
     }
@@ -69,6 +77,9 @@ public class PersonServiceImpl implements PersonService {
                 request.getTypeOfHearingLoss(),
                 request.getPreviousTreatments()
         );
+
+        person.addDocumentType(documentTypeSharedService.getDocumentType(request.getDocumentType()));
+       // person.addGenderType(genderTypeServiceShared.getGenderTypeById(request.getGenderType()));
         personRepository.save(person);
     }
 }
