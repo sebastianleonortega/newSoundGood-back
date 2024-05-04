@@ -8,6 +8,8 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.Getter;
 
+import java.util.UUID;
+
 @Getter
 public class PersonDto {
 
@@ -56,4 +58,8 @@ public class PersonDto {
     @Size(max = 200)
     @JsonProperty(value = "previous_treatments")
     private String previousTreatments;
+
+    @JsonProperty(value = "hearing_losses", required = true)
+    @Size(min = 1)
+    private UUID[] hearingLosses;
 }

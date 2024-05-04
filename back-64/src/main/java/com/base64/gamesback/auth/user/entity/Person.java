@@ -1,9 +1,11 @@
 package com.base64.gamesback.auth.user.entity;
 
+import com.base64.gamesback.hearing_loss.entity.HearingLoss;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -44,6 +46,16 @@ public class Person {
     @Column(name = "previous_treatments", length = 200)
     private String previousTreatments;
 
+    @ManyToMany(cascade = CascadeType.REFRESH)
+    @JoinTable(
+            name = "person_hearing_loss",
+            schema = "main",
+            joinColumns = @JoinColumn(name = "person_id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "hearing_loss_id", nullable = false),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"person_id", "hearing_loss_id"}, name = "uc_person_hearing_loss")
+    )
+    private Set<HearingLoss> hearingLosses;
+
     public Person(String personName, String personLastName, String personDocument, String personAddress, String personPhone, String personEmail, String typeOfHearingLoss, String previousTreatments) {
         this.personName = personName;
         this.personLastName = personLastName;
@@ -72,5 +84,9 @@ public class Person {
 
     public void  addUser(User user){
         this.user = user;
+    }
+
+    public void addHearingLoss(Set<HearingLoss> hearingLosses){
+        this.hearingLosses = hearingLosses;
     }
 }

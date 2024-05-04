@@ -8,8 +8,11 @@ import com.base64.gamesback.auth.user.repository.PersonRepository;
 import com.base64.gamesback.auth.user.repository.UserRepository;
 import com.base64.gamesback.auth.user.service.PersonService;
 import com.base64.gamesback.common.exception_handler.ResourceNotFoundException;
+import com.base64.gamesback.hearing_loss.repository.HearingLossRepository;
+import com.base64.gamesback.hearing_loss.service.HearingLossService;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -17,10 +20,12 @@ import java.util.UUID;
 public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository personRepository;
+    private final HearingLossService hearingLossService;
 
 
-    public PersonServiceImpl(PersonRepository personRepository) {
+    public PersonServiceImpl(PersonRepository personRepository, HearingLossService hearingLossService) {
         this.personRepository = personRepository;
+        this.hearingLossService = hearingLossService;
     }
 
     @Override
@@ -47,7 +52,7 @@ public class PersonServiceImpl implements PersonService {
        );
         person.addUser(user);
         personRepository.save(person);
-
+        hearingLossService.assignHearingLosses(Arrays.asList(request.getHearingLosses()), person.getPersonId());
     }
 
     @Override

@@ -2,15 +2,15 @@ package com.base64.gamesback.auth.user.service;
 
 
 import com.base64.gamesback.auth.user.dto.*;
-import com.base64.gamesback.auth.user.dto.projection.userData;
-import com.base64.gamesback.auth.user.entity.User;
+import com.base64.gamesback.auth.user.dto.projection.userDoctorData;
+import com.base64.gamesback.auth.user.dto.projection.userPersonData;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface UserService {
 
-    userData getUserById(UUID userId);
+    userPersonData getUserPatientById(UUID userId);
 
     Boolean existUserByName(String userName);
 
@@ -20,5 +20,9 @@ public interface UserService {
 
     void updateUser(UserUpdateRequest request, UUID userId);
 
-    List<userData> getAllUsers();
+    List<userPersonData> getAllUsersPatient();
+
+    userDoctorData getUserDoctorById(UUID userId);
+
+    List<userDoctorData> getAllUsersDoctor();
 }

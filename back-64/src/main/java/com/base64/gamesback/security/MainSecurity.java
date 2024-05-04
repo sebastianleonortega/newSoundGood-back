@@ -15,7 +15,8 @@ public class MainSecurity  {
     private final String[] ROUTES_ALLOWED_WITHOUT_AUTHENTICATION = {
             "/register",
             "/auth/login",
-            "/security/speciality/**"
+            "/security/speciality/**",
+            "/security/hearing_loss/**"
     };
 
     @Bean
