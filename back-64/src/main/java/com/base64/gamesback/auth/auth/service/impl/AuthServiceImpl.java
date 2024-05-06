@@ -36,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
            String token = jwtUtil.create(String.valueOf(user.getUserId()), user.getPerson().getPersonEmail());
            return LoginResponse.create(user.getUserId(), user.getProfileImage(), user.isAdministrator(), user.getPerson().getPersonName(), user.getPerson().getPersonLastName(), token);
        }else {
-           throw new AccessDeniedException("Credenciales incrrectas");
+           throw new AccessDeniedException("Credenciales incorrectas");
        }
     }
 

@@ -17,5 +17,5 @@ public class UserDoctorResponse {
 
     @Valid
     @JsonProperty(value = "doctor")
-        private DoctorDto doctor;
+    private DoctorDto doctor;
 }

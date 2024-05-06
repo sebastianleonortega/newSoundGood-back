@@ -1,6 +1,7 @@
 package com.base64.gamesback.auth.user.controller;
 
 import com.base64.gamesback.auth.user.dto.UserDoctorDto;
+import com.base64.gamesback.auth.user.dto.UserDoctorUpdateRequest;
 import com.base64.gamesback.auth.user.dto.UserDto;
 import com.base64.gamesback.auth.user.dto.UserUpdateRequest;
 import com.base64.gamesback.auth.user.dto.projection.userDoctorData;
@@ -86,11 +87,20 @@ public class UserController {
         return new ResponseEntity<>(personService.existPersonByDocument(personDocument), HttpStatus.OK);
     }
 
-    @PutMapping("/{uuid}")
-    @Operation(description = "update user")
+    @PutMapping("/patient/{id}")
+    @Operation(description = "update user patient")
     @ApiResponse(responseCode = "204", description = "no content")
-    public ResponseEntity<HttpStatus> updatePerson(@Valid @RequestBody UserUpdateRequest request, @Valid @PathVariable UUID uuid){
-        userService.updateUser(request, uuid);
+    public ResponseEntity<HttpStatus> updatePersonPatient(@Valid @RequestBody UserUpdateRequest request, @Valid @PathVariable("id") UUID id){
+        userService.updateUserPatient(request, id);
+        return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+    }
+
+    @PutMapping("/doctor/{id}")
+    @Operation(description = "update user doctor")
+    @ApiResponse(responseCode = "204", description = "no content")
+    public ResponseEntity<HttpStatus> updatePersonDoctor(@Valid @RequestBody UserDoctorUpdateRequest request, @Valid @PathVariable("id") UUID id){
+        userService.updateUserDoctor(request, id);
         return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }

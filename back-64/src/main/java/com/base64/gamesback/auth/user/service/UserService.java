@@ -18,7 +18,9 @@ public interface UserService {
 
     void registerUserDoctor(UserDoctorDto request);
 
-    void updateUser(UserUpdateRequest request, UUID userId);
+    void updateUserPatient(UserUpdateRequest request, UUID userId);
+
+    void updateUserDoctor(UserDoctorUpdateRequest request, UUID userId);
 
     List<userPersonData> getAllUsersPatient();
 

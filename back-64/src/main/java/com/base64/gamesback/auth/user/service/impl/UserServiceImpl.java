@@ -1,6 +1,7 @@
 package com.base64.gamesback.auth.user.service.impl;
 
 import com.base64.gamesback.auth.user.dto.UserDoctorDto;
+import com.base64.gamesback.auth.user.dto.UserDoctorUpdateRequest;
 import com.base64.gamesback.auth.user.dto.UserDto;
 import com.base64.gamesback.auth.user.dto.UserUpdateRequest;
 import com.base64.gamesback.auth.user.dto.projection.userDoctorData;
@@ -54,7 +55,6 @@ public class UserServiceImpl implements UserService {
                 null
         );
         personService.registerPerson(userRepository.save(user), request.getPerson());
-
     }
 
     @Override
@@ -66,19 +66,28 @@ public class UserServiceImpl implements UserService {
                 null
         );
         doctorService.registerPersonDoctor(userRepository.save(user), request.getDoctor());
-
     }
 
     @Override
-    public void updateUser(UserUpdateRequest request, UUID userId) {
+    public void updateUserPatient(UserUpdateRequest request, UUID userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("No existe el usuario que desea actualizar"));
 
         user.update(
                 request.getUserName().toLowerCase(Locale.ROOT),
                 request.getProfileImage()
                 );
-
         personService.updatePerson(request.getPerson(), userRepository.save(user));
+    }
+
+    @Override
+    public void updateUserDoctor(UserDoctorUpdateRequest request, UUID userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("No existe el usuario que desea actualizar"));
+
+        user.update(
+                request.getUserName().toLowerCase(Locale.ROOT),
+                ""
+        );
+        doctorService.updatePersonDoctor(request.getDoctor(), userRepository.save(user));
     }
 
     @Override
