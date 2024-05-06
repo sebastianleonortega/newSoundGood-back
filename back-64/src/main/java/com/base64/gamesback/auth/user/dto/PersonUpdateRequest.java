@@ -57,13 +57,12 @@ public class PersonUpdateRequest {
     private String personEmail;
 
     @NotNull
-    @Size(max = 50)
-    @JsonProperty(value = "type_of_hearing_loss")
-    private String typeOfHearingLoss;
-
-    @NotNull
     @Size(max = 200)
     @JsonProperty(value = "previous_treatments")
     private String previousTreatments;
+
+    @JsonProperty(value = "hearing_losses", required = true)
+    @Size(min = 1)
+    private UUID[] hearingLosses;
 
 }

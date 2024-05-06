@@ -58,11 +58,6 @@ public class PersonDto {
     private String email;
 
     @NotNull
-    @Size(max = 50)
-    @JsonProperty(value = "type_of_hearing_loss")
-    private String typeOfHearingLoss;
-
-    @NotNull
     @Size(max = 200)
     @JsonProperty(value = "previous_treatments")
     private String previousTreatments;

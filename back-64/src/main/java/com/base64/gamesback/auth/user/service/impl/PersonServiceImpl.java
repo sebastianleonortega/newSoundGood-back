@@ -14,9 +14,7 @@ import com.base64.gamesback.hearing_loss.repository.HearingLossRepository;
 import com.base64.gamesback.hearing_loss.service.HearingLossService;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class PersonServiceImpl implements PersonService {
@@ -46,6 +44,8 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void registerPerson(User user, PersonDto request) {
+        List<UUID> hearingLossesList = Arrays.asList(request.getHearingLosses());
+        Set<UUID> hearingLossesSet = new HashSet<>(hearingLossesList);
        Person person = Person.create(
                request.getName(),
                request.getLastname(),
@@ -53,20 +53,21 @@ public class PersonServiceImpl implements PersonService {
                request.getAddress(),
                request.getPhone(),
                request.getEmail().toLowerCase(Locale.ROOT),
-               request.getTypeOfHearingLoss(),
                request.getPreviousTreatments()
        );
         person.addUser(user);
 //        person.addGenderType(genderTypeServiceShared.getGenderTypeById(request.getGenderType()));
         person.addDocumentType(documentTypeSharedService.getDocumentType(request.getDocumentType()));
         personRepository.save(person);
-        hearingLossService.assignHearingLosses(Arrays.asList(request.getHearingLosses()), person.getPersonId());
+        hearingLossService.assignHearingLosses(hearingLossesSet, person.getPersonId());
     }
 
     @Override
     public void updatePerson(PersonUpdateRequest request, User user ) {
         Person person = personRepository.findById(user.getPerson().getPersonId()).orElseThrow(() -> new ResourceNotFoundException("Person not found"));
 
+        List<UUID> hearingLossesList = Arrays.asList(request.getHearingLosses());
+        Set<UUID> hearingLossesSet = new HashSet<>(hearingLossesList);
         person.update(
                 request.getPersonName(),
                 request.getPersonLastName(),
@@ -74,12 +75,11 @@ public class PersonServiceImpl implements PersonService {
                 request.getPersonAddress(),
                 request.getPersonPhone(),
                 request.getPersonEmail().toLowerCase(Locale.ROOT),
-                request.getTypeOfHearingLoss(),
                 request.getPreviousTreatments()
         );
-
         person.addDocumentType(documentTypeSharedService.getDocumentType(request.getDocumentType()));
        // person.addGenderType(genderTypeServiceShared.getGenderTypeById(request.getGenderType()));
         personRepository.save(person);
+        hearingLossService.assignHearingLosses(hearingLossesSet, person.getPersonId());
     }
 }

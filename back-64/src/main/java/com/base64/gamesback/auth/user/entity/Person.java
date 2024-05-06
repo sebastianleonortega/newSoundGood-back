@@ -41,9 +41,6 @@ public class Person {
     @Column(name = "email", nullable = false, length = 200, unique = true)
     private String personEmail;
 
-    @Column(name = "type_of_hearing_loss", length = 200)
-    private String typeOfHearingLoss;
-
     @Column(name = "previous_treatments", length = 200)
     private String previousTreatments;
 
@@ -65,29 +62,27 @@ public class Person {
 //    @JoinColumn(name = "gender_type_id", nullable = false)
 //    private GenderType genderType;
 
-    public Person(String personName, String personLastName, String personDocument, String personAddress, String personPhone, String personEmail, String typeOfHearingLoss, String previousTreatments) {
+    public Person(String personName, String personLastName, String personDocument, String personAddress, String personPhone, String personEmail, String previousTreatments) {
         this.personName = personName;
         this.personLastName = personLastName;
         this.personDocument = personDocument;
         this.personAddress = personAddress;
         this.personPhone = personPhone;
         this.personEmail = personEmail;
-        this.typeOfHearingLoss = typeOfHearingLoss;
         this.previousTreatments = previousTreatments;
     }
 
-    public static Person create(String personName, String personLastName, String personDocument, String personAddress, String personPhone, String personEmail, String typeOfHearingLoss, String previousTreatments){
-        return  new Person(personName, personLastName, personDocument, personAddress, personPhone, personEmail, typeOfHearingLoss, previousTreatments);
+    public static Person create(String personName, String personLastName, String personDocument, String personAddress, String personPhone, String personEmail, String previousTreatments){
+        return  new Person(personName, personLastName, personDocument, personAddress, personPhone, personEmail, previousTreatments);
     }
 
-    public void update(String personName, String personLastName, String personDocument, String personAddress, String personPhone, String personEmail, String typeOfHearingLoss, String previousTreatments){
+    public void update(String personName, String personLastName, String personDocument, String personAddress, String personPhone, String personEmail, String previousTreatments){
         this.personName = personName;
         this.personLastName = personLastName;
         this.personDocument = personDocument;
         this.personAddress = personAddress;
         this.personPhone = personPhone;
         this.personEmail = personEmail;
-        this.typeOfHearingLoss = typeOfHearingLoss;
         this.previousTreatments = previousTreatments;
     }
 
