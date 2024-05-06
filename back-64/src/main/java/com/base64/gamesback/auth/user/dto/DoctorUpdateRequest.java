@@ -8,6 +8,8 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 public class DoctorUpdateRequest {
 
@@ -43,4 +45,8 @@ public class DoctorUpdateRequest {
 
     @JsonProperty(value = "doctor_image")
     private String image;
+
+    @JsonProperty(value = "specialities", required = true)
+    @Size(min = 1)
+    private UUID[] specialities;
 }

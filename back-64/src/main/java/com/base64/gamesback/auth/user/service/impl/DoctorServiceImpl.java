@@ -1,6 +1,7 @@
 package com.base64.gamesback.auth.user.service.impl;
 
 import com.base64.gamesback.auth.user.dto.DoctorDto;
+import com.base64.gamesback.auth.user.dto.DoctorUpdateRequest;
 import com.base64.gamesback.auth.user.entity.Doctor;
 import com.base64.gamesback.auth.user.entity.User;
 import com.base64.gamesback.auth.user.repository.DoctorRepository;
@@ -40,6 +41,22 @@ public class DoctorServiceImpl implements DoctorService {
         doctorRepository.save(doctor);
         specialityService.assignSpecialities(Arrays.asList(doctorDto.getSpecialities()), doctor.getDoctorId());
 
+    }
+
+    @Override
+    public void updatePersonDoctor(DoctorUpdateRequest doctorUpdateRequest, User user) {
+        Doctor doctor = this.getDoctorById(user.getUserId());
+        doctor.updateDoctor(
+                doctorUpdateRequest.getName(),
+                doctorUpdateRequest.getLastname(),
+                doctorUpdateRequest.getPhone(),
+                doctorUpdateRequest.getAddress(),
+                doctorUpdateRequest.getEmail(),
+                doctorUpdateRequest.getImage()
+
+        );
+        doctorRepository.save(doctor);
+        specialityService.assignSpecialities(Arrays.asList(doctorUpdateRequest.getSpecialities()), doctor.getDoctorId());
     }
 
     @Override
