@@ -65,7 +65,7 @@ public class HearingLossServiceImpl implements HearingLossService {
     }
 
     @Override
-    public void assignHearingLosses(List<UUID> hearingLossIds, UUID personId) {
+    public void assignHearingLosses(Set<UUID> hearingLossIds, UUID personId) {
 
         Person person = personRepository.findById(personId).orElseThrow(() -> new ResourceNotFoundException("No existe la persona buscada"));
         Set<HearingLoss> hearingLosses = hearingLossRepository.getHearingLossSpecialtyByHearingLossIdIn(hearingLossIds);

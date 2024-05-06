@@ -17,7 +17,7 @@ public interface HearingLossRepository extends JpaRepository<HearingLoss, UUID> 
     @Query("SELECT H.hearingLossId as hearingLossId, H.name as hearingLossName FROM HearingLoss H")
     List<HearingLossResponse> getAllHearingLosses();
 
-    Set<HearingLoss> getHearingLossSpecialtyByHearingLossIdIn(List<UUID> specialityId);
+    Set<HearingLoss> getHearingLossSpecialtyByHearingLossIdIn(Set<UUID> specialityId);
 
     @Query(value = "SELECT h.hearing_loss_id AS hearingLossId, h.name AS hearingLossName " +
             "FROM main.hearing_loss h " +

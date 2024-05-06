@@ -5,6 +5,7 @@ import com.base64.gamesback.hearing_loss.dto.HearingLossResponse;
 import com.base64.gamesback.hearing_loss.entity.HearingLoss;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public interface HearingLossService {
@@ -14,6 +15,6 @@ public interface HearingLossService {
     void deleteHearingLoss(UUID hearingLossId);
     HearingLoss getHearingLossById(UUID hearingLossId);
     List<HearingLossResponse> getAllHearingLoss();
-    void assignHearingLosses(List<UUID> hearingLossIds, UUID personId);
+    void assignHearingLosses(Set<UUID> hearingLossIds, UUID personId);
     List<HearingLossResponse> getAllHearingLossesByPersonId(UUID personId);
 }
