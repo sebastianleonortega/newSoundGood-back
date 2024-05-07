@@ -7,7 +7,7 @@ import com.base64.gamesback.auth.user.entity.User;
 import com.base64.gamesback.auth.user.repository.DoctorRepository;
 import com.base64.gamesback.auth.user.service.DoctorService;
 import com.base64.gamesback.common.exception_handler.ResourceNotFoundException;
-import com.base64.gamesback.specialtiy.service.SpecialityService;
+import com.base64.gamesback.speciality.service.SpecialityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +35,8 @@ public class DoctorServiceImpl implements DoctorService {
                 doctorDto.getPhone(),
                 doctorDto.getAddress(),
                 doctorDto.getEmail(),
-                doctorDto.getImage() != null ? doctorDto.getImage() : ""
+                doctorDto.getImage() != null ? doctorDto.getImage() : "",
+                doctorDto.getDescription()
         );
         doctor.addUser(user);
         doctorRepository.save(doctor);
@@ -52,8 +53,8 @@ public class DoctorServiceImpl implements DoctorService {
                 doctorUpdateRequest.getPhone(),
                 doctorUpdateRequest.getAddress(),
                 doctorUpdateRequest.getEmail(),
-                doctorUpdateRequest.getImage()
-
+                doctorUpdateRequest.getImage(),
+                doctorUpdateRequest.getDescription()
         );
         doctorRepository.save(doctor);
         specialityService.assignSpecialities(Arrays.asList(doctorUpdateRequest.getSpecialities()), doctor.getDoctorId());

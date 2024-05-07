@@ -45,6 +45,9 @@ public class DoctorDto {
     @JsonProperty(value = "doctor_image")
     private String image;
 
+    @JsonProperty(value = "doctor_description")
+    private String description;
+
     @JsonProperty(value = "specialities", required = true)
     @Size(min = 1)
     private UUID[] specialities;
