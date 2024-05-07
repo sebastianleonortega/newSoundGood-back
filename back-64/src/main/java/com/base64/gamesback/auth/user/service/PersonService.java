@@ -3,6 +3,7 @@ package com.base64.gamesback.auth.user.service;
 import com.base64.gamesback.auth.user.dto.DoctorDto;
 import com.base64.gamesback.auth.user.dto.PersonDto;
 import com.base64.gamesback.auth.user.dto.PersonUpdateRequest;
+import com.base64.gamesback.auth.user.entity.Person;
 import com.base64.gamesback.auth.user.entity.User;
 
 import java.util.UUID;
@@ -16,4 +17,6 @@ public interface PersonService {
     void registerPerson(User user, PersonDto personDto);
 
     void updatePerson(PersonUpdateRequest request, User user);
+
+    Person getPersonById(UUID personId);
 }

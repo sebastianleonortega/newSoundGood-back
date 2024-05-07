@@ -2,6 +2,7 @@ package com.base64.gamesback.auth.user.entity;
 
 import com.base64.gamesback.documentType.entity.DocumentType;
 import com.base64.gamesback.hearing_loss.entity.HearingLoss;
+import com.base64.gamesback.medicines.entity.Medicine;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -54,6 +55,16 @@ public class Person {
     )
     private Set<HearingLoss> hearingLosses;
 
+//    @ManyToMany(cascade = CascadeType.REFRESH)
+//    @JoinTable(
+//            name = "person_medicine",
+//            schema = "main",
+//            joinColumns = @JoinColumn(name = "person_id", nullable = false),
+//            inverseJoinColumns = @JoinColumn(name = "medicine_id", nullable = false),
+//            uniqueConstraints = @UniqueConstraint(columnNames = {"person_id", "medicine_id"}, name = "uc_person_medicine")
+//    )
+//    private Set<Medicine> medicines;
+
     @ManyToOne
     @JoinColumn(name = "document_type_id", nullable = false)
     private DocumentType documentType;
@@ -93,6 +104,10 @@ public class Person {
     public void addHearingLoss(Set<HearingLoss> hearingLosses){
         this.hearingLosses = hearingLosses;
     }
+
+//    public void addMedicines(Set<Medicine> medicines){
+//        this.medicines = medicines;
+//    }
 
     public void addDocumentType(DocumentType documentType) {
         this.documentType = documentType;

@@ -82,4 +82,9 @@ public class PersonServiceImpl implements PersonService {
         personRepository.save(person);
         hearingLossService.assignHearingLosses(hearingLossesSet, person.getPersonId());
     }
+
+    @Override
+    public Person getPersonById(UUID personId) {
+        return personRepository.findById(personId).orElseThrow(() -> new ResourceNotFoundException("No existe la persona buscada"));
+    }
 }

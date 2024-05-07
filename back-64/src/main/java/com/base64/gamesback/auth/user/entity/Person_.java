@@ -2,6 +2,7 @@ package com.base64.gamesback.auth.user.entity;
 
 import com.base64.gamesback.documentType.entity.DocumentType;
 import com.base64.gamesback.hearing_loss.entity.HearingLoss;
+import com.base64.gamesback.medicines.entity.Medicine;
 import jakarta.persistence.metamodel.SetAttribute;
 import jakarta.persistence.metamodel.SingularAttribute;
 import jakarta.persistence.metamodel.StaticMetamodel;
@@ -24,4 +25,5 @@ public abstract class Person_ {
     public static volatile SingularAttribute<Person,String> personEmail;
     public static volatile SingularAttribute<Person,String> previousTreatments;
     public static volatile SetAttribute<Person, HearingLoss> hearingLosses;
+//    public static volatile SetAttribute<Person, Medicine> medicines;
 }
