@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface UserService {
 
-    userPersonData getUserPatientById(UUID userId);
+    UserPatientResponse getUserPatientById(UUID userId);
 
     Boolean existUserByName(String userName);
 
@@ -22,9 +22,9 @@ public interface UserService {
 
     void updateUserDoctor(UserDoctorUpdateRequest request, UUID userId);
 
-    List<userPersonData> getAllUsersPatient();
+    List<UserPatientResponse> getAllUsersPatient();
 
-    userDoctorData getUserDoctorById(UUID userId);
+    UserDoctorResponse getUserDoctorById(UUID userId);
 
-    List<userDoctorData> getAllUsersDoctor();
+    List<UserDoctorResponse> getAllUsersDoctor();
 }

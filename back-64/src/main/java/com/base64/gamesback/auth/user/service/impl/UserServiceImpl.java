@@ -1,11 +1,6 @@
 package com.base64.gamesback.auth.user.service.impl;
 
-import com.base64.gamesback.auth.user.dto.UserDoctorDto;
-import com.base64.gamesback.auth.user.dto.UserDoctorUpdateRequest;
-import com.base64.gamesback.auth.user.dto.UserDto;
-import com.base64.gamesback.auth.user.dto.UserUpdateRequest;
-import com.base64.gamesback.auth.user.dto.projection.userDoctorData;
-import com.base64.gamesback.auth.user.dto.projection.userPersonData;
+import com.base64.gamesback.auth.user.dto.*;
 import com.base64.gamesback.auth.user.entity.User;
 import com.base64.gamesback.auth.user.repository.UserRepository;
 import com.base64.gamesback.auth.user.service.DoctorService;
@@ -32,13 +27,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public userPersonData getUserPatientById(UUID userId) {
-        return userRepository.getUserPatientId(userId);
+    public UserPatientResponse getUserPatientById(UUID userId) {
+        return userRepository.getUserPatientById(userId);
     }
 
     @Override
-    public userDoctorData getUserDoctorById(UUID userId) {
-        return userRepository.getUserDoctorId(userId);
+    public UserDoctorResponse getUserDoctorById(UUID userId) {
+        return userRepository.getUserDoctorById(userId);
     }
 
     @Override
@@ -91,12 +86,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<userPersonData> getAllUsersPatient() {
-        return userRepository.getAllUsersPatient();
+    public List<UserPatientResponse> getAllUsersPatient() {
+        return userRepository.getAllUserPatients();
     }
 
     @Override
-    public List<userDoctorData> getAllUsersDoctor() {
-        return userRepository.getAllUsersDoctor();
+    public List<UserDoctorResponse> getAllUsersDoctor() {
+        return userRepository.getAllUserDoctors();
     }
 }

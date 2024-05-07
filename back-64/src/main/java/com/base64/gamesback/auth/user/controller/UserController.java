@@ -1,11 +1,6 @@
 package com.base64.gamesback.auth.user.controller;
 
-import com.base64.gamesback.auth.user.dto.UserDoctorDto;
-import com.base64.gamesback.auth.user.dto.UserDoctorUpdateRequest;
-import com.base64.gamesback.auth.user.dto.UserDto;
-import com.base64.gamesback.auth.user.dto.UserUpdateRequest;
-import com.base64.gamesback.auth.user.dto.projection.userDoctorData;
-import com.base64.gamesback.auth.user.dto.projection.userPersonData;
+import com.base64.gamesback.auth.user.dto.*;
 import com.base64.gamesback.auth.user.service.PersonService;
 import com.base64.gamesback.auth.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,22 +26,22 @@ public class UserController {
     }
 
     @GetMapping("/patient/")
-    public ResponseEntity<List<userPersonData>> getAllUsersPatient(){
+    public ResponseEntity<List<UserPatientResponse>> getAllUsersPatient(){
         return new ResponseEntity<>(userService.getAllUsersPatient(), HttpStatus.OK);
     }
 
     @GetMapping("/patient/{userId}")
-    public ResponseEntity<userPersonData> getPatientById(@Valid @PathVariable UUID userId){
+    public ResponseEntity<UserPatientResponse> getPatientById(@Valid @PathVariable UUID userId){
         return new ResponseEntity<>(userService.getUserPatientById(userId), HttpStatus.OK);
     }
 
     @GetMapping("/doctor/")
-    public ResponseEntity<List<userDoctorData>> getAllUsersDoctor(){
+    public ResponseEntity<List<UserDoctorResponse>> getAllUsersDoctor(){
         return new ResponseEntity<>(userService.getAllUsersDoctor(), HttpStatus.OK);
     }
 
     @GetMapping("/doctor/{userId}")
-    public ResponseEntity<userDoctorData> getDoctorById(@Valid @PathVariable UUID userId){
+    public ResponseEntity<UserDoctorResponse> getDoctorById(@Valid @PathVariable UUID userId){
         return new ResponseEntity<>(userService.getUserDoctorById(userId), HttpStatus.OK);
     }
 
