@@ -16,14 +16,14 @@ public class AppointmentDto {
     @JsonProperty(value = "time")
     private String time;
 
-    @JsonProperty(value = "speciality")
-    private String speciality;
+    @JsonProperty(value = "speciality_id")
+    private UUID speciality;
 
     @JsonProperty(value = "address")
     private String address;
 
-    @JsonProperty(value = "user_id")
-    private UUID userId;
+    @JsonProperty(value = "person_id")
+    private UUID personId;
 
     @JsonProperty(value = "doctor_id")
     private UUID doctorId;
