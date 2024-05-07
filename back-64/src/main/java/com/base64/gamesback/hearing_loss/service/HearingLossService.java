@@ -16,5 +16,4 @@ public interface HearingLossService {
     HearingLoss getHearingLossById(UUID hearingLossId);
     List<HearingLossResponse> getAllHearingLoss();
     void assignHearingLosses(Set<UUID> hearingLossIds, UUID personId);
-    List<HearingLossResponse> getAllHearingLossesByPersonId(UUID personId);
 }

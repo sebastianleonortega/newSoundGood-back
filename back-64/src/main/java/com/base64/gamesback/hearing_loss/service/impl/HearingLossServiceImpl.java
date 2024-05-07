@@ -77,9 +77,4 @@ public class HearingLossServiceImpl implements HearingLossService {
         person.addHearingLoss(hearingLosses);
         personRepository.save(person);
     }
-
-    @Override
-    public List<HearingLossResponse> getAllHearingLossesByPersonId(UUID personId) {
-        return hearingLossRepository.getAllHearingLossesByPersonId(personId);
-    }
 }

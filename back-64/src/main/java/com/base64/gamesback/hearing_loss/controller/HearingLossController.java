@@ -104,18 +104,4 @@ public class HearingLossController {
         hearingLossService.deleteHearingLoss(hearingLossId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-    @GetMapping("/person/{id}")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Success"),
-            @ApiResponse(responseCode = "404", description = "Not Found"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
-    })
-    @Operation(
-            security = {@SecurityRequirement(name = "bearer-key")},
-            description = "Get hearing loss by person id"
-    )
-    public ResponseEntity<List<HearingLossResponse>> getHearingLossByPersonId(@Parameter(description = "UUID of a person", required = true) @PathVariable("id") UUID personId){
-        return new ResponseEntity<>(hearingLossService.getAllHearingLossesByPersonId(personId), HttpStatus.OK);
-    }
 }

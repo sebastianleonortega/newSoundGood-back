@@ -18,12 +18,4 @@ public interface HearingLossRepository extends JpaRepository<HearingLoss, UUID> 
     List<HearingLossResponse> getAllHearingLosses();
 
     Set<HearingLoss> getHearingLossSpecialtyByHearingLossIdIn(Set<UUID> specialityId);
-
-    @Query(value = "SELECT h.hearing_loss_id AS hearingLossId, h.name AS hearingLossName " +
-            "FROM main.hearing_loss h " +
-            "INNER JOIN main.person_hearing_loss phl ON h.hearing_loss_id = phl.hearing_loss_id " +
-            "INNER JOIN main.person p ON phl.person_id = p.user_id " +
-            "WHERE p.user_id = :personId", nativeQuery = true)
-    List<HearingLossResponse> getAllHearingLossesByPersonId(@Param("personId") UUID personId);
-
 }
