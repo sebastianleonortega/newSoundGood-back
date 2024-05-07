@@ -1,4 +1,4 @@
-package com.base64.gamesback.specialtiy.entity;
+package com.base64.gamesback.speciality.entity;
 
 import com.base64.gamesback.auth.user.entity.Doctor;
 import jakarta.persistence.*;
@@ -9,15 +9,15 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "specialty", schema = "main")
+@Table(name = "speciality", schema = "main")
 @Getter
 @NoArgsConstructor
-public class Specialty {
+public class Speciality {
 
     @Id
     @GeneratedValue
-    @Column(name = "specialty_id")
-    private UUID specialtyId;
+    @Column(name = "speciality_id")
+    private UUID specialityId;
 
     @Column(name = "name")
     private String name;
@@ -25,7 +25,7 @@ public class Specialty {
     @ManyToMany(mappedBy = "speciality")
     private List<Doctor> doctor;
 
-    public Specialty(String name) {
+    public Speciality(String name) {
         this.name = name;
     }
 
@@ -33,8 +33,8 @@ public class Specialty {
         this.name = name;
     }
 
-    public static Specialty create(String name) {
-        return new Specialty(
+    public static Speciality create(String name) {
+        return new Speciality(
                 name
         );
     }

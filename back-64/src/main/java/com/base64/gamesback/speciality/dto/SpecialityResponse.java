@@ -1,4 +1,4 @@
-package com.base64.gamesback.specialtiy.dto;
+package com.base64.gamesback.speciality.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -1,9 +1,9 @@
-package com.base64.gamesback.specialtiy.controller;
+package com.base64.gamesback.speciality.controller;
 
-import com.base64.gamesback.specialtiy.dto.SpecialityDto;
-import com.base64.gamesback.specialtiy.dto.SpecialityResponse;
-import com.base64.gamesback.specialtiy.entity.Specialty;
-import com.base64.gamesback.specialtiy.service.SpecialityService;
+import com.base64.gamesback.speciality.dto.SpecialityDto;
+import com.base64.gamesback.speciality.dto.SpecialityResponse;
+import com.base64.gamesback.speciality.entity.Speciality;
+import com.base64.gamesback.speciality.service.SpecialityService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -53,7 +53,7 @@ public class SpecialityController {
             security = {@SecurityRequirement(name = "bearer-key")},
             description = "Get speciality by id"
     )
-    public ResponseEntity<Specialty> getSpecialityById(@Parameter(description = "UUID of a speciality", required = true) @PathVariable("id") UUID specialityId){
+    public ResponseEntity<Speciality> getSpecialityById(@Parameter(description = "UUID of a speciality", required = true) @PathVariable("id") UUID specialityId){
         return new ResponseEntity<>(specialityService.getSpecialityById(specialityId), HttpStatus.OK);
     }
 

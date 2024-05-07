@@ -1,13 +1,13 @@
-package com.base64.gamesback.specialtiy.service.impl;
+package com.base64.gamesback.speciality.service.impl;
 
 import com.base64.gamesback.auth.user.entity.Doctor;
 import com.base64.gamesback.auth.user.repository.DoctorRepository;
 import com.base64.gamesback.common.exception_handler.ResourceNotFoundException;
-import com.base64.gamesback.specialtiy.dto.SpecialityDto;
-import com.base64.gamesback.specialtiy.dto.SpecialityResponse;
-import com.base64.gamesback.specialtiy.entity.Specialty;
-import com.base64.gamesback.specialtiy.repository.SpecialityRepository;
-import com.base64.gamesback.specialtiy.service.SpecialityService;
+import com.base64.gamesback.speciality.dto.SpecialityDto;
+import com.base64.gamesback.speciality.dto.SpecialityResponse;
+import com.base64.gamesback.speciality.entity.Speciality;
+import com.base64.gamesback.speciality.repository.SpecialityRepository;
+import com.base64.gamesback.speciality.service.SpecialityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -31,33 +31,33 @@ public class SpecialityServiceImpl implements SpecialityService {
     @Override
     public void registerSpeciality(SpecialityDto specialityDto) {
 
-        List<Specialty> specialties = specialityRepository.getSpecialtyByNameContainingIgnoreCase(specialityDto.getSpecialityName());
+        List<Speciality> specialties = specialityRepository.getSpecialityByNameContainingIgnoreCase(specialityDto.getSpecialityName());
         if (!specialties.isEmpty()) {
             throw new IllegalArgumentException("Ya existe una especialidad con ese nombre");
         }
 
-        Specialty specialty = Specialty.create(
+        Speciality speciality = com.base64.gamesback.speciality.entity.Speciality.create(
                 specialityDto.getSpecialityName()
         );
-        specialityRepository.save(specialty);
+        specialityRepository.save(speciality);
     }
 
 
     @Override
     public void updateSpeciality(SpecialityDto specialityDto, UUID specialityId) {
-       Specialty specialty = this.getSpecialityById(specialityId);
-        specialty.updateSpeciality(specialityDto.getSpecialityName());
-        specialityRepository.save(specialty);
+       Speciality speciality = this.getSpecialityById(specialityId);
+        speciality.updateSpeciality(specialityDto.getSpecialityName());
+        specialityRepository.save(speciality);
     }
 
     @Override
     public void deleteSpeciality(UUID specialityId) {
-        Specialty specialty = this.getSpecialityById(specialityId);
-        specialityRepository.delete(specialty);
+        Speciality speciality = this.getSpecialityById(specialityId);
+        specialityRepository.delete(speciality);
     }
 
     @Override
-    public Specialty getSpecialityById(UUID specialityId) {
+    public Speciality getSpecialityById(UUID specialityId) {
         return specialityRepository.findById(specialityId).orElseThrow(() -> new ResourceNotFoundException("No existe la especialidad a buscar"));
     }
 
@@ -69,7 +69,7 @@ public class SpecialityServiceImpl implements SpecialityService {
     @Override
     public void assignSpecialities(List<UUID> specialityIds, UUID doctorId) {
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new ResourceNotFoundException("No existe el doctor buscado"));
-        Set<Specialty> specialties = specialityRepository.getSpecialtyBySpecialtyIdIn(specialityIds);
+        Set<Speciality> specialties = specialityRepository.getSpecialityBySpecialityIdIn(specialityIds);
 
         if(specialties.isEmpty()){
             throw new IllegalArgumentException("Las especialidades ingresadas no existen");
