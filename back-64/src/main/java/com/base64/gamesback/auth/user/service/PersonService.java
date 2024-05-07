@@ -14,6 +14,8 @@ public interface PersonService {
 
     Boolean existPersonByDocument(String personDocument);
 
+    Person getPersonByID(UUID uuid);
+
     void registerPerson(User user, PersonDto personDto);
 
     void updatePerson(PersonUpdateRequest request, User user);

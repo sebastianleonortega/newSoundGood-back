@@ -22,10 +22,10 @@ public class Appointment {
     private UUID appointmentId;
 
     @Column(name = "date", nullable = false)
-    private LocalDate date;
+    private String date;
 
     @Column(name = "time", nullable = false)
-    private LocalTime time;
+    private String time;
 
     @Column(name = "speciality", nullable = false)
     private String speciality;
@@ -41,14 +41,14 @@ public class Appointment {
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 
-    public Appointment(LocalDate date, LocalTime time, String speciality, String address) {
+    public Appointment(String date, String time, String speciality, String address) {
         this.date = date;
         this.time = time;
         this.speciality = speciality;
         this.address = address;
     }
 
-    public static Appointment create(LocalDate date, LocalTime time, String speciality, String address){
+    public static Appointment create(String date, String time, String speciality, String address){
         return new Appointment(
                 date,
                 time,

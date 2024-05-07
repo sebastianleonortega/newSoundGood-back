@@ -13,7 +13,6 @@ import java.util.UUID;
 public class UserDoctorResponse {
 
     @JsonProperty(value = "user_id")
-    @JsonIgnore
     private UUID userId;
 
     @NotNull

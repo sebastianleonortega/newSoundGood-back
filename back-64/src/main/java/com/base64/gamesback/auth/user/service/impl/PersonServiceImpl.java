@@ -43,6 +43,11 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    public Person getPersonByID(UUID uuid) {
+        return personRepository.findById(uuid).orElseThrow(() -> new ResourceNotFoundException("no existe la persona"));
+    }
+
+    @Override
     public void registerPerson(User user, PersonDto request) {
         List<UUID> hearingLossesList = Arrays.asList(request.getHearingLosses());
         Set<UUID> hearingLossesSet = new HashSet<>(hearingLossesList);
