@@ -78,9 +78,4 @@ public class SpecialityServiceImpl implements SpecialityService {
         doctor.addSpecialities(specialties);
         doctorRepository.save(doctor);
     }
-
-    @Override
-    public List<SpecialityResponse> getAllSpecialitiesByDoctorId(UUID doctorId) {
-        return specialityRepository.getAllSpecialitiesByDoctorId(doctorId);
-    }
 }

@@ -15,5 +15,4 @@ public interface SpecialityService {
     Speciality getSpecialityById(UUID specialityId);
     List<SpecialityResponse> getAllSpecialities();
     void assignSpecialities(List<UUID> specialityIds, UUID doctorId);
-    List<SpecialityResponse> getAllSpecialitiesByDoctorId(UUID doctorId);
 }
