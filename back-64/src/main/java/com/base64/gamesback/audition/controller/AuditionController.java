@@ -13,7 +13,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/test-audition")
+@RequestMapping("/security/test-audition")
 public class AuditionController {
 
     private final AuditionService auditionService;

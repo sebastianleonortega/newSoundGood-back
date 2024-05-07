@@ -25,7 +25,7 @@ public class Doctor {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "lastName", nullable = false)
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
     @ManyToMany(cascade = CascadeType.REFRESH)
