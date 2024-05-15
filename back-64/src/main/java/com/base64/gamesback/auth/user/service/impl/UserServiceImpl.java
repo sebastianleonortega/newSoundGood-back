@@ -7,6 +7,7 @@ import com.base64.gamesback.auth.user.service.DoctorService;
 import com.base64.gamesback.auth.user.service.PersonService;
 import com.base64.gamesback.auth.user.service.UserService;
 import com.base64.gamesback.common.exception_handler.ResourceNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,11 +20,13 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PersonService personService;
     private final DoctorService doctorService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, PersonService personService, DoctorService doctorService) {
+    public UserServiceImpl(UserRepository userRepository, PersonService personService, DoctorService doctorService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.personService = personService;
         this.doctorService = doctorService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -45,7 +48,7 @@ public class UserServiceImpl implements UserService {
     public void registerUserPatient(UserDto request) {
         User user = User.create(
                 request.getName().toLowerCase(Locale.ROOT),
-                request.getPassword(),
+                passwordEncoder.encode(request.getPassword()),
                 false,
                 null
         );
@@ -56,7 +59,7 @@ public class UserServiceImpl implements UserService {
     public void registerUserDoctor(UserDoctorDto request) {
         User user = User.create(
                 request.getName().toLowerCase(Locale.ROOT),
-                request.getPassword(),
+                passwordEncoder.encode(request.getPassword()),
                 false,
                 null
         );
