@@ -33,7 +33,7 @@ public class AuthServiceImpl implements AuthService {
 
        if(user != null && passwordEncoder.matches(request.getPassword(), user.getPassword())){
            String token = jwtUtil.create(String.valueOf(user.getUserId()), user.getPerson().getPersonEmail());
-           return LoginResponse.create(user.getUserId(), user.getProfileImage(), user.isAdministrator(), user.getPerson().getPersonName(), user.getPerson().getPersonLastName(), token);
+           return LoginResponse.create(user.getUserId(), user.getProfileImage(), user.isAdministrator(), user.getPerson().getPersonName(), user.getPerson().getPersonLastName(), user.getDoctor() != null, token);
        }else {
            throw new AccessDeniedException("Credenciales incorrectas");
        }

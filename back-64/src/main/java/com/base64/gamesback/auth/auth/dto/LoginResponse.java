@@ -28,20 +28,24 @@ public class LoginResponse {
     @JsonProperty(value = "person_last_name")
     private String personLastName;
 
+    @JsonProperty(value = "is_doctor")
+    private Boolean isDoctor;
+
     @JsonProperty(value = "token")
     private String token;
 
-    public LoginResponse(UUID userId, String useProfile, Boolean administrator, String personName, String personLastName, String token) {
+    public LoginResponse(UUID userId, String useProfile, Boolean administrator, String personName, String personLastName, Boolean isDoctor, String token) {
         this.userId = userId;
         this.useProfile = useProfile;
         this.administrator = administrator;
         this.personName = personName;
-        this.token = token;
         this.personLastName = personLastName;
+        this.isDoctor = isDoctor;
+        this.token = token;
     }
 
-    public static LoginResponse create(UUID userId, String useProfile, Boolean administrator, String personName, String personLastName, String token) {
-        return new LoginResponse(userId, useProfile, administrator, personName, personLastName, token);
+    public static LoginResponse create(UUID userId, String useProfile, Boolean administrator, String personName, String personLastName, Boolean isDoctor, String token) {
+        return new LoginResponse(userId, useProfile, administrator, personName, personLastName, isDoctor, token);
     }
 
 
