@@ -97,4 +97,21 @@ public class UserServiceImpl implements UserService {
     public List<UserDoctorResponse> getAllUsersDoctor() {
         return userRepository.getAllUserDoctors();
     }
+
+    @Override
+    public User getUserById(UUID userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("El usuario no se encuentra"));
+    }
+
+    @Override
+    public User getUserUserName(String userName) {
+        return userRepository.getUserByUserName(userName.toLowerCase(Locale.ROOT));
+    }
+
+    @Override
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
+
+
 }

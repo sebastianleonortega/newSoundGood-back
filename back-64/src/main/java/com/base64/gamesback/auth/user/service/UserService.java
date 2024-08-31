@@ -4,6 +4,7 @@ package com.base64.gamesback.auth.user.service;
 import com.base64.gamesback.auth.user.dto.*;
 import com.base64.gamesback.auth.user.dto.projection.userDoctorData;
 import com.base64.gamesback.auth.user.dto.projection.userPersonData;
+import com.base64.gamesback.auth.user.entity.User;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,4 +28,10 @@ public interface UserService {
     UserDoctorResponse getUserDoctorById(UUID userId);
 
     List<UserDoctorResponse> getAllUsersDoctor();
+
+    User getUserById(UUID userId);
+
+    User getUserUserName(String userName);
+
+    void saveUser(User user);
 }

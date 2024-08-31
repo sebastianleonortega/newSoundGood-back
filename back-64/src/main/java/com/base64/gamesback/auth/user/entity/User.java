@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.print.Doc;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -29,6 +30,15 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "locked",nullable = false)
+    private boolean locked;
+
+    @Column(name = "login_attempts")
+    private int loginAttempts;
+
+    @Column(name = "login_attempts_mfa")
+    private int loginAttemptsMfa;
+
     @Column(name = "administrator")
     private boolean administrator;
 
@@ -38,6 +48,14 @@ public class User {
     @OneToOne(mappedBy = "user")
     private Doctor doctor;
 
+    @Column(name = "code_verification")
+    private String codeVerification;
+
+    @Column(name = "created_code_verification")
+    private LocalDateTime createCodeVerification;
+
+    @Column(name = "quantity_resent_email")
+    private int quantityResentEmail;
 
     public User(String userName, String password, boolean administrator, String profileImage) {
         this.userName = userName;
@@ -53,5 +71,30 @@ public class User {
     public void update(String userName, String profileImage){
         this.userName = userName;
         this.profileImage = profileImage;
+    }
+
+    public void addCodeVerification(String codeVerification) {
+        this.codeVerification = codeVerification;
+        this.createCodeVerification = LocalDateTime.now();
+    }
+
+    public void resetCodeVerification(){
+        this.codeVerification = null;
+    }
+
+    public void updateLoginAttempts(int attempts){
+        this.loginAttempts = attempts;
+    }
+
+    public void updateLocked(boolean locked){
+        this.locked = locked;
+    }
+
+    public void updateLoginAttemptsMfa(int loginAttemptsMfa){
+        this.loginAttemptsMfa = loginAttemptsMfa;
+    }
+
+    public void updateQuantityResentEmail(int quantityResentEmail){
+        this.quantityResentEmail = quantityResentEmail;
     }
 }

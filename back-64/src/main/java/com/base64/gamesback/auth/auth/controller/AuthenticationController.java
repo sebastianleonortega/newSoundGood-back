@@ -1,6 +1,7 @@
 package com.base64.gamesback.auth.auth.controller;
 
 
+import com.base64.gamesback.auth.auth.dto.AuthenticationMfaRequest;
 import com.base64.gamesback.auth.auth.dto.LoginRequest;
 import com.base64.gamesback.auth.auth.dto.LoginResponse;
 import com.base64.gamesback.auth.auth.service.AuthService;
@@ -26,6 +27,12 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request){
         LoginResponse response = authService.login(request);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/mfa")
+    public ResponseEntity<LoginResponse> mfa(@Valid @RequestBody AuthenticationMfaRequest request){
+        LoginResponse response = authService.mfa(request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
