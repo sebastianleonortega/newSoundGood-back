@@ -86,7 +86,7 @@ public class AuthServiceImpl implements AuthService {
         user.resetCodeVerification();
         user.updateQuantityResentEmail(0);
         userService.saveUser(user);
-        return LoginResponse.create(user.getProfileImage(), user.isAdministrator(), user.getPerson().getPersonName(), user.getPerson().getPersonLastName(), user.getDoctor() != null, token);
+        return LoginResponse.create(user.getProfileImage(), user.isAdministrator(), (user.getPerson() != null) ? user.getPerson().getPersonName() : user.getDoctor().getName(), (user.getPerson() != null) ? user.getPerson().getPersonLastName() : user.getDoctor().getLastName(), user.getDoctor() != null, token);
     }
 
     private void updateLockedUser(User user) {
