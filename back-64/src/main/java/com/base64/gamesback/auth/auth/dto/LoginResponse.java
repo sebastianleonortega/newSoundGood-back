@@ -34,6 +34,9 @@ public class LoginResponse {
     @JsonProperty(value = "token")
     private String token;
 
+    @JsonProperty(value = "type_token",required = true)
+    private String typeToken;
+
     public LoginResponse(UUID userId) {
         this.userId = userId;
     }
@@ -45,11 +48,7 @@ public class LoginResponse {
         this.personLastName = personLastName;
         this.isDoctor = isDoctor;
         this.token = token;
+        this.typeToken = "Bearer";
     }
-
-    public static LoginResponse create(String useProfile, Boolean administrator, String personName, String personLastName, Boolean isDoctor, String token) {
-        return new LoginResponse(useProfile, administrator, personName, personLastName, isDoctor, token);
-    }
-
 
 }
