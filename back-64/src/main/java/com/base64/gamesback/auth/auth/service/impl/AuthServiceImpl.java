@@ -80,7 +80,7 @@ public class AuthServiceImpl implements AuthService {
             throw new AuthenticationFailedException("el código ha expirado, vuelve a iniciar sesión");
         }
 
-        String token = jwtUtil.create(String.valueOf(user.getUserId()), user.getPerson().getPersonEmail());
+        String token = jwtUtil.create(String.valueOf(user.getUserId()), (user.getPerson() != null) ? user.getPerson().getPersonEmail() : user.getDoctor().getEmail());
 
         user.updateLoginAttemptsMfa(0);
         user.resetCodeVerification();
