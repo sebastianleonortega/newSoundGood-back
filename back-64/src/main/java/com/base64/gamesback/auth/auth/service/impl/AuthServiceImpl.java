@@ -6,12 +6,9 @@ import com.base64.gamesback.auth.auth.dto.LoginResponse;
 import com.base64.gamesback.auth.auth.exception.AuthenticationFailedException;
 import com.base64.gamesback.auth.auth.service.AuthService;
 import com.base64.gamesback.auth.user.entity.User;
-import com.base64.gamesback.auth.user.repository.UserRepository;
 import com.base64.gamesback.auth.user.service.UserService;
 import com.base64.gamesback.auth.user.util.GenericLoginAttempts;
 import com.base64.gamesback.security.JwtUtil;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,15 +21,13 @@ import java.util.Objects;
 
 @Service
 public class AuthServiceImpl implements AuthService {
-    private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
     private final JwtUtil jwtUtil;
 
 
-    public AuthServiceImpl(AuthenticationManager authenticationManager, UserService userService, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
-        this.authenticationManager = authenticationManager;
+    public AuthServiceImpl(UserService userService, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
@@ -115,7 +110,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private String generateCodeVerification(User user) {
-        if (user.getCodeVerification() != null && !user.getCodeVerification().isEmpty()) {
+        if (user.getCodeVerification() != null && user.getCreateCodeVerification() != null && !user.getCodeVerification().isEmpty()) {
             Duration duration = Duration.between(user.getCreateCodeVerification(), LocalDateTime.now());
             if (duration.toMinutes() <= 30) {
                 throw new AuthenticationFailedException("has alcanzado el límite de intentos para reenviar el código a tu correo, reintenta en " + (30 - duration.toMinutes()) + " minutos.");
