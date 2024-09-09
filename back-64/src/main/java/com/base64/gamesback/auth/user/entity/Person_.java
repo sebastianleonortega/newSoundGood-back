@@ -1,6 +1,7 @@
 package com.base64.gamesback.auth.user.entity;
 
 import com.base64.gamesback.documentType.entity.DocumentType;
+import com.base64.gamesback.genderType.entity.GenderType;
 import com.base64.gamesback.hearing_loss.entity.HearingLoss;
 import com.base64.gamesback.medicines.entity.Medicine;
 import jakarta.persistence.metamodel.SetAttribute;
@@ -18,7 +19,7 @@ public abstract class Person_ {
     public static volatile SingularAttribute<Person,String> personName;
     public static volatile SingularAttribute<Person,String> personLastName;
     public static volatile SingularAttribute<Person, DocumentType> documentType;
-//    public static volatile SingularAttribute<Person, GenderType> genderType;
+    public static volatile SingularAttribute<Person, GenderType> genderType;
     public static volatile SingularAttribute<Person,String> personDocument;
     public static volatile SingularAttribute<Person,String> personAddress;
     public static volatile SingularAttribute<Person,String> personPhone;

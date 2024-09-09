@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
 import lombok.Getter;
 
 import java.util.UUID;
@@ -26,12 +25,12 @@ public class PersonDto {
     private String lastname;
 
     @NotNull
-    @JsonProperty(value = "document_type", required = true)
+    @JsonProperty(value = "document_type_id", required = true)
     private UUID documentType;
 
-//    @NotNull
-//    @JsonProperty(value = "gender_type", required = true)
-//    private UUID genderType;
+    @NotNull
+    @JsonProperty(value = "gender_type_id", required = true)
+    private UUID genderType;
 
     @NotNull
     @NotEmpty

@@ -1,6 +1,7 @@
 package com.base64.gamesback.auth.user.entity;
 
 import com.base64.gamesback.documentType.entity.DocumentType;
+import com.base64.gamesback.genderType.entity.GenderType;
 import com.base64.gamesback.hearing_loss.entity.HearingLoss;
 import com.base64.gamesback.medicines.entity.Medicine;
 import jakarta.persistence.*;
@@ -69,9 +70,9 @@ public class Person {
     @JoinColumn(name = "document_type_id", nullable = false)
     private DocumentType documentType;
 
-//    @ManyToOne
-//    @JoinColumn(name = "gender_type_id", nullable = false)
-//    private GenderType genderType;
+    @ManyToOne
+    @JoinColumn(name = "gender_type_id", nullable = false)
+    private GenderType genderType;
 
     public Person(String personName, String personLastName, String personDocument, String personAddress, String personPhone, String personEmail, String previousTreatments) {
         this.personName = personName;
@@ -113,8 +114,8 @@ public class Person {
         this.documentType = documentType;
     }
 
-//    public void addGenderType(GenderType genderType) {
-//        this.genderType = genderType;
-//
-//    }
+    public void addGenderType(GenderType genderType) {
+        this.genderType = genderType;
+
+    }
 }
