@@ -3,7 +3,7 @@ package com.base64.gamesback.genderType.service.impl;
 import com.base64.gamesback.common.exception_handler.ResourceNotFoundException;
 import com.base64.gamesback.genderType.entity.GenderType;
 import com.base64.gamesback.genderType.repository.GenderTypeRepository;
-import com.base64.gamesback.genderType.service.GenderTypeServiceShared;
+import com.base64.gamesback.genderType.service.GenderTypeSharedService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +11,11 @@ import java.util.UUID;
 
 @Service
 @Slf4j
-public class GenderTypeServiceSharedImpl implements GenderTypeServiceShared {
+public class GenderTypeSharedServiceImpl implements GenderTypeSharedService {
 
     private final GenderTypeRepository genderTypeRepository;
 
-    public GenderTypeServiceSharedImpl(GenderTypeRepository genderTypeRepository) {
+    public GenderTypeSharedServiceImpl(GenderTypeRepository genderTypeRepository) {
         this.genderTypeRepository = genderTypeRepository;
     }
 

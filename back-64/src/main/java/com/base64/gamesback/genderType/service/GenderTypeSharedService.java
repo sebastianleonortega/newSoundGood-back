@@ -5,7 +5,7 @@ import com.base64.gamesback.genderType.entity.GenderType;
 
 import java.util.UUID;
 
-public interface GenderTypeServiceShared {
+public interface GenderTypeSharedService {
 
     GenderType getGenderTypeById(UUID genderTypeId);
 }
