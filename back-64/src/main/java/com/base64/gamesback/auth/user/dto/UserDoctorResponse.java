@@ -1,7 +1,6 @@
 package com.base64.gamesback.auth.user.dto;
 
 import com.base64.gamesback.speciality.dto.SpecialityResponseDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -34,6 +33,21 @@ public class UserDoctorResponse {
     @JsonProperty(value = "doctor_address")
     private String address;
 
+    @JsonProperty(value = "document_type_id", required = true)
+    private UUID documentType;
+
+    @JsonProperty(value = "document_type_code")
+    private String documentTypeCode;
+
+    @JsonProperty(value = "doctor_document")
+    private String documentNumber;
+
+    @JsonProperty(value = "gender_type_id", required = true)
+    private UUID genderType;
+
+    @JsonProperty(value = "gender_type_code")
+    private String genderTypeCode;
+
     @JsonProperty(value = "doctor_email")
     private String email;
 
@@ -46,7 +60,7 @@ public class UserDoctorResponse {
     @JsonProperty(value = "specialities")
     private List<SpecialityResponseDto> specialities;
 
-    public UserDoctorResponse(UUID userId, String userName, Boolean administrator, String name, String lastname, String phone, String address, String email, String image, String description) {
+    public UserDoctorResponse(UUID userId, String userName, Boolean administrator, String name, String lastname, String phone, String address, UUID documentType, String documentTypeCode, String documentNumber, UUID genderType, String genderTypeCode, String email, String image, String description) {
         this.userId = userId;
         this.userName = userName;
         this.administrator = administrator;
@@ -54,6 +68,11 @@ public class UserDoctorResponse {
         this.lastname = lastname;
         this.phone = phone;
         this.address = address;
+        this.documentType = documentType;
+        this.documentTypeCode = documentTypeCode;
+        this.documentNumber = documentNumber;
+        this.genderType = genderType;
+        this.genderTypeCode = genderTypeCode;
         this.email = email;
         this.image = image;
         this.description = description;

@@ -7,6 +7,8 @@ import com.base64.gamesback.auth.user.entity.User;
 import com.base64.gamesback.auth.user.repository.DoctorRepository;
 import com.base64.gamesback.auth.user.service.DoctorService;
 import com.base64.gamesback.common.exception_handler.ResourceNotFoundException;
+import com.base64.gamesback.documentType.service.DocumentTypeSharedService;
+import com.base64.gamesback.genderType.service.GenderTypeSharedService;
 import com.base64.gamesback.speciality.service.SpecialityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,11 +22,15 @@ public class DoctorServiceImpl implements DoctorService {
 
     private final DoctorRepository doctorRepository;
     private final SpecialityService specialityService;
+    private final DocumentTypeSharedService documentTypeSharedService;
+    private final GenderTypeSharedService genderTypeSharedService;
 
 
-    public DoctorServiceImpl(DoctorRepository doctorRepository, SpecialityService specialityService) {
+    public DoctorServiceImpl(DoctorRepository doctorRepository, SpecialityService specialityService, DocumentTypeSharedService documentTypeSharedService, GenderTypeSharedService genderTypeSharedService) {
         this.doctorRepository = doctorRepository;
         this.specialityService = specialityService;
+        this.documentTypeSharedService = documentTypeSharedService;
+        this.genderTypeSharedService = genderTypeSharedService;
     }
 
     @Override
@@ -32,6 +38,7 @@ public class DoctorServiceImpl implements DoctorService {
         Doctor doctor = Doctor.create(
                 doctorDto.getName(),
                 doctorDto.getLastname(),
+                doctorDto.getDocument(),
                 doctorDto.getPhone(),
                 doctorDto.getAddress(),
                 doctorDto.getEmail(),
@@ -39,6 +46,8 @@ public class DoctorServiceImpl implements DoctorService {
                 doctorDto.getDescription()
         );
         doctor.addUser(user);
+        doctor.addDocumentType(documentTypeSharedService.getDocumentType(doctorDto.getDocumentType()));
+        doctor.addGenderType(genderTypeSharedService.getGenderTypeById(doctorDto.getGenderType()));
         doctorRepository.save(doctor);
         specialityService.assignSpecialities(Arrays.asList(doctorDto.getSpecialities()), doctor.getDoctorId());
 
@@ -50,12 +59,15 @@ public class DoctorServiceImpl implements DoctorService {
         doctor.updateDoctor(
                 doctorUpdateRequest.getName(),
                 doctorUpdateRequest.getLastname(),
+                doctorUpdateRequest.getDocument(),
                 doctorUpdateRequest.getPhone(),
                 doctorUpdateRequest.getAddress(),
                 doctorUpdateRequest.getEmail(),
                 doctorUpdateRequest.getImage(),
                 doctorUpdateRequest.getDescription()
         );
+        doctor.addDocumentType(documentTypeSharedService.getDocumentType(doctorUpdateRequest.getDocumentType()));
+        doctor.addGenderType(genderTypeSharedService.getGenderTypeById(doctorUpdateRequest.getGenderType()));
         doctorRepository.save(doctor);
         specialityService.assignSpecialities(Arrays.asList(doctorUpdateRequest.getSpecialities()), doctor.getDoctorId());
     }

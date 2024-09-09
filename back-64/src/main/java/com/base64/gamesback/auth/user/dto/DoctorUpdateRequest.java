@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.UUID;
 
@@ -25,6 +24,12 @@ public class DoctorUpdateRequest {
     @JsonProperty(value = "doctor_last_name")
     private String lastname;
 
+    @NotEmpty
+    @NotNull
+    @Size(max = 50)
+    @JsonProperty(value = "document")
+    private String document;
+
     @NotNull
     @NotEmpty
     @Size(min = 8, max = 15)
@@ -35,6 +40,14 @@ public class DoctorUpdateRequest {
     @Size(max = 50)
     @JsonProperty(value = "doctor_address")
     private String address;
+
+    @NotNull
+    @JsonProperty(value = "document_type_id", required = true)
+    private UUID documentType;
+
+    @NotNull
+    @JsonProperty(value = "gender_type_id", required = true)
+    private UUID genderType;
 
     @NotNull
     @NotEmpty

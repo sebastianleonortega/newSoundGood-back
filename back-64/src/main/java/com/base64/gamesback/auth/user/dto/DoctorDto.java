@@ -24,6 +24,12 @@ public class DoctorDto {
     @JsonProperty(value = "doctor_last_name")
     private String lastname;
 
+    @NotEmpty
+    @NotNull
+    @Size(max = 50)
+    @JsonProperty(value = "document")
+    private String document;
+
     @NotNull
     @NotEmpty
     @Size(min = 8, max = 15)
@@ -32,8 +38,16 @@ public class DoctorDto {
 
     @NotNull
     @Size(max = 50)
-    @JsonProperty(value = "doctor_address")
+    @JsonProperty(value = "doctor_address_id")
     private String address;
+
+    @NotNull
+    @JsonProperty(value = "document_type_id", required = true)
+    private UUID documentType;
+
+    @NotNull
+    @JsonProperty(value = "gender_type", required = true)
+    private UUID genderType;
 
     @NotNull
     @NotEmpty

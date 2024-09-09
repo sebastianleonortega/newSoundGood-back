@@ -1,5 +1,7 @@
 package com.base64.gamesback.auth.user.entity;
 
+import com.base64.gamesback.documentType.entity.DocumentType;
+import com.base64.gamesback.genderType.entity.GenderType;
 import com.base64.gamesback.speciality.entity.Speciality;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -38,6 +40,9 @@ public class Doctor {
     )
     private Set<Speciality> speciality;
 
+    @Column(name = "document", nullable = false, length = 15, unique = true)
+    private String document;
+
     @Column(name = "phone", nullable = false)
     private String phone;
 
@@ -53,9 +58,18 @@ public class Doctor {
     @Column(name = "description")
     private String description;
 
-    public Doctor(String name, String lastName, String phone, String address, String email, String image, String description) {
+    @ManyToOne
+    @JoinColumn(name = "document_type_id", nullable = false)
+    private DocumentType documentType;
+
+    @ManyToOne
+    @JoinColumn(name = "gender_type_id", nullable = false)
+    private GenderType genderType;
+
+    public Doctor(String name, String lastName, String document, String phone, String address, String email, String image, String description) {
         this.name = name;
         this.lastName = lastName;
+        this.document = document;
         this.phone = phone;
         this.address = address;
         this.email = email;
@@ -63,14 +77,15 @@ public class Doctor {
         this.description = description;
     }
 
-    public static Doctor create(String name, String lastName, String phone, String address, String email, String image, String description) {
-        return new Doctor(name, lastName, phone, address, email, image, description
+    public static Doctor create(String name, String lastName, String document, String phone, String address, String email, String image, String description) {
+        return new Doctor(name, lastName, document, phone, address, email, image, description
         );
     }
 
-    public void updateDoctor(String name, String lastName, String phone, String address, String email, String image, String description) {
+    public void updateDoctor(String name, String lastName, String document,  String phone, String address, String email, String image, String description) {
         this.name = name;
         this.lastName = lastName;
+        this.document = document;
         this.phone = phone;
         this.address = address;
         this.email = email;
@@ -84,5 +99,14 @@ public class Doctor {
 
     public void addSpecialities(Set<Speciality> speciality){
         this.speciality = speciality;
+    }
+
+    public void addDocumentType(DocumentType documentType) {
+        this.documentType = documentType;
+    }
+
+    public void addGenderType(GenderType genderType) {
+        this.genderType = genderType;
+
     }
 }
