@@ -38,7 +38,7 @@ public class DoctorDto {
 
     @NotNull
     @Size(max = 50)
-    @JsonProperty(value = "doctor_address_id")
+    @JsonProperty(value = "doctor_address")
     private String address;
 
     @NotNull
@@ -46,7 +46,7 @@ public class DoctorDto {
     private UUID documentType;
 
     @NotNull
-    @JsonProperty(value = "gender_type", required = true)
+    @JsonProperty(value = "gender_type_id", required = true)
     private UUID genderType;
 
     @NotNull
