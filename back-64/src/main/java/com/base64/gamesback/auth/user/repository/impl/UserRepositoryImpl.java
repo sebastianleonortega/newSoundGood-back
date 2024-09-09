@@ -6,6 +6,8 @@ import com.base64.gamesback.auth.user.entity.*;
 import com.base64.gamesback.auth.user.repository.UserRepositoryCustom;
 import com.base64.gamesback.documentType.entity.DocumentType;
 import com.base64.gamesback.documentType.entity.DocumentType_;
+import com.base64.gamesback.genderType.entity.GenderType;
+import com.base64.gamesback.genderType.entity.GenderType_;
 import com.base64.gamesback.hearing_loss.dto.HearingLossResponseDto;
 import com.base64.gamesback.hearing_loss.entity.HearingLoss;
 import com.base64.gamesback.hearing_loss.entity.HearingLoss_;
@@ -40,6 +42,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
             Root<User> root = cq.from(User.class);
             Join<User, Doctor> userDoctorJoin = root.join(User_.doctor, JoinType.INNER);
+            Join<Doctor, DocumentType> doctorDocumentTypeJoin = userDoctorJoin.join(Doctor_.documentType, JoinType.INNER);
+            Join<Doctor, GenderType> doctorGenderTypeJoin = userDoctorJoin.join(Doctor_.genderType, JoinType.INNER);
 
             cq.select(cb.construct(
                     UserDoctorResponse.class,
@@ -50,6 +54,11 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                     userDoctorJoin.get(Doctor_.lastName),
                     userDoctorJoin.get(Doctor_.phone),
                     userDoctorJoin.get(Doctor_.address),
+                    doctorDocumentTypeJoin.get(DocumentType_.documentTypeId),
+                    doctorDocumentTypeJoin.get(DocumentType_.code),
+                    userDoctorJoin.get(Doctor_.document),
+                    doctorGenderTypeJoin.get(GenderType_.genderId),
+                    doctorGenderTypeJoin.get(GenderType_.code),
                     userDoctorJoin.get(Doctor_.email),
                     userDoctorJoin.get(Doctor_.image),
                     userDoctorJoin.get(Doctor_.description)
@@ -82,6 +91,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
             Root<User> root = cq.from(User.class);
             Join<User, Person> userPersonJoin = root.join(User_.person, JoinType.INNER);
             Join<Person, DocumentType> personDocumentTypeJoin = userPersonJoin.join(Person_.documentType, JoinType.INNER);
+            Join<Person, GenderType> personGenderTypeJoin = userPersonJoin.join(Person_.genderType, JoinType.INNER);
 
             cq.select(cb.construct(
                     UserPatientResponse.class,
@@ -94,6 +104,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                     personDocumentTypeJoin.get(DocumentType_.documentTypeId),
                     personDocumentTypeJoin.get(DocumentType_.code),
                     userPersonJoin.get(Person_.personDocument),
+                    personGenderTypeJoin.get(GenderType_.genderId),
+                    personGenderTypeJoin.get(GenderType_.code),
                     userPersonJoin.get(Person_.personPhone),
                     userPersonJoin.get(Person_.personAddress),
                     userPersonJoin.get(Person_.personEmail),
@@ -127,6 +139,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
             Root<User> root = cq.from(User.class);
             Join<User, Doctor> userDoctorJoin = root.join(User_.doctor, JoinType.INNER);
+            Join<Doctor, DocumentType> doctorDocumentTypeJoin = userDoctorJoin.join(Doctor_.documentType, JoinType.INNER);
+            Join<Doctor, GenderType> doctorGenderTypeJoin = userDoctorJoin.join(Doctor_.genderType, JoinType.INNER);
 
             cq.select(cb.construct(
                     UserDoctorResponse.class,
@@ -137,6 +151,11 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                     userDoctorJoin.get(Doctor_.lastName),
                     userDoctorJoin.get(Doctor_.phone),
                     userDoctorJoin.get(Doctor_.address),
+                    doctorDocumentTypeJoin.get(DocumentType_.documentTypeId),
+                    doctorDocumentTypeJoin.get(DocumentType_.code),
+                    userDoctorJoin.get(Doctor_.document),
+                    doctorGenderTypeJoin.get(GenderType_.genderId),
+                    doctorGenderTypeJoin.get(GenderType_.code),
                     userDoctorJoin.get(Doctor_.email),
                     userDoctorJoin.get(Doctor_.image),
                     userDoctorJoin.get(Doctor_.description)
@@ -169,6 +188,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
             Root<User> root = cq.from(User.class);
             Join<User, Person> userPersonJoin = root.join(User_.person, JoinType.INNER);
             Join<Person, DocumentType> personDocumentTypeJoin = userPersonJoin.join(Person_.documentType, JoinType.INNER);
+            Join<Person, GenderType> personGenderTypeJoin = userPersonJoin.join(Person_.genderType, JoinType.INNER);
 
             cq.select(cb.construct(
                     UserPatientResponse.class,
@@ -181,6 +201,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                     personDocumentTypeJoin.get(DocumentType_.documentTypeId),
                     personDocumentTypeJoin.get(DocumentType_.code),
                     userPersonJoin.get(Person_.personDocument),
+                    personGenderTypeJoin.get(GenderType_.genderId),
+                    personGenderTypeJoin.get(GenderType_.code),
                     userPersonJoin.get(Person_.personPhone),
                     userPersonJoin.get(Person_.personAddress),
                     userPersonJoin.get(Person_.personEmail),
