@@ -68,7 +68,7 @@ public class HearingLossServiceImpl implements HearingLossService {
     public void assignHearingLosses(Set<UUID> hearingLossIds, UUID personId) {
 
         Person person = personRepository.findById(personId).orElseThrow(() -> new ResourceNotFoundException("No existe la persona buscada"));
-        Set<HearingLoss> hearingLosses = hearingLossRepository.getHearingLossSpecialtyByHearingLossIdIn(hearingLossIds);
+        Set<HearingLoss> hearingLosses = hearingLossRepository.getHearingLossSpecialityByHearingLossIdIn(hearingLossIds);
 
         if (hearingLosses.isEmpty()) {
             throw new IllegalArgumentException("Las perdidas auditivas ingresadas no existen");

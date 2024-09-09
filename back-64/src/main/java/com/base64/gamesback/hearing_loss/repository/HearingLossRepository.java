@@ -4,7 +4,6 @@ import com.base64.gamesback.hearing_loss.dto.HearingLossResponse;
 import com.base64.gamesback.hearing_loss.entity.HearingLoss;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Set;
@@ -17,5 +16,5 @@ public interface HearingLossRepository extends JpaRepository<HearingLoss, UUID> 
     @Query("SELECT H.hearingLossId as hearingLossId, H.name as hearingLossName FROM HearingLoss H")
     List<HearingLossResponse> getAllHearingLosses();
 
-    Set<HearingLoss> getHearingLossSpecialtyByHearingLossIdIn(Set<UUID> specialityId);
+    Set<HearingLoss> getHearingLossSpecialityByHearingLossIdIn(Set<UUID> specialityId);
 }
