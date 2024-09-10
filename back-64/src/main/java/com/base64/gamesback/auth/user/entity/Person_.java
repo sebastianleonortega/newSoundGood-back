@@ -26,5 +26,4 @@ public abstract class Person_ {
     public static volatile SingularAttribute<Person,String> personEmail;
     public static volatile SingularAttribute<Person,String> previousTreatments;
     public static volatile SetAttribute<Person, HearingLoss> hearingLosses;
-//    public static volatile SetAttribute<Person, Medicine> medicines;
 }
