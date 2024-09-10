@@ -3,7 +3,6 @@ package com.base64.gamesback.medicines.service;
 import com.base64.gamesback.medicines.dto.MedicineDto;
 import com.base64.gamesback.medicines.dto.MedicineResponse;
 import com.base64.gamesback.medicines.entity.Medicine;
-import com.base64.gamesback.speciality.dto.SpecialityResponse;
 
 import java.util.List;
 import java.util.UUID;

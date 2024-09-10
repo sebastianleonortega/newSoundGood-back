@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public interface MedicineRepository extends JpaRepository<Medicine, UUID> {
@@ -14,4 +15,6 @@ public interface MedicineRepository extends JpaRepository<Medicine, UUID> {
 
     @Query("SELECT M.medicineId as medicineId, M.name as medicineName FROM Medicine M")
     List<MedicineResponse> getAllMedicines();
+
+    Set<Medicine> getMedicinesByMedicineIdIn(List<UUID> medicinesIds);
 }
