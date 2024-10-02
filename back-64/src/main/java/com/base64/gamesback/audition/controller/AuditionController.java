@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 
 @RestController
@@ -24,7 +25,7 @@ public class AuditionController {
 
     @PostMapping("/submit-results")
     public ResponseEntity<AuditionResult> submitResults(
-            @RequestParam(defaultValue = "1, 2, 3, 4, 5, 6") List<String> inputNumbers
+            @RequestParam(defaultValue = "1, 2, 3") Set<String> inputNumbers
     ) {
         return new ResponseEntity<>(auditionService.submitResultsList(inputNumbers), HttpStatus.OK);
     }

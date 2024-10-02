@@ -7,6 +7,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 @Service
@@ -14,34 +15,32 @@ public class AuditionServiceImpl implements AuditionService {
 
     private static final Set<String> VALID_NUMBERS = new HashSet<>(Arrays.asList("321", "432", "654", "765", "976", "987"));
 
-    public AuditionResult validateNumbers(String inputNumbers) {
-        int validCount = 0;
+    public AuditionResult validateNumbers(Set<String> inputNumbers) {
+        AtomicInteger validCount = new AtomicInteger();
         List<String> invalidNumbers = new ArrayList<>();
 
-        for (String number : inputNumbers.split(",")) {
-            if (VALID_NUMBERS.contains(number.trim())) {
-                validCount++;
+        inputNumbers.forEach(number -> {
+            String trimmedNumber = number.trim();
+            if (VALID_NUMBERS.contains(trimmedNumber)) {
+                validCount.getAndIncrement();
             } else {
-                invalidNumbers.add(number);
+                invalidNumbers.add(trimmedNumber);
             }
-        }
+        });
         return new AuditionResult(
                 invalidNumbers.isEmpty() ? "¡Correcto! Has ingresado los números correctamente." : "¡Incorrecto! Has cometido un error. El test ha terminado.",
-                validCount,
+                validCount.get(),
                 invalidNumbers.toString().replace("[", "")
                         .replace("]", "")
                         .replace(" ", ""));
     }
 
     @Override
-    public AuditionResult submitResultsList(List<String> inputNumbers) {
+    public AuditionResult submitResultsList(Set<String> inputNumbers) {
         if(inputNumbers.isEmpty()){
           throw new IllegalArgumentException("Los datos de entrada no deben de estar vacíos");
         }
-        return this.validateNumbers(
-                inputNumbers.toString().replace("[", "")
-                        .replace("]", "")
-                        .replace(" ", ""));
+        return this.validateNumbers(inputNumbers);
     }
 
     @Override
