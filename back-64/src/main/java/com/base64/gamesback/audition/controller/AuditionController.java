@@ -25,7 +25,7 @@ public class AuditionController {
 
     @PostMapping("/submit-results")
     public ResponseEntity<AuditionResult> submitResults(
-            @RequestParam(defaultValue = "1, 2, 3") Set<String> inputNumbers
+            @RequestBody Set<String> inputNumbers
     ) {
         return new ResponseEntity<>(auditionService.submitResultsList(inputNumbers), HttpStatus.OK);
     }

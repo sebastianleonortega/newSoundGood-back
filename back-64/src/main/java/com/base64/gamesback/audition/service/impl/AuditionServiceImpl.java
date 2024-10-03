@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class AuditionServiceImpl implements AuditionService {
 
-    private static final Set<String> VALID_NUMBERS = new HashSet<>(Arrays.asList("321", "432", "654", "765", "976", "987"));
+    private static final Set<String> VALID_NUMBERS = new HashSet<>(Arrays.asList("321", "432", "654", "765", "976", "987", "264"));
 
     public AuditionResult validateNumbers(Set<String> inputNumbers) {
         AtomicInteger validCount = new AtomicInteger();
@@ -48,7 +48,7 @@ public class AuditionServiceImpl implements AuditionService {
         String audioFileName = switch (numero) {
             case 1 -> "432_Vol1";
             case 2 -> "976_Vol2";
-            case 3 -> "976_Vol3";
+            case 3 -> "264_Vol3";
             case 4 -> "321_Vol4";
             case 5 -> "765_Vol5";
             case 6 -> "987_Vol6";
