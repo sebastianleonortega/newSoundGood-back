@@ -9,6 +9,7 @@ import com.base64.gamesback.auth.user.service.UserService;
 import com.base64.gamesback.common.exception_handler.ResourceNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Locale;
@@ -45,6 +46,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void registerUserPatient(UserDto request) {
         User user = User.create(
                 request.getName().toLowerCase(Locale.ROOT),
