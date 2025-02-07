@@ -57,7 +57,7 @@ public class AuthServiceImpl implements AuthService {
 
         if (user.getDoctor() == null && !user.isAdministrator()){
             String token = jwtUtil.create(String.valueOf(user.getUserId()), user.getPerson().getPersonEmail());
-            return new LoginResponse(user.getProfileImage(), false, user.getPerson().getPersonName(), user.getPerson().getPersonLastName(), false, token);
+            return new LoginResponse(user.getUserId(), user.getProfileImage(), false, user.getPerson().getPersonName(), user.getPerson().getPersonLastName(), false, token);
         } else {
             return new LoginResponse(user.getUserId());
         }
@@ -86,7 +86,7 @@ public class AuthServiceImpl implements AuthService {
         user.resetCodeVerification();
         user.updateQuantityResentEmail(0);
         userService.saveUser(user);
-        return new LoginResponse(user.getProfileImage(), user.isAdministrator(), (user.getPerson() != null) ? user.getPerson().getPersonName() : user.getDoctor().getName(), (user.getPerson() != null) ? user.getPerson().getPersonLastName() : user.getDoctor().getLastName(), user.getDoctor() != null, token);
+        return new LoginResponse(user.getUserId(), user.getProfileImage(), user.isAdministrator(), (user.getPerson() != null) ? user.getPerson().getPersonName() : user.getDoctor().getName(), (user.getPerson() != null) ? user.getPerson().getPersonLastName() : user.getDoctor().getLastName(), user.getDoctor() != null, token);
     }
 
     private void updateLockedUser(User user) {

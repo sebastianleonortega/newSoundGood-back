@@ -41,7 +41,8 @@ public class LoginResponse {
         this.userId = userId;
     }
 
-    public LoginResponse(String useProfile, Boolean administrator, String personName, String personLastName, Boolean isDoctor, String token) {
+    public LoginResponse(UUID userId, String useProfile, Boolean administrator, String personName, String personLastName, Boolean isDoctor, String token) {
+        this.userId = userId;
         this.useProfile = useProfile;
         this.administrator = administrator;
         this.personName = personName;
