@@ -8,4 +8,5 @@ INSERT INTO main.hearing_loss (hearing_loss_id, "name") VALUES ('8b3b40b9-5d5f-4
 INSERT INTO main.hearing_loss (hearing_loss_id, "name") VALUES ('487df7d5-f065-4313-a7c0-8bb3d48c1606', 'Hipoacusia Unilateral');
 INSERT INTO main.hearing_loss (hearing_loss_id, "name") VALUES ('e6aae8a0-30bf-40f5-b9e4-614448e7eb8b', 'Hipoacusia Asimétrica');
 INSERT INTO main.hearing_loss (hearing_loss_id, "name") VALUES ('41d97b13-607d-474f-82aa-34f2d66e590e', 'Hipoacusia Progresiva');
+INSERT INTO main.hearing_loss (hearing_loss_id, "name") VALUES ('10647614-0f09-4993-b6e8-7db2e8697963', 'Sin problemas de audicion');
 
