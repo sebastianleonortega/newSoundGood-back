@@ -57,6 +57,9 @@ public class User {
     @Column(name = "quantity_resent_email")
     private int quantityResentEmail;
 
+    @Column(name = "reset_password_updateAt")
+    private LocalDateTime resetPasswordUpdateAt;
+
     public User(String userName, String password, boolean administrator, String profileImage) {
         this.userName = userName;
         this.password = password;
@@ -78,6 +81,13 @@ public class User {
         this.createCodeVerification = LocalDateTime.now();
     }
 
+    public void resetPassword(String password, LocalDateTime resetPasswordUpdateAt, Integer loginAttempts, Integer loginAttemptsMfa) {
+        this.password = password;
+        this.resetPasswordUpdateAt = resetPasswordUpdateAt;
+        this.loginAttempts = loginAttempts;
+        this.loginAttemptsMfa = loginAttemptsMfa;
+    }
+
     public void resetCodeVerification(){
         this.codeVerification = null;
     }
@@ -96,5 +106,13 @@ public class User {
 
     public void updateQuantityResentEmail(int quantityResentEmail){
         this.quantityResentEmail = quantityResentEmail;
+    }
+
+    public void updateResetPasswordUpdateAt(LocalDateTime resetPasswordUpdateAt){
+        this.resetPasswordUpdateAt = resetPasswordUpdateAt;
+    }
+
+    public void updatePassword(String password){
+        this.password = password;
     }
 }

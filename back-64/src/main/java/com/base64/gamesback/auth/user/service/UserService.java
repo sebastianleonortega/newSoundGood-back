@@ -1,6 +1,5 @@
 package com.base64.gamesback.auth.user.service;
 
-
 import com.base64.gamesback.auth.user.dto.*;
 import com.base64.gamesback.auth.user.dto.projection.userDoctorData;
 import com.base64.gamesback.auth.user.dto.projection.userPersonData;
@@ -29,9 +28,11 @@ public interface UserService {
 
     List<UserDoctorResponse> getAllUsersDoctor();
 
-    User getUserById(UUID userId);
+    void updatePassword(UpdatePasswordRequest request);
 
-    User getUserUserName(String userName);
+    void updatePasswordByAdmin(UUID userId, UUID userAdminId);
 
-    void saveUser(User user);
+    void forgotPassword(ResetPasswordRequest request);
+
+    void verifyTokenResetPassword(TokenResentPasswordRequest request);
 }

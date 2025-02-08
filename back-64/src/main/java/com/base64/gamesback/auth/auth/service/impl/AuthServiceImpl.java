@@ -6,8 +6,9 @@ import com.base64.gamesback.auth.auth.dto.LoginResponse;
 import com.base64.gamesback.auth.auth.exception.AuthenticationFailedException;
 import com.base64.gamesback.auth.auth.service.AuthService;
 import com.base64.gamesback.auth.user.entity.User;
-import com.base64.gamesback.auth.user.service.UserService;
+import com.base64.gamesback.auth.user.service.UserServiceShared;
 import com.base64.gamesback.auth.user.util.GenericLoginAttempts;
+import com.base64.gamesback.email.service.EmailSendService;
 import com.base64.gamesback.security.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,24 +18,26 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.Objects;
-
+import java.util.UUID;
 
 @Service
 public class AuthServiceImpl implements AuthService {
-    private final UserService userService;
+
     private final PasswordEncoder passwordEncoder;
+    private final EmailSendService emailSendService;
+    private final UserServiceShared userServiceShared;
 
     private final JwtUtil jwtUtil;
 
-
-    public AuthServiceImpl(UserService userService, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
-        this.userService = userService;
+    public AuthServiceImpl(PasswordEncoder passwordEncoder, EmailSendService emailSendService, UserServiceShared userServiceShared, JwtUtil jwtUtil) {
         this.passwordEncoder = passwordEncoder;
+        this.emailSendService = emailSendService;
+        this.userServiceShared = userServiceShared;
         this.jwtUtil = jwtUtil;
     }
 
     public LoginResponse login(LoginRequest request) {
-       User user = userService.getUserUserName(request.getName().toLowerCase(Locale.ROOT));
+        User user = userServiceShared.getUserUserName(request.getName().toLowerCase(Locale.ROOT));
 
         if (user.isLocked()) {
             throw new AuthenticationFailedException("el usuario se encuentra bloqueado");
@@ -48,24 +51,30 @@ public class AuthServiceImpl implements AuthService {
             }
         }
 
-        if(user.getDoctor() != null || user.isAdministrator()){
-            user.updateLoginAttempts(0);
-            user.addCodeVerification(this.generateCodeVerification(user));
-            user.updateQuantityResentEmail(0);
-            userService.saveUser(user);
-        }
+        user.updateLoginAttempts(0);
+        user.addCodeVerification(this.generateCodeVerification(user));
+        user.updateQuantityResentEmail(0);
+        userServiceShared.saveUser(user);
 
-        if (user.getDoctor() == null && !user.isAdministrator()){
-            String token = jwtUtil.create(String.valueOf(user.getUserId()), user.getPerson().getPersonEmail());
-            return new LoginResponse(user.getUserId(), user.getProfileImage(), false, user.getPerson().getPersonName(), user.getPerson().getPersonLastName(), false, token);
-        } else {
-            return new LoginResponse(user.getUserId());
-        }
+//        if(user.getDoctor() != null || user.isAdministrator()){
+//            user.updateLoginAttempts(0);
+//            user.addCodeVerification(this.generateCodeVerification(user));
+//            user.updateQuantityResentEmail(0);
+//            userService.saveUser(user);
+//        }
+//
+//        if (user.getDoctor() == null && !user.isAdministrator()){
+//            String token = jwtUtil.create(String.valueOf(user.getUserId()), user.getPerson().getPersonEmail());
+//            return new LoginResponse(user.getProfileImage(), false, user.getPerson().getPersonName(), user.getPerson().getPersonLastName(), false, token);
+//        } else {
+//            return new LoginResponse(user.getUserId());
+//        }
+        return new LoginResponse(user.getUserId());
     }
 
     @Override
     public LoginResponse mfa(AuthenticationMfaRequest request) {
-        User user = userService.getUserById(request.getUserId());
+        User user = userServiceShared.getUserById(request.getUserId());
 
         if (user.isLocked()) {
             throw new AuthenticationFailedException("el usuario se encuentra bloqueado");
@@ -85,13 +94,13 @@ public class AuthServiceImpl implements AuthService {
         user.updateLoginAttemptsMfa(0);
         user.resetCodeVerification();
         user.updateQuantityResentEmail(0);
-        userService.saveUser(user);
+        userServiceShared.saveUser(user);
         return new LoginResponse(user.getUserId(), user.getProfileImage(), user.isAdministrator(), (user.getPerson() != null) ? user.getPerson().getPersonName() : user.getDoctor().getName(), (user.getPerson() != null) ? user.getPerson().getPersonLastName() : user.getDoctor().getLastName(), user.getDoctor() != null, token);
     }
 
     private void updateLockedUser(User user) {
         user.updateLocked(true);
-        userService.saveUser(user);
+        userServiceShared.saveUser(user);
         throw new AuthenticationFailedException("usuario bloqueado debido a intentos fallidos de inicio de sesión.");
     }
 
@@ -104,7 +113,7 @@ public class AuthServiceImpl implements AuthService {
             }
             user.updateLoginAttemptsMfa(user.getLoginAttemptsMfa() + 1);
         }
-        userService.saveUser(user);
+        userServiceShared.saveUser(user);
         String message = (attempts.equals(GenericLoginAttempts.LOGIN_ATTEMPTS)) ? "." : " el código es inválido";
         throw new AuthenticationFailedException("quedan " + (attempts.equals(GenericLoginAttempts.LOGIN_ATTEMPTS) ? 3 - user.getLoginAttempts() : 3 - user.getLoginAttemptsMfa()) + " intentos" + message);
     }
@@ -119,8 +128,16 @@ public class AuthServiceImpl implements AuthService {
         SecureRandom random = new SecureRandom();
         int code = random.nextInt(999999);
         String codeVerification = String.format("%06d", code);
-//        emailSendService.emailCodeVerification(user, codeVerification);
+        emailSendService.emailCodeVerification(user, codeVerification);
         return codeVerification;
+    }
+
+    @Override
+    public void resentEmailByUser(UUID userId) {
+        User user = userServiceShared.getUserById(userId);
+        user.addCodeVerification(this.generateCodeVerification(user));
+        user.updateQuantityResentEmail(user.getQuantityResentEmail() + 1);
+        userServiceShared.saveUser(user);
     }
 
 }

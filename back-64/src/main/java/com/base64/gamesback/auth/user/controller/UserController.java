@@ -4,7 +4,10 @@ import com.base64.gamesback.auth.user.dto.*;
 import com.base64.gamesback.auth.user.service.PersonService;
 import com.base64.gamesback.auth.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -98,5 +101,48 @@ public class UserController {
         userService.updateUserDoctor(request, id);
         return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
+    }
+
+    @PutMapping("/update_password")
+    @Operation(security = {@SecurityRequirement(name = "bearer-key")},description = "UPDATE PASSWORD")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204",description = "NOT CONTENT"),
+            @ApiResponse(responseCode = "404",description = "NOT FOUND")
+    })
+    public ResponseEntity<HttpStatus> updatePassword(@Valid @RequestBody UpdatePasswordRequest request){
+        userService.updatePassword(request);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/v1/reset_password_by_admin/{user_id}/{user_admin_id}")
+    @Operation(description = "Reset password of user by administrator")
+    @ApiResponse(responseCode = "204", description = "No Content")
+    public ResponseEntity<HttpStatus> resetPasswordUser(
+            @Parameter(description = "UUID of a user", required = true) @PathVariable("user_id") UUID userId,
+            @Parameter(description = "UUID of a user admin", required = true) @PathVariable("user_admin_id") UUID userAdminId) {
+        userService.updatePasswordByAdmin(userId, userAdminId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/forgot_password")
+    @Operation(description = "Forgot password by user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "OK"),
+            @ApiResponse(responseCode = "401",description = "UNAUTHORIZED")
+    })
+    public ResponseEntity<HttpStatus> forgotPassword(@Valid @RequestBody ResetPasswordRequest request){
+//        authenticationService.forgotPassword(request);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/reset_password")
+    @Operation(description = "Reset password by user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "OK"),
+            @ApiResponse(responseCode = "401",description = "UNAUTHORIZED")
+    })
+    public ResponseEntity<HttpStatus> resetPassword(@Valid @RequestBody TokenResentPasswordRequest request){
+//        authenticationService.verifyTokenResetPassword(request);
+        return  new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface UserRepository  extends JpaRepository<User, UUID>, UserRepositoryCustom {
@@ -45,4 +46,8 @@ public interface UserRepository  extends JpaRepository<User, UUID>, UserReposito
             "inner join main.doctor_speciality ds on d.user_id = ds.user_id " +
             "inner join main.speciality s on ds.speciality_id = s.speciality ", nativeQuery = true)
     List<userDoctorData> getAllUsersDoctor();
+
+    User getUserByUserNameAndPersonPersonEmail(String userName, String email);
+
+    Optional<User> findByUserIdAndUserName(UUID userId, String userName);
 }
