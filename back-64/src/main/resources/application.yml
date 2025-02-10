@@ -1,5 +1,8 @@
 server:
   port: 8010
+settings:
+  url:
+    front: http://localhost:4200
 spring:
   mail:
     host: smtp.gmail.com
@@ -16,7 +19,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/sound-good
     username: postgres
-    password: 2408
+    password: 123
   jpa:
     database: POSTGRESQL
     generate-ddl: true

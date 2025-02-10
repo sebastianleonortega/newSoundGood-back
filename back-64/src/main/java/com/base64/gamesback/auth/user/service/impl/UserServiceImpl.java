@@ -71,10 +71,11 @@ public class UserServiceImpl implements UserService {
                 null
         );
         personService.registerPerson(userRepository.save(user), request.getPerson());
-        emailSendService.sendUserCredentials(user, null);
+//        emailSendService.sendUserCredentials(user, null);
     }
 
     @Override
+    @Transactional
     public void registerUserDoctor(UserDoctorDto request) {
         String randomPassword = UtilString.generateRandom(12);
         User user = User.create(
@@ -84,7 +85,7 @@ public class UserServiceImpl implements UserService {
                 null
         );
         doctorService.registerPersonDoctor(userRepository.save(user), request.getDoctor());
-        emailSendService.sendUserCredentials(user, randomPassword);
+//        emailSendService.sendUserCredentials(user, randomPassword);
     }
 
     @Override
