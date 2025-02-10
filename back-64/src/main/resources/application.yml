@@ -32,7 +32,7 @@ spring:
         format_sql: true
         hbm2ddl:
           charset_name: UTF-8
-          import_files: scripts/documentType.sql, scripts/genderType.sql, scripts/user.sql, scripts/specialities.sql, scripts/medicine.sql, scripts/hearing_losses.sql, scripts/doctors.sql, scripts/patients.sql, scripts/doctor_speciality.sql, scripts/person_hearing_loss.sql
+          import_files: scripts/documentType.sql, scripts/genderType.sql, scripts/user.sql, scripts/specialities.sql, scripts/medicine.sql, scripts/hearing_losses.sql, scripts/doctors.sql, scripts/patients.sql, scripts/doctor_speciality.sql, scripts/person_hearing_loss.sql, scripts/emailTemplate.sql
 springdoc:
   swagger-ui:
     enabled: true

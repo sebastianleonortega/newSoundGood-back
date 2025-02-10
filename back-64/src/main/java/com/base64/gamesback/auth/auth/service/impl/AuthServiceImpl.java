@@ -39,6 +39,10 @@ public class AuthServiceImpl implements AuthService {
     public LoginResponse login(LoginRequest request) {
         User user = userServiceShared.getUserUserName(request.getName().toLowerCase(Locale.ROOT));
 
+        if(user == null) {
+            throw new AuthenticationFailedException("usuario no encontrado");
+        }
+
         if (user.isLocked()) {
             throw new AuthenticationFailedException("el usuario se encuentra bloqueado");
         }
@@ -75,6 +79,10 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public LoginResponse mfa(AuthenticationMfaRequest request) {
         User user = userServiceShared.getUserById(request.getUserId());
+
+        if(user == null) {
+            throw new AuthenticationFailedException("usuario no encontrado");
+        }
 
         if (user.isLocked()) {
             throw new AuthenticationFailedException("el usuario se encuentra bloqueado");
