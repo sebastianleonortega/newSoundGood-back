@@ -1,6 +1,18 @@
 server:
   port: 8010
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: yorksanc@gmail.com
+    password: lfrwjavbmczhflsd
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
   datasource:
     url: jdbc:postgresql://localhost:5432/sound-good
     username: postgres
@@ -18,9 +30,16 @@ spring:
         hbm2ddl:
           charset_name: UTF-8
           import_files: scripts/documentType.sql, scripts/genderType.sql, scripts/user.sql, scripts/specialities.sql, scripts/medicine.sql, scripts/hearing_losses.sql, scripts/doctors.sql, scripts/patients.sql, scripts/doctor_speciality.sql, scripts/person_hearing_loss.sql
-
+springdoc:
+  swagger-ui:
+    enabled: true
+  api-docs:
+    enabled: true
 security:
   jwt:
     secret: GamesFull123
     issuer: Main
     ttlMillis: 3600000
+settings:
+  url:
+    front: http://localhost:4200
