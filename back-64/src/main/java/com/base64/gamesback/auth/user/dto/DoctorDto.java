@@ -62,6 +62,12 @@ public class DoctorDto {
     @JsonProperty(value = "doctor_description")
     private String description;
 
+    @JsonProperty(value = "doctor_latitude")
+    private String latitude;
+
+    @JsonProperty(value = "doctor_longitude")
+    private String longitude;
+
     @JsonProperty(value = "specialities", required = true)
     @Size(min = 1)
     private UUID[] specialities;

@@ -58,6 +58,12 @@ public class Doctor {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "latitude")
+    private String latitude;
+
+    @Column(name = "longitude")
+    private String longitude;
+
     @ManyToOne
     @JoinColumn(name = "document_type_id", nullable = false)
     private DocumentType documentType;
@@ -66,7 +72,7 @@ public class Doctor {
     @JoinColumn(name = "gender_type_id", nullable = false)
     private GenderType genderType;
 
-    public Doctor(String name, String lastName, String document, String phone, String address, String email, String image, String description) {
+    public Doctor(String name, String lastName, String document, String phone, String address, String email, String image, String description, String latitude, String longitude) {
         this.name = name;
         this.lastName = lastName;
         this.document = document;
@@ -75,14 +81,16 @@ public class Doctor {
         this.email = email;
         this.image = image;
         this.description = description;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
-    public static Doctor create(String name, String lastName, String document, String phone, String address, String email, String image, String description) {
-        return new Doctor(name, lastName, document, phone, address, email, image, description
+    public static Doctor create(String name, String lastName, String document, String phone, String address, String email, String image, String description, String latitude, String longitude) {
+        return new Doctor(name, lastName, document, phone, address, email, image, description, latitude, longitude
         );
     }
 
-    public void updateDoctor(String name, String lastName, String document,  String phone, String address, String email, String image, String description) {
+    public void updateDoctor(String name, String lastName, String document,  String phone, String address, String email, String image, String description, String latitude, String longitude) {
         this.name = name;
         this.lastName = lastName;
         this.document = document;
@@ -91,6 +99,8 @@ public class Doctor {
         this.email = email;
         this.image = image;
         this.description = description;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public void addUser(User user){

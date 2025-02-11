@@ -61,7 +61,9 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                     doctorGenderTypeJoin.get(GenderType_.code),
                     userDoctorJoin.get(Doctor_.email),
                     userDoctorJoin.get(Doctor_.image),
-                    userDoctorJoin.get(Doctor_.description)
+                    userDoctorJoin.get(Doctor_.description),
+                    userDoctorJoin.get(Doctor_.latitude),
+                    userDoctorJoin.get(Doctor_.longitude)
             ));
             cq.distinct(true);
 
@@ -158,7 +160,9 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                     doctorGenderTypeJoin.get(GenderType_.code),
                     userDoctorJoin.get(Doctor_.email),
                     userDoctorJoin.get(Doctor_.image),
-                    userDoctorJoin.get(Doctor_.description)
+                    userDoctorJoin.get(Doctor_.description),
+                    userDoctorJoin.get(Doctor_.latitude),
+                    userDoctorJoin.get(Doctor_.longitude)
             ));
             cq.distinct(true);
 

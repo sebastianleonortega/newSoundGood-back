@@ -25,6 +25,8 @@ public abstract class Doctor_ {
         public static volatile SingularAttribute<Doctor, String> phone;
         public static volatile SingularAttribute<Doctor, String> document;
         public static volatile SingularAttribute<Doctor, String> email;
+        public static volatile SingularAttribute<Doctor, String> latitude;
+        public static volatile SingularAttribute<Doctor, String> longitude;
         public static volatile SingularAttribute<Doctor, DocumentType> documentType;
         public static volatile SingularAttribute<Doctor, GenderType> genderType;
 

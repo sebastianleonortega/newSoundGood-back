@@ -43,7 +43,9 @@ public class DoctorServiceImpl implements DoctorService {
                 doctorDto.getAddress(),
                 doctorDto.getEmail(),
                 doctorDto.getImage() != null ? doctorDto.getImage() : "",
-                doctorDto.getDescription()
+                doctorDto.getDescription(),
+                doctorDto.getLatitude(),
+                doctorDto.getLongitude()
         );
         doctor.addUser(user);
         doctor.addDocumentType(documentTypeSharedService.getDocumentType(doctorDto.getDocumentType()));
@@ -64,7 +66,9 @@ public class DoctorServiceImpl implements DoctorService {
                 doctorUpdateRequest.getAddress(),
                 doctorUpdateRequest.getEmail(),
                 doctorUpdateRequest.getImage(),
-                doctorUpdateRequest.getDescription()
+                doctorUpdateRequest.getDescription(),
+                doctorUpdateRequest.getLatitude(),
+                doctorUpdateRequest.getLongitude()
         );
         doctor.addDocumentType(documentTypeSharedService.getDocumentType(doctorUpdateRequest.getDocumentType()));
         doctor.addGenderType(genderTypeSharedService.getGenderTypeById(doctorUpdateRequest.getGenderType()));

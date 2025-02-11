@@ -57,10 +57,16 @@ public class UserDoctorResponse {
     @JsonProperty(value = "doctor_description")
     private String description;
 
+    @JsonProperty(value = "doctor_latitude")
+    private String latitude;
+
+    @JsonProperty(value = "doctor_longitude")
+    private String longitude;
+
     @JsonProperty(value = "specialities")
     private List<SpecialityResponseDto> specialities;
 
-    public UserDoctorResponse(UUID userId, String userName, Boolean administrator, String name, String lastname, String phone, String address, UUID documentType, String documentTypeCode, String documentNumber, UUID genderType, String genderTypeCode, String email, String image, String description) {
+    public UserDoctorResponse(UUID userId, String userName, Boolean administrator, String name, String lastname, String phone, String address, UUID documentType, String documentTypeCode, String documentNumber, UUID genderType, String genderTypeCode, String email, String image, String description, String latitude, String longitude) {
         this.userId = userId;
         this.userName = userName;
         this.administrator = administrator;
@@ -76,6 +82,8 @@ public class UserDoctorResponse {
         this.email = email;
         this.image = image;
         this.description = description;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public void addResponseSpeciality(List<SpecialityResponseDto> specialities) {
