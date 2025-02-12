@@ -30,6 +30,12 @@ public interface AppointmentDataResponse {
     @JsonProperty(value = "doctor_image")
     String getDoctorImage();
 
+    @JsonProperty(value = "doctor_latitude")
+    String getDoctorLatitude();
+
+    @JsonProperty(value = "doctor_longitude")
+    String getDoctorLongitude();
+
     @JsonProperty(value = "person_name")
     String getPersonName();
 
