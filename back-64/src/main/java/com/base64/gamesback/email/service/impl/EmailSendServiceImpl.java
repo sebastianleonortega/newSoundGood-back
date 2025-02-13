@@ -92,6 +92,6 @@ public class EmailSendServiceImpl implements EmailSendService {
                 subject,
                 body
         );
-        emailService.sendEmail(emailRequest);
+//        emailService.sendEmail(emailRequest);
     }
 }
