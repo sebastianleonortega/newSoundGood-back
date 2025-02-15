@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
-@StaticMetamodel(Person_.class)
+@StaticMetamodel(Person.class)
 public abstract class Person_ {
     public static volatile SingularAttribute<Person, UUID> personId;
     public static volatile SingularAttribute<Person, User> user;

@@ -1,6 +1,6 @@
 package com.base64.gamesback.auth.user.repository;
 
-import com.base64.gamesback.auth.user.dto.projection.CountUser;
+import com.base64.gamesback.auth.user.dto.projection.CountUsersAndTest;
 import com.base64.gamesback.auth.user.dto.projection.UserDoctorData;
 import com.base64.gamesback.auth.user.dto.projection.UserPersonData;
 import com.base64.gamesback.auth.user.entity.User;
@@ -48,10 +48,10 @@ public interface UserRepository  extends JpaRepository<User, UUID>, UserReposito
             "inner join main.speciality s on ds.speciality_id = s.speciality ", nativeQuery = true)
     List<UserDoctorData> getAllUsersDoctor();
 
-    @Query(value = "SELECT count(d.user_id) AS userDoctor, count(p.user_id) AS userPerson " +
+    @Query(value = "SELECT count(d.user_id) AS userDoctor, count(p.user_id) AS userPerson, (select count(t.test_id) from main.test t) as test " +
             " FROM main.user u LEFT JOIN main.doctor d ON u.user_id = d.user_id " +
             "left join main.person p on u.user_id = p.user_id ", nativeQuery = true)
-    CountUser getCountUsers();
+    CountUsersAndTest getCountUsersAndTest();
 
     User getUserByUserNameAndPersonPersonEmail(String userName, String email);
 

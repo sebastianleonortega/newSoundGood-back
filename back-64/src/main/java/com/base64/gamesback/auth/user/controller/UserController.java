@@ -1,7 +1,7 @@
 package com.base64.gamesback.auth.user.controller;
 
 import com.base64.gamesback.auth.user.dto.*;
-import com.base64.gamesback.auth.user.dto.projection.CountUser;
+import com.base64.gamesback.auth.user.dto.projection.CountUsersAndTest;
 import com.base64.gamesback.auth.user.service.PersonService;
 import com.base64.gamesback.auth.user.service.UserService;
 import com.base64.gamesback.common.object.SearchByCriteria;
@@ -197,10 +197,10 @@ public class UserController {
 
     }
 
-    @GetMapping("/count_users")
-    @Operation(description = "count user on platform")
+    @GetMapping("/count_users_and_test")
+    @Operation(description = "count user and test on platform")
     @ApiResponse(responseCode = "200", description = "success")
-    public ResponseEntity<CountUser> countUsers() {
-        return new ResponseEntity<>(userService.getCountUsers(), HttpStatus.OK);
+    public ResponseEntity<CountUsersAndTest> countUsersAndTest() {
+        return new ResponseEntity<>(userService.getCountUsersAndTest(), HttpStatus.OK);
     }
 }

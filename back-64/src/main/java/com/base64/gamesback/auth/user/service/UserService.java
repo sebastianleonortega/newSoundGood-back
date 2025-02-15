@@ -1,7 +1,7 @@
 package com.base64.gamesback.auth.user.service;
 
 import com.base64.gamesback.auth.user.dto.*;
-import com.base64.gamesback.auth.user.dto.projection.CountUser;
+import com.base64.gamesback.auth.user.dto.projection.CountUsersAndTest;
 import com.base64.gamesback.common.object.SearchByCriteria;
 import org.springframework.data.domain.Page;
 
@@ -42,5 +42,5 @@ public interface UserService {
 
     void updateStatusUser(UpdateStatusUserRequest updateStatusUserRequest);
 
-    CountUser getCountUsers();
+    CountUsersAndTest getCountUsersAndTest();
 }
