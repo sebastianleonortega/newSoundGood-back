@@ -37,11 +37,14 @@ public class LoginResponse {
     @JsonProperty(value = "type_token",required = true)
     private String typeToken;
 
+    @JsonProperty(value = "have_password_by_admin")
+    private Boolean havePasswordByAdmin;
+
     public LoginResponse(UUID userId) {
         this.userId = userId;
     }
 
-    public LoginResponse(UUID userId, String useProfile, Boolean administrator, String personName, String personLastName, Boolean isDoctor, String token) {
+    public LoginResponse(UUID userId, String useProfile, Boolean administrator, String personName, String personLastName, Boolean isDoctor, String token, Boolean havePasswordByAdmin) {
         this.userId = userId;
         this.useProfile = useProfile;
         this.administrator = administrator;
@@ -50,6 +53,7 @@ public class LoginResponse {
         this.isDoctor = isDoctor;
         this.token = token;
         this.typeToken = "Bearer";
+        this.havePasswordByAdmin = havePasswordByAdmin;
     }
 
 }

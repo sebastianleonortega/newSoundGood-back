@@ -48,6 +48,9 @@ public class User {
     @OneToOne(mappedBy = "user")
     private Doctor doctor;
 
+    @Column(name = "have_password_by_admin")
+    private Boolean havePasswordByAdmin;
+
     @Column(name = "code_verification")
     private String codeVerification;
 
@@ -60,15 +63,16 @@ public class User {
     @Column(name = "reset_password_updateAt")
     private LocalDateTime resetPasswordUpdateAt;
 
-    public User(String userName, String password, boolean administrator, String profileImage) {
+    public User(String userName, String password, String profileImage, Boolean havePasswordByAdmin) {
         this.userName = userName;
         this.password = password;
-        this.administrator = administrator;
+        this.administrator = false;
         this.profileImage = profileImage;
+        this.havePasswordByAdmin = havePasswordByAdmin;
     }
 
-    public static User create( String userName, String password, boolean administrator, String profileImag){
-        return new User(userName, password, administrator, profileImag);
+    public static User create( String userName, String password, String profileImag, Boolean isCreatedByAdmin){
+        return new User(userName, password, profileImag, isCreatedByAdmin);
     }
 
     public void update(String userName, String profileImage){
@@ -114,5 +118,9 @@ public class User {
 
     public void updatePassword(String password){
         this.password = password;
+    }
+
+    public void updateHavePasswordByAdmin(){
+        this.havePasswordByAdmin = false;
     }
 }

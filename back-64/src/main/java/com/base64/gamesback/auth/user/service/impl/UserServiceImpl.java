@@ -67,8 +67,8 @@ public class UserServiceImpl implements UserService {
         User user = User.create(
                 request.getName().toLowerCase(Locale.ROOT),
                 passwordEncoder.encode(request.getPassword()),
-                false,
-                null
+                null,
+                false
         );
         userRepository.save(user);
         personService.registerPerson(user, request.getPerson());
@@ -81,8 +81,8 @@ public class UserServiceImpl implements UserService {
         User user = User.create(
                 request.getName().toLowerCase(Locale.ROOT),
                 passwordEncoder.encode(request.getDoctor().getDocument().toLowerCase(Locale.ROOT) + ".$"),
-                false,
-                null
+                null,
+                true
         );
         userRepository.save(user);
         doctorService.registerPersonDoctor(user, request.getDoctor());
@@ -128,6 +128,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("La contraseña actual es incorrecta.");
         }
         user.updatePassword(passwordEncoder.encode(request.getPassword()));
+        user.updateHavePasswordByAdmin();
         userRepository.save(user);
         emailSendService.changePassword(user);
     }

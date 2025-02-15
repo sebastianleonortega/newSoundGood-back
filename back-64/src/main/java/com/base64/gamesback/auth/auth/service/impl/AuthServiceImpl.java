@@ -103,7 +103,7 @@ public class AuthServiceImpl implements AuthService {
         user.resetCodeVerification();
         user.updateQuantityResentEmail(0);
         userServiceShared.saveUser(user);
-        return new LoginResponse(user.getUserId(), user.getProfileImage(), user.isAdministrator(), (user.getPerson() != null) ? user.getPerson().getPersonName() : user.getDoctor().getName(), (user.getPerson() != null) ? user.getPerson().getPersonLastName() : user.getDoctor().getLastName(), user.getDoctor() != null, token);
+        return new LoginResponse(user.getUserId(), user.getProfileImage(), user.isAdministrator(), (user.getPerson() != null) ? user.getPerson().getPersonName() : user.getDoctor().getName(), (user.getPerson() != null) ? user.getPerson().getPersonLastName() : user.getDoctor().getLastName(), user.getDoctor() != null, token, user.getHavePasswordByAdmin());
     }
 
     private void updateLockedUser(User user) {
