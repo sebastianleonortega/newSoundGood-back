@@ -24,6 +24,8 @@ public interface UserService {
 
     List<UserPatientResponse> getAllUsersPatient();
 
+    Page<UserPatientResponse> getAllUsersPatientPage(SearchByCriteria search);
+
     UserDoctorResponse getUserDoctorById(UUID userId);
 
     List<UserDoctorResponse> getAllUsersDoctor();

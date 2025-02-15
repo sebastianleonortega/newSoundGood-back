@@ -12,11 +12,22 @@ import java.util.UUID;
 public interface UserRepositoryCustom {
 
     UserDoctorResponse getUserDoctorById(UUID userId);
+
     UserPatientResponse getUserPatientById(UUID userId);
+
     List<UserDoctorResponse> getAllUserDoctors();
+
     Page<UserDoctorResponse> getAllUserDoctorsPage(Criteria criteria, Long totalRows);
+
     Long countUserDoctorsPage(Criteria criteria);
+
     Page<UserResponseDto> getAllUsersPage(Criteria criteria, Long totalRows);
+
     Long countUsersPage(Criteria criteria);
+
     List<UserPatientResponse> getAllUserPatients();
+
+    Page<UserPatientResponse> getAllUserPatientsPage(Criteria criteria, Long totalRows);
+
+    Long countUserPatientsPage(Criteria criteria);
 }

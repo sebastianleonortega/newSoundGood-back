@@ -125,6 +125,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Page<UserPatientResponse> getAllUsersPatientPage(SearchByCriteria search) {
+        List<Filter> filters = ParseFilters.getFilters(search.filters());
+
+        Order order = Order.fromValues(search.orderBy(), search.orderType());
+        if (!order.hasOrder()) {
+            order = Order.desc("created_at");
+        }
+
+        Criteria criteria = new Criteria(
+                new Filters(filters),
+                order,
+                search.limit(),
+                search.offset()
+        );
+
+        Criteria criteriaCount = new Criteria(new Filters(ParseFilters.getFilters(search.filters())), Order.none());
+        return userRepository.getAllUserPatientsPage(criteria, userRepository.countUserPatientsPage(criteriaCount));
+    }
+
+    @Override
     public List<UserDoctorResponse> getAllUsersDoctor() {
         return userRepository.getAllUserDoctors();
     }
@@ -244,7 +264,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateStatusUser(UpdateStatusUserRequest updateStatusUserRequest) {
         User userAdmin = userServiceShared.getUserById(updateStatusUserRequest.getAdminUserId());
-        if(!userAdmin.isAdministrator()){
+        if (!userAdmin.isAdministrator()) {
             throw new AuthenticationFailedException("Solo el administrador tiene estos permisos");
         }
         User user = userServiceShared.getUserById(updateStatusUserRequest.getUserId());

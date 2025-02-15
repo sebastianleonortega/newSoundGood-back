@@ -376,6 +376,85 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
         return result;
     }
 
+    @Override
+    public Page<UserPatientResponse> getAllUserPatientsPage(Criteria criteria, Long totalRows) {
+        CriteriaBuilder cb = manager.getCriteriaBuilder();
+        Page<UserPatientResponse> result = null;
+
+        try {
+            CriteriaQuery<UserPatientResponse> cq = cb.createQuery(UserPatientResponse.class);
+
+            Root<User> root = cq.from(User.class);
+            Join<User, Person> userPersonJoin = root.join(User_.person, JoinType.INNER);
+            Join<Person, DocumentType> personDocumentTypeJoin = userPersonJoin.join(Person_.documentType, JoinType.INNER);
+            Join<Person, GenderType> personGenderTypeJoin = userPersonJoin.join(Person_.genderType, JoinType.INNER);
+
+            cq.select(cb.construct(
+                    UserPatientResponse.class,
+                    root.get(User_.userId),
+                    root.get(User_.userName),
+                    root.get(User_.administrator),
+                    root.get(User_.profileImage),
+                    userPersonJoin.get(Person_.personName),
+                    userPersonJoin.get(Person_.personLastName),
+                    personDocumentTypeJoin.get(DocumentType_.documentTypeId),
+                    personDocumentTypeJoin.get(DocumentType_.code),
+                    userPersonJoin.get(Person_.personDocument),
+                    personGenderTypeJoin.get(GenderType_.genderId),
+                    personGenderTypeJoin.get(GenderType_.code),
+                    userPersonJoin.get(Person_.personPhone),
+                    userPersonJoin.get(Person_.personAddress),
+                    userPersonJoin.get(Person_.personEmail),
+                    userPersonJoin.get(Person_.previousTreatments)
+            ));
+
+            CriteriaPredicate<User, UserPatientResponse> criteriaPredicate = new CriteriaPredicate<>(cb);
+            TypedQuery<UserPatientResponse> query = manager.createQuery(criteriaPredicate.convert(cq, criteria, root));
+
+            Pageable page = PageRequest.of(criteria.offset().orElse(0), criteria.limit().orElse(15));
+
+            query.setFirstResult(page.getPageNumber() * page.getPageSize());
+            query.setMaxResults(page.getPageSize());
+
+            List<UserPatientResponse> userPatientResponse = query.getResultList();
+            userPatientResponse.forEach(
+                    userPatientResponse1 -> userPatientResponse1.addResponseHearingLosses(
+                            this.getAllHearingLossesByPersonId(userPatientResponse1.getUserId())
+                    )
+            );
+            result = new PageImpl<>(userPatientResponse, page, totalRows);
+        } catch (Exception ex) {
+            log.error("error en la consulta criteria getAllUserPatientsPage {}", ex.getMessage());
+        }
+        manager.close();
+        return result;
+    }
+
+    @Override
+    public Long countUserPatientsPage(Criteria criteria) {
+        CriteriaBuilder cb = manager.getCriteriaBuilder();
+        Long totalRows = 0L;
+        try {
+            CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+
+            Root<User> root = cq.from(User.class);
+            Join<User, Person> userPersonJoin = root.join(User_.person, JoinType.INNER);
+            userPersonJoin.join(Person_.documentType, JoinType.INNER);
+            userPersonJoin.join(Person_.genderType, JoinType.INNER);
+
+            cq.select(cb.countDistinct(root));
+
+            CriteriaPredicate<User, Long> criteriaPredicate = new CriteriaPredicate<>(cb);
+            CriteriaQuery<Long> query = criteriaPredicate.convert(cq, criteria, root);
+            totalRows = manager.createQuery(query).getSingleResult();
+
+        } catch (Exception ex) {
+            log.error("Error en consulta Criteria countUserPatientsPage {} ", ex.getMessage());
+        }
+        manager.close();
+        return totalRows;
+    }
+
     private List<SpecialityResponseDto> getAllSpecialitiesByDoctorId(UUID doctorId) {
         CriteriaBuilder cb = manager.getCriteriaBuilder();
         List<SpecialityResponseDto> result = null;

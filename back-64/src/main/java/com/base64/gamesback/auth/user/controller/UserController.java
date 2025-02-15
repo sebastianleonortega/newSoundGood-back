@@ -43,6 +43,18 @@ public class UserController {
         return new ResponseEntity<>(userService.getAllUsersPatient(), HttpStatus.OK);
     }
 
+    @GetMapping("/person_page")
+    public ResponseEntity<Page<UserPatientResponse>> getAllUsersPatientPageByDoctorId(@RequestParam Map<String, Serializable> params) {
+        SearchByCriteria search = new SearchByCriteria(
+                ParseFilters.parseFilters(params),
+                Optional.ofNullable((String) params.get("order_by")),
+                Optional.ofNullable((String) params.get("order")),
+                ParseFilters.serializableToOptionalInteger(params.get("limit")),
+                ParseFilters.serializableToOptionalInteger(params.get("offset"))
+        );
+        return new ResponseEntity<>(userService.getAllUsersPatientPage(search), HttpStatus.OK);
+    }
+
     @GetMapping("/patient/{userId}")
     public ResponseEntity<UserPatientResponse> getPatientById(@Valid @PathVariable UUID userId) {
         return new ResponseEntity<>(userService.getUserPatientById(userId), HttpStatus.OK);
@@ -53,7 +65,7 @@ public class UserController {
         return new ResponseEntity<>(userService.getAllUsersDoctor(), HttpStatus.OK);
     }
 
-    @GetMapping("/doctor_page/")
+    @GetMapping("/doctor_page")
     public ResponseEntity<Page<UserDoctorResponse>> getAllUsersDoctorPage(@RequestParam Map<String, Serializable> params) {
         SearchByCriteria search = new SearchByCriteria(
                 ParseFilters.parseFilters(params),
