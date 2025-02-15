@@ -2,6 +2,8 @@ package com.base64.gamesback.email.service;
 
 import com.base64.gamesback.auth.user.entity.User;
 
+import java.util.UUID;
+
 public interface EmailSendService {
 
     void emailCodeVerification(User user, String codeVerification);
@@ -12,5 +14,5 @@ public interface EmailSendService {
 
     void resetUserPassword(User user, String password);
 
-    void sendUserCredentials(User userAuth, String randomPassword);
+    void sendUserCredentials(UUID userAuth);
 }

@@ -3,6 +3,7 @@ package com.base64.gamesback.auth.user.controller;
 import com.base64.gamesback.auth.user.dto.*;
 import com.base64.gamesback.auth.user.service.PersonService;
 import com.base64.gamesback.auth.user.service.UserService;
+import com.base64.gamesback.email.service.EmailSendService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -22,94 +23,104 @@ public class UserController {
 
     private final UserService userService;
     private final PersonService personService;
+    private final EmailSendService emailSendService;
 
-    public UserController(UserService userService, PersonService personService) {
+    public UserController(UserService userService, PersonService personService, EmailSendService emailSendService) {
         this.userService = userService;
         this.personService = personService;
+        this.emailSendService = emailSendService;
     }
 
     @GetMapping("/patient/")
-    public ResponseEntity<List<UserPatientResponse>> getAllUsersPatient(){
+    public ResponseEntity<List<UserPatientResponse>> getAllUsersPatient() {
         return new ResponseEntity<>(userService.getAllUsersPatient(), HttpStatus.OK);
     }
 
     @GetMapping("/patient/{userId}")
-    public ResponseEntity<UserPatientResponse> getPatientById(@Valid @PathVariable UUID userId){
+    public ResponseEntity<UserPatientResponse> getPatientById(@Valid @PathVariable UUID userId) {
         return new ResponseEntity<>(userService.getUserPatientById(userId), HttpStatus.OK);
     }
 
     @GetMapping("/doctor/")
-    public ResponseEntity<List<UserDoctorResponse>> getAllUsersDoctor(){
+    public ResponseEntity<List<UserDoctorResponse>> getAllUsersDoctor() {
         return new ResponseEntity<>(userService.getAllUsersDoctor(), HttpStatus.OK);
     }
 
     @GetMapping("/doctor/{userId}")
-    public ResponseEntity<UserDoctorResponse> getDoctorById(@Valid @PathVariable UUID userId){
+    public ResponseEntity<UserDoctorResponse> getDoctorById(@Valid @PathVariable UUID userId) {
         return new ResponseEntity<>(userService.getUserDoctorById(userId), HttpStatus.OK);
     }
 
     @PostMapping("/patient/")
-    @Operation(description = "Create a new user patient" )
+    @Operation(description = "Create a new user patient")
     @ApiResponse(responseCode = "201", description = "Created")
-    public ResponseEntity<HttpStatus> createUserPatient(@Valid @RequestBody UserDto request){
-         userService.registerUserPatient(request);
-         return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<UUID> createUserPatient(@Valid @RequestBody UserDto request) {
+        UUID userId = userService.registerUserPatient(request);
+        return new ResponseEntity<>(userId, HttpStatus.CREATED);
     }
 
     @PostMapping("/doctor/")
-    @Operation(description = "Create a new user doctor" )
+    @Operation(description = "Create a new user doctor")
     @ApiResponse(responseCode = "201", description = "Created")
-    public ResponseEntity<HttpStatus> createUserDoctor(@Valid @RequestBody UserDoctorDto request){
-        userService.registerUserDoctor(request);
+    public ResponseEntity<UUID> createUserDoctor(@Valid @RequestBody UserDoctorDto request) {
+        UUID userId = userService.registerUserDoctor(request);
+        return new ResponseEntity<>(userId, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/send_user_credentials/{userId}")
+    @Operation(description = "Send user credentials")
+    @ApiResponse(responseCode = "201", description = "Created")
+    public ResponseEntity<HttpStatus> sendCodeAuth(@Valid @PathVariable UUID userId) {
+        emailSendService.sendUserCredentials(userId);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/exist_username/{userName}")
-    @Operation(description = "exist by userName" )
+    @Operation(description = "exist by userName")
     @ApiResponse(responseCode = "200", description = "success")
-    public ResponseEntity<Boolean> responseName(@Valid @PathVariable String userName){
+    public ResponseEntity<Boolean> responseName(@Valid @PathVariable String userName) {
         return new ResponseEntity<>(userService.existUserByName(userName), HttpStatus.OK);
     }
 
     @GetMapping("/exist_email/{personEmail}")
-    @Operation(description = "exist person by email" )
+    @Operation(description = "exist person by email")
     @ApiResponse(responseCode = "200", description = "success")
-    public ResponseEntity<Boolean> responseEmail(@Valid @PathVariable String personEmail){
+    public ResponseEntity<Boolean> responseEmail(@Valid @PathVariable String personEmail) {
         return new ResponseEntity<>(personService.existPersonByEmail(personEmail), HttpStatus.OK);
     }
 
     @GetMapping("/exist_document/{personDocument}")
-    @Operation(description = "exist person by document" )
+    @Operation(description = "exist person by document")
     @ApiResponse(responseCode = "200", description = "success")
-    public ResponseEntity<Boolean> personDocument(@Valid @PathVariable String personDocument){
+    public ResponseEntity<Boolean> personDocument(@Valid @PathVariable String personDocument) {
         return new ResponseEntity<>(personService.existPersonByDocument(personDocument), HttpStatus.OK);
     }
 
     @PutMapping("/patient/{id}")
     @Operation(description = "update user patient")
     @ApiResponse(responseCode = "204", description = "no content")
-    public ResponseEntity<HttpStatus> updatePersonPatient(@Valid @RequestBody UserUpdateRequest request, @Valid @PathVariable("id") UUID id){
+    public ResponseEntity<HttpStatus> updatePersonPatient(@Valid @RequestBody UserUpdateRequest request, @Valid @PathVariable("id") UUID id) {
         userService.updateUserPatient(request, id);
-        return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
 
     @PutMapping("/doctor/{id}")
     @Operation(description = "update user doctor")
     @ApiResponse(responseCode = "204", description = "no content")
-    public ResponseEntity<HttpStatus> updatePersonDoctor(@Valid @RequestBody UserDoctorUpdateRequest request, @Valid @PathVariable("id") UUID id){
+    public ResponseEntity<HttpStatus> updatePersonDoctor(@Valid @RequestBody UserDoctorUpdateRequest request, @Valid @PathVariable("id") UUID id) {
         userService.updateUserDoctor(request, id);
-        return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
 
     @PutMapping("/update_password")
-    @Operation(security = {@SecurityRequirement(name = "bearer-key")},description = "UPDATE PASSWORD")
+    @Operation(security = {@SecurityRequirement(name = "bearer-key")}, description = "UPDATE PASSWORD")
     @ApiResponses({
-            @ApiResponse(responseCode = "204",description = "NOT CONTENT"),
-            @ApiResponse(responseCode = "404",description = "NOT FOUND")
+            @ApiResponse(responseCode = "204", description = "NOT CONTENT"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND")
     })
-    public ResponseEntity<HttpStatus> updatePassword(@Valid @RequestBody UpdatePasswordRequest request){
+    public ResponseEntity<HttpStatus> updatePassword(@Valid @RequestBody UpdatePasswordRequest request) {
         userService.updatePassword(request);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -127,22 +138,22 @@ public class UserController {
     @PostMapping("/forgot_password")
     @Operation(description = "Forgot password by user")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",description = "OK"),
-            @ApiResponse(responseCode = "401",description = "UNAUTHORIZED")
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
     })
-    public ResponseEntity<HttpStatus> forgotPassword(@Valid @RequestBody ResetPasswordRequest request){
-//        authenticationService.forgotPassword(request);
+    public ResponseEntity<HttpStatus> forgotPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        userService.forgotPassword(request);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/reset_password")
     @Operation(description = "Reset password by user")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",description = "OK"),
-            @ApiResponse(responseCode = "401",description = "UNAUTHORIZED")
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
     })
-    public ResponseEntity<HttpStatus> resetPassword(@Valid @RequestBody TokenResentPasswordRequest request){
-//        authenticationService.verifyTokenResetPassword(request);
-        return  new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<HttpStatus> resetPassword(@Valid @RequestBody TokenResentPasswordRequest request) {
+        userService.verifyTokenResetPassword(request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

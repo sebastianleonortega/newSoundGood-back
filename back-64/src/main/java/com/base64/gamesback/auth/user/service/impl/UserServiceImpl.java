@@ -12,12 +12,12 @@ import com.base64.gamesback.common.exception_handler.ResourceNotFoundException;
 import com.base64.gamesback.common.util.UtilString;
 import com.base64.gamesback.email.service.EmailSendService;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import com.google.gson.JsonObject;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -63,29 +63,30 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void registerUserPatient(UserDto request) {
+    public UUID registerUserPatient(UserDto request) {
         User user = User.create(
                 request.getName().toLowerCase(Locale.ROOT),
                 passwordEncoder.encode(request.getPassword()),
                 false,
                 null
         );
-        personService.registerPerson(userRepository.save(user), request.getPerson());
-//        emailSendService.sendUserCredentials(user, null);
+        userRepository.save(user);
+        personService.registerPerson(user, request.getPerson());
+        return user.getUserId();
     }
 
     @Override
     @Transactional
-    public void registerUserDoctor(UserDoctorDto request) {
-        String randomPassword = UtilString.generateRandom(12);
+    public UUID registerUserDoctor(UserDoctorDto request) {
         User user = User.create(
                 request.getName().toLowerCase(Locale.ROOT),
-                passwordEncoder.encode(randomPassword),
+                passwordEncoder.encode(request.getDoctor().getDocument().toLowerCase(Locale.ROOT) + ".$"),
                 false,
                 null
         );
-        doctorService.registerPersonDoctor(userRepository.save(user), request.getDoctor());
-//        emailSendService.sendUserCredentials(user, randomPassword);
+        userRepository.save(user);
+        doctorService.registerPersonDoctor(user, request.getDoctor());
+        return user.getUserId();
     }
 
     @Override
@@ -95,7 +96,7 @@ public class UserServiceImpl implements UserService {
         user.update(
                 request.getUserName().toLowerCase(Locale.ROOT),
                 request.getProfileImage()
-                );
+        );
         personService.updatePerson(request.getPerson(), userRepository.save(user));
     }
 

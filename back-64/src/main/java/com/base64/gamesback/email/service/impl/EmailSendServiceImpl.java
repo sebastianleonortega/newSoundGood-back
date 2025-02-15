@@ -1,14 +1,17 @@
 package com.base64.gamesback.email.service.impl;
 
 import com.base64.gamesback.auth.user.entity.User;
+import com.base64.gamesback.auth.user.service.UserServiceShared;
 import com.base64.gamesback.email.dto.EmailRequest;
 import com.base64.gamesback.email.service.EmailSendService;
 import com.base64.gamesback.email.service.EmailService;
 import com.base64.gamesback.email.service.EmailTemplateService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Year;
+import java.util.UUID;
 
 @Service
 public class EmailSendServiceImpl implements EmailSendService {
@@ -18,10 +21,12 @@ public class EmailSendServiceImpl implements EmailSendService {
 
     private final EmailService emailService;
     private final EmailTemplateService emailTemplateService;
+    private final UserServiceShared userServiceShared;
 
-    public EmailSendServiceImpl(EmailService emailService, EmailTemplateService emailTemplateService) {
+    public EmailSendServiceImpl(EmailService emailService, EmailTemplateService emailTemplateService, UserServiceShared userServiceShared) {
         this.emailService = emailService;
         this.emailTemplateService = emailTemplateService;
+        this.userServiceShared = userServiceShared;
     }
 
     @Override
@@ -65,12 +70,14 @@ public class EmailSendServiceImpl implements EmailSendService {
     }
 
     @Override
-    public void sendUserCredentials(User userAuth, String randomPassword) {
+    @Transactional
+    public void sendUserCredentials(UUID userAuth) {
+        User user = userServiceShared.getUserById(userAuth);
         String body = emailTemplateService.getEmailTemplateByName("new_user");
-         body = body.replace("{charge}", userAuth.getDoctor() != null ? "Doctor" : "Paciente");
-        body = getDataPersonOrDoctor(userAuth, randomPassword, body);
+         body = body.replace("{charge}", user.getDoctor() != null ? "Doctor" : "Paciente");
+        body = getDataPersonOrDoctor(user, user.getDoctor() != null ? user.getDoctor().getDocument().toLowerCase()+".$" : null, body);
 
-        emailSend(userAuth.getPerson() != null ? userAuth.getPerson().getPersonEmail() : userAuth.getDoctor().getEmail(), "Detalles de tu nueva cuenta de usuario", body);
+        emailSend(user.getPerson() != null ? user.getPerson().getPersonEmail() : user.getDoctor().getEmail(), "Detalles de tu nueva cuenta de usuario", body);
     }
 
     private String getDataPersonOrDoctor(User user, String randomPassword, String body) {
@@ -92,6 +99,6 @@ public class EmailSendServiceImpl implements EmailSendService {
                 subject,
                 body
         );
-//        emailService.sendEmail(emailRequest);
+        emailService.sendEmail(emailRequest);
     }
 }

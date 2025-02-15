@@ -14,9 +14,9 @@ public interface UserService {
 
     Boolean existUserByName(String userName);
 
-    void registerUserPatient(UserDto request);
+    UUID registerUserPatient(UserDto request);
 
-    void registerUserDoctor(UserDoctorDto request);
+    UUID registerUserDoctor(UserDoctorDto request);
 
     void updateUserPatient(UserUpdateRequest request, UUID userId);
 

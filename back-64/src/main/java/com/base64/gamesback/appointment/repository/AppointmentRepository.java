@@ -20,7 +20,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
 
         List<Appointment> getAppointmentsByPersonPersonId(UUID uuid);
 
-        @Query(value = "SELECT a.appointment_id as appointmentId, d.user_id as doctorId, s.speciality_id as specialityId, s.name as specialityName, d.name as doctorName, d.last_name as doctorLastName, d.phone as doctorPhone, d.image as doctorImage, " +
+        @Query(value = "SELECT a.appointment_id as appointmentId, d.user_id as doctorId, s.speciality_id as specialityId, s.name as specialityName, d.name as doctorName, d.last_name as doctorLastName, d.phone as doctorPhone, d.image as doctorImage, d.latitude as doctorLatitude, d.longitude as doctorLongitude, " +
                 "p.name as personName, p.last_name as personLastName, p.phone as personPhone, a.address as appointmentAddress, a.date as appointmentDate,  a.time as appointmentTime " +
                 "FROM main.appointment a inner join main.doctor d on a.doctor_id = d.user_id inner join main.speciality s on a.speciality_id = s.speciality_id " +
                 "inner join main.person p on a.person_id = p.user_id WHERE a.appointment_id = :appointmentId", nativeQuery = true)
@@ -32,7 +32,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
                 "inner join main.person p on a.person_id = p.user_id WHERE p.user_id = :personId", nativeQuery = true)
         List<AppointmentDataResponse> getAppointmentsByPersonId(@Param("personId") UUID personId);
 
-        @Query(value = "SELECT a.appointment_id as appointmentId, d.user_id as doctorId, s.speciality_id as specialityId, s.name as specialityName, d.name as doctorName, d.last_name as doctorLastName, d.phone as doctorPhone, d.image as doctorImage, " +
+        @Query(value = "SELECT a.appointment_id as appointmentId, d.user_id as doctorId, s.speciality_id as specialityId, s.name as specialityName, d.name as doctorName, d.last_name as doctorLastName, d.phone as doctorPhone, d.image as doctorImage, d.latitude as doctorLatitude, d.longitude as doctorLongitude, " +
                 "p.name as personName, p.last_name as personLastName, p.phone as personPhone, a.address as appointmentAddress, a.date as appointmentDate,  a.time as appointmentTime " +
                 "FROM main.appointment a inner join main.doctor d on a.doctor_id = d.user_id inner join main.speciality s on a.speciality_id = s.speciality_id " +
                 "inner join main.person p on a.person_id = p.user_id WHERE d.user_id = :doctorId", nativeQuery = true)

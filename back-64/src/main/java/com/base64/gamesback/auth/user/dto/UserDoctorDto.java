@@ -14,10 +14,6 @@ public class UserDoctorDto {
     @JsonProperty(value = "user_name")
     private String name;
 
-    @NotNull
-    @JsonProperty(value = "password")
-    private String password;
-
     @Valid
     @JsonProperty(value = "doctor")
     private DoctorDto doctor;
