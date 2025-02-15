@@ -2,7 +2,7 @@ package com.base64.gamesback.auth.user.dto.projection;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public interface userDoctorData {
+public interface UserDoctorData {
 
     @JsonProperty(value = "user_id")
     String getUserId();

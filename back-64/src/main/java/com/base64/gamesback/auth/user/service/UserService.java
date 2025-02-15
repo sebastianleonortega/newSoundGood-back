@@ -1,9 +1,7 @@
 package com.base64.gamesback.auth.user.service;
 
 import com.base64.gamesback.auth.user.dto.*;
-import com.base64.gamesback.auth.user.dto.projection.userDoctorData;
-import com.base64.gamesback.auth.user.dto.projection.userPersonData;
-import com.base64.gamesback.auth.user.entity.User;
+import com.base64.gamesback.auth.user.dto.projection.CountUser;
 import com.base64.gamesback.common.object.SearchByCriteria;
 import org.springframework.data.domain.Page;
 
@@ -43,4 +41,6 @@ public interface UserService {
     void verifyTokenResetPassword(TokenResentPasswordRequest request);
 
     void updateStatusUser(UpdateStatusUserRequest updateStatusUserRequest);
+
+    CountUser getCountUsers();
 }

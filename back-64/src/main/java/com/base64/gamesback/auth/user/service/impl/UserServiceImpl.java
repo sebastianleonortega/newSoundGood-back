@@ -2,6 +2,7 @@ package com.base64.gamesback.auth.user.service.impl;
 
 import com.base64.gamesback.auth.auth.exception.AuthenticationFailedException;
 import com.base64.gamesback.auth.user.dto.*;
+import com.base64.gamesback.auth.user.dto.projection.CountUser;
 import com.base64.gamesback.auth.user.entity.User;
 import com.base64.gamesback.auth.user.repository.UserRepository;
 import com.base64.gamesback.auth.user.service.DoctorService;
@@ -249,6 +250,11 @@ public class UserServiceImpl implements UserService {
         User user = userServiceShared.getUserById(updateStatusUserRequest.getUserId());
         user.updateStatus(updateStatusUserRequest.getStatus());
         userRepository.save(user);
+    }
+
+    @Override
+    public CountUser getCountUsers() {
+        return userRepository.getCountUsers();
     }
 
     private void userResetPassword(User user, String password) {

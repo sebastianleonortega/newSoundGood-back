@@ -1,7 +1,8 @@
 package com.base64.gamesback.auth.user.repository;
 
-import com.base64.gamesback.auth.user.dto.projection.userDoctorData;
-import com.base64.gamesback.auth.user.dto.projection.userPersonData;
+import com.base64.gamesback.auth.user.dto.projection.CountUser;
+import com.base64.gamesback.auth.user.dto.projection.UserDoctorData;
+import com.base64.gamesback.auth.user.dto.projection.UserPersonData;
 import com.base64.gamesback.auth.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,13 +22,13 @@ public interface UserRepository  extends JpaRepository<User, UUID>, UserReposito
             "p.name AS personName, p.last_name AS personLastName, " +
             "p.document AS personDocument, p.address AS personAddress, p.phone AS personPhone, " +
             "p.email AS personEmail FROM main.user u INNER JOIN main.person p ON u.user_id = p.user_id WHERE u.user_id = :userId", nativeQuery = true)
-    userPersonData getUserPatientId(@Param("userId") UUID userId);
+    UserPersonData getUserPatientId(@Param("userId") UUID userId);
 
     @Query(value = "SELECT u.user_id AS userId, u.user_name AS userName, u.administrator AS administrator, u.profile_image AS profileImage, " +
             "p.name AS personName, p.last_name AS personLastName, " +
             "p.document AS personDocument, p.address AS personAddress, p.phone AS personPhone, " +
             "p.email AS personEmail FROM main.user u INNER JOIN main.person p ON u.user_id = p.user_id ", nativeQuery = true)
-    List<userPersonData> getAllUsersPatient();
+    List<UserPersonData> getAllUsersPatient();
 
     @Query(value = "SELECT u.user_name AS userName, u.administrator AS administrator, u.profile_image AS profileImage, " +
             "d.name AS doctorName, d.last_name AS doctorLastName, " +
@@ -37,7 +38,7 @@ public interface UserRepository  extends JpaRepository<User, UUID>, UserReposito
             "inner join main.doctor_speciality ds on d.user_id = ds.doctor_id " +
             "inner join main.speciality s on ds.speciality_id = s.speciality_id " +
             "WHERE u.user_id = :userId", nativeQuery = true)
-    userDoctorData getUserDoctorId(@Param("userId") UUID userId);
+    UserDoctorData getUserDoctorId(@Param("userId") UUID userId);
 
     @Query(value = "SELECT u.user_id AS userId, u.user_name AS userName, u.administrator AS administrator, u.profile_image AS profileImage, " +
             "d.name AS doctorName, d.last_name AS doctorLastName, " +
@@ -45,7 +46,12 @@ public interface UserRepository  extends JpaRepository<User, UUID>, UserReposito
             "d.email AS doctorEmail s.speciality_id as specialityId, s.name as specialityName FROM main.user u INNER JOIN main.doctor d ON u.user_id = d.user_id " +
             "inner join main.doctor_speciality ds on d.user_id = ds.user_id " +
             "inner join main.speciality s on ds.speciality_id = s.speciality ", nativeQuery = true)
-    List<userDoctorData> getAllUsersDoctor();
+    List<UserDoctorData> getAllUsersDoctor();
+
+    @Query(value = "SELECT count(d.user_id) AS userDoctor, count(p.user_id) AS userPerson " +
+            " FROM main.user u LEFT JOIN main.doctor d ON u.user_id = d.user_id " +
+            "left join main.person p on u.user_id = p.user_id ", nativeQuery = true)
+    CountUser getCountUsers();
 
     User getUserByUserNameAndPersonPersonEmail(String userName, String email);
 

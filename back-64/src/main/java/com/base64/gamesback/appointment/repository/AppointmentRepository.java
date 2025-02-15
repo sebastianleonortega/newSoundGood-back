@@ -2,9 +2,7 @@ package com.base64.gamesback.appointment.repository;
 
 import com.base64.gamesback.appointment.dto.AppointmentDataResponse;
 import com.base64.gamesback.appointment.entity.Appointment;
-import com.base64.gamesback.auth.user.dto.projection.userPersonData;
 import com.base64.gamesback.auth.user.entity.Doctor;
-import com.base64.gamesback.auth.user.entity.Doctor_;
 import com.base64.gamesback.auth.user.entity.Person;
 import com.base64.gamesback.speciality.entity.Speciality;
 import org.springframework.data.jpa.repository.JpaRepository;

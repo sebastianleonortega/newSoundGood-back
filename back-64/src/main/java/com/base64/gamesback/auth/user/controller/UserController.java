@@ -1,6 +1,7 @@
 package com.base64.gamesback.auth.user.controller;
 
 import com.base64.gamesback.auth.user.dto.*;
+import com.base64.gamesback.auth.user.dto.projection.CountUser;
 import com.base64.gamesback.auth.user.service.PersonService;
 import com.base64.gamesback.auth.user.service.UserService;
 import com.base64.gamesback.common.object.SearchByCriteria;
@@ -194,5 +195,12 @@ public class UserController {
         userService.updateStatusUser(updateStatusUserRequest);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
+    }
+
+    @GetMapping("/count_users")
+    @Operation(description = "count user on platform")
+    @ApiResponse(responseCode = "200", description = "success")
+    public ResponseEntity<CountUser> countUsers() {
+        return new ResponseEntity<>(userService.getCountUsers(), HttpStatus.OK);
     }
 }
