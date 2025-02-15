@@ -43,13 +43,17 @@ public class AuthServiceImpl implements AuthService {
             throw new AuthenticationFailedException("usuario no encontrado");
         }
 
-        if (user.isLocked()) {
+        if (user.getStatus().equalsIgnoreCase("bloqueado")) {
             throw new AuthenticationFailedException("el usuario se encuentra bloqueado");
+        }
+
+        if (user.getStatus().equalsIgnoreCase("inactivo")) {
+            throw new AuthenticationFailedException("el usuario se encuentra inactivo");
         }
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             if (user.getLoginAttempts() >= 2) {
-                this.updateLockedUser(user);
+                this.updateStatusUser(user);
             } else {
                 this.updateLoginAttemptsUser(user, GenericLoginAttempts.LOGIN_ATTEMPTS);
             }
@@ -84,8 +88,12 @@ public class AuthServiceImpl implements AuthService {
             throw new AuthenticationFailedException("usuario no encontrado");
         }
 
-        if (user.isLocked()) {
+        if (user.getStatus().equalsIgnoreCase("bloqueado")) {
             throw new AuthenticationFailedException("el usuario se encuentra bloqueado");
+        }
+
+        if (user.getStatus().equalsIgnoreCase("inactivo")) {
+            throw new AuthenticationFailedException("el usuario se encuentra inactivo");
         }
 
         if (user.getCreateCodeVerification() == null || !Objects.equals(user.getCodeVerification(), request.getCode())) {
@@ -99,6 +107,7 @@ public class AuthServiceImpl implements AuthService {
 
         String token = jwtUtil.create(String.valueOf(user.getUserId()), (user.getPerson() != null) ? user.getPerson().getPersonEmail() : user.getDoctor().getEmail());
 
+        user.updateLastLogin(LocalDateTime.now());
         user.updateLoginAttemptsMfa(0);
         user.resetCodeVerification();
         user.updateQuantityResentEmail(0);
@@ -106,8 +115,8 @@ public class AuthServiceImpl implements AuthService {
         return new LoginResponse(user.getUserId(), user.getProfileImage(), user.isAdministrator(), (user.getPerson() != null) ? user.getPerson().getPersonName() : user.getDoctor().getName(), (user.getPerson() != null) ? user.getPerson().getPersonLastName() : user.getDoctor().getLastName(), user.getDoctor() != null, token, user.getHavePasswordByAdmin());
     }
 
-    private void updateLockedUser(User user) {
-        user.updateLocked(true);
+    private void updateStatusUser(User user) {
+        user.updateStatus("Bloqueado");
         userServiceShared.saveUser(user);
         throw new AuthenticationFailedException("usuario bloqueado debido a intentos fallidos de inicio de sesión.");
     }
@@ -115,9 +124,10 @@ public class AuthServiceImpl implements AuthService {
     private void updateLoginAttemptsUser(User user, GenericLoginAttempts attempts) {
         if (GenericLoginAttempts.LOGIN_ATTEMPTS.equals(attempts)) {
             user.updateLoginAttempts(user.getLoginAttempts() + 1);
+            user.updateLastLogin(LocalDateTime.now());
         } else {
             if (user.getLoginAttemptsMfa() >= 2) {
-                this.updateLockedUser(user);
+                this.updateStatusUser(user);
             }
             user.updateLoginAttemptsMfa(user.getLoginAttemptsMfa() + 1);
         }

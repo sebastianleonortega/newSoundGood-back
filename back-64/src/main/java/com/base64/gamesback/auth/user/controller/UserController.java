@@ -3,6 +3,8 @@ package com.base64.gamesback.auth.user.controller;
 import com.base64.gamesback.auth.user.dto.*;
 import com.base64.gamesback.auth.user.service.PersonService;
 import com.base64.gamesback.auth.user.service.UserService;
+import com.base64.gamesback.common.object.SearchByCriteria;
+import com.base64.gamesback.common.parse.ParseFilters;
 import com.base64.gamesback.email.service.EmailSendService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -10,11 +12,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -44,6 +50,30 @@ public class UserController {
     @GetMapping("/doctor/")
     public ResponseEntity<List<UserDoctorResponse>> getAllUsersDoctor() {
         return new ResponseEntity<>(userService.getAllUsersDoctor(), HttpStatus.OK);
+    }
+
+    @GetMapping("/doctor_page/")
+    public ResponseEntity<Page<UserDoctorResponse>> getAllUsersDoctorPage(@RequestParam Map<String, Serializable> params) {
+        SearchByCriteria search = new SearchByCriteria(
+                ParseFilters.parseFilters(params),
+                Optional.ofNullable((String) params.get("order_by")),
+                Optional.ofNullable((String) params.get("order")),
+                ParseFilters.serializableToOptionalInteger(params.get("limit")),
+                ParseFilters.serializableToOptionalInteger(params.get("offset"))
+        );
+        return new ResponseEntity<>(userService.getAllUsersDoctorPage(search), HttpStatus.OK);
+    }
+
+    @GetMapping("/user_page/")
+    public ResponseEntity<Page<UserResponseDto>> getAllUsersPage(@RequestParam Map<String, Serializable> params) {
+        SearchByCriteria search = new SearchByCriteria(
+                ParseFilters.parseFilters(params),
+                Optional.ofNullable((String) params.get("order_by")),
+                Optional.ofNullable((String) params.get("order")),
+                ParseFilters.serializableToOptionalInteger(params.get("limit")),
+                ParseFilters.serializableToOptionalInteger(params.get("offset"))
+        );
+        return new ResponseEntity<>(userService.getAllUsersPage(search), HttpStatus.OK);
     }
 
     @GetMapping("/doctor/{userId}")
@@ -155,5 +185,14 @@ public class UserController {
     public ResponseEntity<HttpStatus> resetPassword(@Valid @RequestBody TokenResentPasswordRequest request) {
         userService.verifyTokenResetPassword(request);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/update_status_user")
+    @Operation(description = "update status user")
+    @ApiResponse(responseCode = "204", description = "no content")
+    public ResponseEntity<HttpStatus> updateStatusUser(@Valid @RequestBody UpdateStatusUserRequest updateStatusUserRequest) {
+        userService.updateStatusUser(updateStatusUserRequest);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
     }
 }

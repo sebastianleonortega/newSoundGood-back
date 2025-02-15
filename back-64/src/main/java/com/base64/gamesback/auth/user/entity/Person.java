@@ -6,7 +6,10 @@ import com.base64.gamesback.hearing_loss.entity.HearingLoss;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -54,6 +57,14 @@ public class Person {
             uniqueConstraints = @UniqueConstraint(columnNames = {"person_id", "hearing_loss_id"}, name = "uc_person_hearing_loss")
     )
     private Set<HearingLoss> hearingLosses;
+
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private LocalDateTime updateAt;
 
     @ManyToOne
     @JoinColumn(name = "document_type_id", nullable = false)

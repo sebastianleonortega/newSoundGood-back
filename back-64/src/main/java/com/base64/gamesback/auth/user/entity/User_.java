@@ -15,7 +15,7 @@ public abstract class User_ {
         public static volatile SingularAttribute<User, Person> person;
         public static volatile SingularAttribute<User, String> userName;
         public static volatile SingularAttribute<User, String> password;
-        public static volatile SingularAttribute<User, Boolean> locked;
+        public static volatile SingularAttribute<User, String> status;
         public static volatile SingularAttribute<User, Integer> loginAttempts;
         public static volatile SingularAttribute<User, Integer> loginAttemptsMfa;
         public static volatile SingularAttribute<User, Boolean> administrator;
@@ -26,4 +26,7 @@ public abstract class User_ {
         public static volatile SingularAttribute<User, LocalDateTime> createCodeVerification;
         public static volatile SingularAttribute<User, Integer> quantityResentEmail;
         public static volatile SingularAttribute<User, LocalDateTime> resetPasswordUpdateAt;
+        public static volatile SingularAttribute<User, LocalDateTime> createdAt;
+        public static volatile SingularAttribute<User, LocalDateTime> updateAt;
+        public static volatile SingularAttribute<User, LocalDateTime> lastLogin;
 }

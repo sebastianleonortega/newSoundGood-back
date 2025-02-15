@@ -4,6 +4,8 @@ import com.base64.gamesback.auth.user.dto.*;
 import com.base64.gamesback.auth.user.dto.projection.userDoctorData;
 import com.base64.gamesback.auth.user.dto.projection.userPersonData;
 import com.base64.gamesback.auth.user.entity.User;
+import com.base64.gamesback.common.object.SearchByCriteria;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,6 +30,10 @@ public interface UserService {
 
     List<UserDoctorResponse> getAllUsersDoctor();
 
+    Page<UserDoctorResponse> getAllUsersDoctorPage(SearchByCriteria search);
+
+    Page<UserResponseDto> getAllUsersPage(SearchByCriteria search);
+
     void updatePassword(UpdatePasswordRequest request);
 
     void updatePasswordByAdmin(UUID userId, UUID userAdminId);
@@ -35,4 +41,6 @@ public interface UserService {
     void forgotPassword(ResetPasswordRequest request);
 
     void verifyTokenResetPassword(TokenResentPasswordRequest request);
+
+    void updateStatusUser(UpdateStatusUserRequest updateStatusUserRequest);
 }

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.print.Doc;
 import java.time.LocalDateTime;
@@ -30,8 +32,8 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "locked",nullable = false)
-    private boolean locked;
+    @Column(name = "status",nullable = false)
+    private String status;
 
     @Column(name = "login_attempts")
     private int loginAttempts;
@@ -63,9 +65,21 @@ public class User {
     @Column(name = "reset_password_updateAt")
     private LocalDateTime resetPasswordUpdateAt;
 
+    @Column(name = "last_login")
+    private LocalDateTime lastLogin;
+
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private LocalDateTime updateAt;
+
     public User(String userName, String password, String profileImage, Boolean havePasswordByAdmin) {
         this.userName = userName;
         this.password = password;
+        this.status = "Activo";
         this.administrator = false;
         this.profileImage = profileImage;
         this.havePasswordByAdmin = havePasswordByAdmin;
@@ -100,8 +114,8 @@ public class User {
         this.loginAttempts = attempts;
     }
 
-    public void updateLocked(boolean locked){
-        this.locked = locked;
+    public void updateStatus(String status){
+        this.status = status;
     }
 
     public void updateLoginAttemptsMfa(int loginAttemptsMfa){
@@ -122,5 +136,9 @@ public class User {
 
     public void updateHavePasswordByAdmin(){
         this.havePasswordByAdmin = false;
+    }
+
+    public void updateLastLogin(LocalDateTime lastLogin) {
+        this.lastLogin = lastLogin;
     }
 }

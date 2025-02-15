@@ -8,13 +8,20 @@ import com.base64.gamesback.auth.user.service.DoctorService;
 import com.base64.gamesback.auth.user.service.PersonService;
 import com.base64.gamesback.auth.user.service.UserService;
 import com.base64.gamesback.auth.user.service.UserServiceShared;
+import com.base64.gamesback.common.criteria.Criteria;
+import com.base64.gamesback.common.criteria.Filter;
+import com.base64.gamesback.common.criteria.Filters;
+import com.base64.gamesback.common.criteria.Order;
 import com.base64.gamesback.common.exception_handler.ResourceNotFoundException;
+import com.base64.gamesback.common.object.SearchByCriteria;
+import com.base64.gamesback.common.parse.ParseFilters;
 import com.base64.gamesback.common.util.UtilString;
 import com.base64.gamesback.email.service.EmailSendService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -122,6 +129,46 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Page<UserDoctorResponse> getAllUsersDoctorPage(SearchByCriteria search) {
+        List<Filter> filters = ParseFilters.getFilters(search.filters());
+
+        Order order = Order.fromValues(search.orderBy(), search.orderType());
+        if (!order.hasOrder()) {
+            order = Order.desc("created_at");
+        }
+
+        Criteria criteria = new Criteria(
+                new Filters(filters),
+                order,
+                search.limit(),
+                search.offset()
+        );
+
+        Criteria criteriaCount = new Criteria(new Filters(ParseFilters.getFilters(search.filters())), Order.none());
+        return userRepository.getAllUserDoctorsPage(criteria, userRepository.countUserDoctorsPage(criteriaCount));
+    }
+
+    @Override
+    public Page<UserResponseDto> getAllUsersPage(SearchByCriteria search) {
+        List<Filter> filters = ParseFilters.getFilters(search.filters());
+
+        Order order = Order.fromValues(search.orderBy(), search.orderType());
+        if (!order.hasOrder()) {
+            order = Order.desc("created_at");
+        }
+
+        Criteria criteria = new Criteria(
+                new Filters(filters),
+                order,
+                search.limit(),
+                search.offset()
+        );
+
+        Criteria criteriaCount = new Criteria(new Filters(ParseFilters.getFilters(search.filters())), Order.none());
+        return userRepository.getAllUsersPage(criteria, userRepository.countUsersPage(criteriaCount));
+    }
+
+    @Override
     public void updatePassword(UpdatePasswordRequest request) {
         User user = userServiceShared.getUserById(request.getUserId());
         if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
@@ -188,9 +235,20 @@ public class UserServiceImpl implements UserService {
         user.updateLoginAttempts(0);
         user.updateLoginAttemptsMfa(0);
         user.updateQuantityResentEmail(0);
-        user.updateLocked(false);
+        user.updateStatus("Activo");
         userServiceShared.saveUser(user);
         emailSendService.changePassword(user);
+    }
+
+    @Override
+    public void updateStatusUser(UpdateStatusUserRequest updateStatusUserRequest) {
+        User userAdmin = userServiceShared.getUserById(updateStatusUserRequest.getAdminUserId());
+        if(!userAdmin.isAdministrator()){
+            throw new AuthenticationFailedException("Solo el administrador tiene estos permisos");
+        }
+        User user = userServiceShared.getUserById(updateStatusUserRequest.getUserId());
+        user.updateStatus(updateStatusUserRequest.getStatus());
+        userRepository.save(user);
     }
 
     private void userResetPassword(User user, String password) {
