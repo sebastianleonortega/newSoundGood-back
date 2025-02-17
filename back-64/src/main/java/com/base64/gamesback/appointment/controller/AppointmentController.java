@@ -1,10 +1,7 @@
 package com.base64.gamesback.appointment.controller;
 
-import com.base64.gamesback.appointment.dto.AppointmentDataResponse;
-import com.base64.gamesback.appointment.dto.AppointmentDto;
-import com.base64.gamesback.appointment.entity.Appointment;
+import com.base64.gamesback.appointment.dto.*;
 import com.base64.gamesback.appointment.service.AppointmentService;
-import com.base64.gamesback.auth.user.dto.UserDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -38,7 +35,7 @@ public class AppointmentController {
             security = {@SecurityRequirement(name = "bearer-key")},
             description = "Create new appointment"
     )
-    public ResponseEntity<HttpStatus> createUserPatient(@Valid @RequestBody AppointmentDto request){
+    public ResponseEntity<HttpStatus> createUserPatient(@Valid @RequestBody AppointmentRequest request){
         appointmentService.registerAppointment(request);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -53,7 +50,7 @@ public class AppointmentController {
             security = {@SecurityRequirement(name = "bearer-key")},
             description = "Get all appointments by person id"
     )
-    public ResponseEntity<List<AppointmentDataResponse>> getAllAppointmentsByPersonId(@Parameter(description = "UUID of a person", required = true) @PathVariable("id") UUID personId){
+    public ResponseEntity<List<AppointmentDataResponsePatient>> getAllAppointmentsByPersonId(@Parameter(description = "UUID of a person", required = true) @PathVariable("id") UUID personId){
         return new ResponseEntity<>(appointmentService.getAppointmentByPersonId(personId), HttpStatus.OK);
 
     }
@@ -68,7 +65,7 @@ public class AppointmentController {
             security = {@SecurityRequirement(name = "bearer-key")},
             description = "Get all appointments by doctor id"
     )
-    public ResponseEntity<List<AppointmentDataResponse>> getAllAppointmentsByDoctorId(@Parameter(description = "UUID of a doctor", required = true) @PathVariable("id") UUID doctorId){
+    public ResponseEntity<List<AppointmentDataResponseDoctor>> getAllAppointmentsByDoctorId(@Parameter(description = "UUID of a doctor", required = true) @PathVariable("id") UUID doctorId){
         return new ResponseEntity<>(appointmentService.getAppointmentByDoctorId(doctorId), HttpStatus.OK);
 
     }
@@ -86,6 +83,20 @@ public class AppointmentController {
     public ResponseEntity<AppointmentDataResponse> getAppointmentsById(@Parameter(description = "UUID of a appointment", required = true) @PathVariable("id") UUID appointmentId){
         return new ResponseEntity<>(appointmentService.getAppointmentByAppointmentId(appointmentId), HttpStatus.OK);
 
+    }
+
+    @PutMapping("/")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Not content"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+    })
+    @Operation(
+            security = {@SecurityRequirement(name = "bearer-key")},
+            description = "Update appointment by id"
+    )
+    private ResponseEntity<HttpStatus> updateAppointment(@Valid @RequestBody AppointmentUpdateRequest appointmentUpdateRequest){
+        appointmentService.updateAppointment(appointmentUpdateRequest);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/{id}")

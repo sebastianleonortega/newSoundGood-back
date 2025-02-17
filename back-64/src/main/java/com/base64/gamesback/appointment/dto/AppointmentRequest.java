@@ -1,30 +1,27 @@
 package com.base64.gamesback.appointment.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.UUID;
 
 @Getter
-public class AppointmentDto {
+public class AppointmentRequest {
 
-    @JsonProperty(value = "date")
-    private String date;
-
-    @JsonProperty(value = "time")
-    private String time;
-
+    @NotNull
     @JsonProperty(value = "speciality_id")
     private UUID speciality;
 
-    @JsonProperty(value = "address")
-    private String address;
-
+    @NotNull
     @JsonProperty(value = "person_id")
     private UUID personId;
 
+    @NotNull
     @JsonProperty(value = "doctor_id")
     private UUID doctorId;
+
+    @NotNull
+    @JsonProperty(value = "doctor_schedule_id")
+    private UUID doctorScheduleId;
 }

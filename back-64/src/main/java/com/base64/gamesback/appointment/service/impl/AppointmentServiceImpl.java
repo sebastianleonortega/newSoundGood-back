@@ -1,13 +1,14 @@
 package com.base64.gamesback.appointment.service.impl;
 
-import com.base64.gamesback.appointment.dto.AppointmentDataResponse;
-import com.base64.gamesback.appointment.dto.AppointmentDto;
+import com.base64.gamesback.appointment.dto.*;
 import com.base64.gamesback.appointment.entity.Appointment;
 import com.base64.gamesback.appointment.repository.AppointmentRepository;
 import com.base64.gamesback.appointment.service.AppointmentService;
+import com.base64.gamesback.auth.user.dto.DoctorScheduleUpdateRequest;
 import com.base64.gamesback.auth.user.entity.Doctor;
+import com.base64.gamesback.auth.user.entity.DoctorSchedule;
 import com.base64.gamesback.auth.user.entity.Person;
-import com.base64.gamesback.auth.user.repository.UserRepository;
+import com.base64.gamesback.auth.user.service.DoctorScheduleService;
 import com.base64.gamesback.auth.user.service.DoctorService;
 import com.base64.gamesback.auth.user.service.PersonService;
 import com.base64.gamesback.common.exception_handler.ResourceNotFoundException;
@@ -29,47 +30,61 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     private final SpecialityService specialityService;
 
-    public AppointmentServiceImpl(AppointmentRepository appointmentRepository, DoctorService doctorService, PersonService personService, SpecialityService specialityService) {
+    private final DoctorScheduleService doctorScheduleService;
+
+    public AppointmentServiceImpl(AppointmentRepository appointmentRepository, DoctorService doctorService, PersonService personService, SpecialityService specialityService, DoctorScheduleService doctorScheduleService) {
         this.appointmentRepository = appointmentRepository;
         this.doctorService = doctorService;
         this.personService = personService;
         this.specialityService = specialityService;
+        this.doctorScheduleService = doctorScheduleService;
     }
 
     @Override
-    public void registerAppointment(AppointmentDto request) {
+    public void registerAppointment(AppointmentRequest request) {
         Doctor doctor = doctorService.getDoctorById(request.getDoctorId());
         Person person = personService.getPersonByID(request.getPersonId());
         Speciality speciality = specialityService.getSpecialityById(request.getSpeciality());
+        DoctorSchedule doctorSchedule = doctorScheduleService.getDoctorScheduleById(request.getDoctorScheduleId());
 
-        if(Boolean.TRUE.equals(appointmentRepository.existsByPersonAndDoctorAndSpecialityAndDateAndTimeAndAddress(person, doctor, speciality, request.getDate(), request.getTime(), request.getAddress()))){
-            throw new IllegalArgumentException("Ya existe una cita para ti, con el mismo doctor, especialidad, fecha, hora y lugar");
+        if(Boolean.TRUE.equals(appointmentRepository.existsByPersonAndDoctorAndSpecialityAndAppointmentStatusIgnoreCase(person, doctor, speciality, "CONFIRMADA"))){
+            throw new IllegalArgumentException("Ya existe una cita para ti, con el mismo doctor, especialidad");
         }
 
         Appointment appointment = Appointment.create(
-                request.getDate(),
-                request.getTime(),
-                request.getAddress()
+                person,
+                doctor,
+                speciality,
+                doctorSchedule
         );
-        appointment.addDoctor(doctor);
-        appointment.addPerson(person);
-        appointment.addSpeciality(speciality);
+        doctorScheduleService.updateDoctorSchedule(new DoctorScheduleUpdateRequest(doctorSchedule.getDoctorScheduleId(), false));
+        appointmentRepository.save(appointment);
+    }
+
+    @Override
+    public void updateAppointment(AppointmentUpdateRequest appointmentUpdateRequest) {
+        Appointment appointment = this.getAppointmentById(appointmentUpdateRequest.getAppointmentId());
+        appointment.updateStatusAndObservation(appointmentUpdateRequest.getAppointmentStatus(), appointmentUpdateRequest.getAppointmentObservation());
+        if(appointmentUpdateRequest.getAppointmentStatus().equalsIgnoreCase("CANCELADA")){
+            doctorScheduleService.updateDoctorSchedule(new DoctorScheduleUpdateRequest(appointment.getDoctorSchedule().getDoctorScheduleId(), true));
+        }
         appointmentRepository.save(appointment);
     }
 
     @Override
     public void deleteAppointment(UUID appointmentId) {
         Appointment appointment = this.getAppointmentById(appointmentId);
+        doctorScheduleService.updateDoctorSchedule(new DoctorScheduleUpdateRequest(appointment.getDoctorSchedule().getDoctorScheduleId(), true));
         appointmentRepository.delete(appointment);
     }
 
     @Override
-    public List<AppointmentDataResponse> getAppointmentByPersonId(UUID personId) {
+    public List<AppointmentDataResponsePatient> getAppointmentByPersonId(UUID personId) {
         return appointmentRepository.getAppointmentsByPersonId(personId);
     }
 
     @Override
-    public List<AppointmentDataResponse> getAppointmentByDoctorId(UUID doctorId) {
+    public List<AppointmentDataResponseDoctor> getAppointmentByDoctorId(UUID doctorId) {
         return appointmentRepository.getAppointmentsByDoctorId(doctorId);
     }
 

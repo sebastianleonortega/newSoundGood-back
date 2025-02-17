@@ -1,14 +1,16 @@
 package com.base64.gamesback.appointment.entity;
 
 import com.base64.gamesback.auth.user.entity.Doctor;
+import com.base64.gamesback.auth.user.entity.DoctorSchedule;
 import com.base64.gamesback.auth.user.entity.Person;
 import com.base64.gamesback.speciality.entity.Speciality;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -22,14 +24,11 @@ public class Appointment {
     @Column(name = "appointment_id")
     private UUID appointmentId;
 
-    @Column(name = "date", nullable = false)
-    private String date;
+    @Column(name = "appointment_status", nullable = false)
+    private String appointmentStatus;
 
-    @Column(name = "time", nullable = false)
-    private String time;
-
-    @Column(name = "address", nullable = false)
-    private String address;
+    @Column(name = "appointment_observation", nullable = false)
+    private String appointmentObservation;
 
     @ManyToOne
     @JoinColumn(name = "person_id")
@@ -43,29 +42,38 @@ public class Appointment {
     @JoinColumn(name = "speciality_id")
     private Speciality speciality;
 
-    public Appointment(String date, String time, String address) {
-        this.date = date;
-        this.time = time;
-        this.address = address;
+    @ManyToOne
+    @JoinColumn(name = "doctor_schedule_id")
+    private DoctorSchedule doctorSchedule;
+
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private LocalDateTime updateAt;
+
+    public Appointment(Person person, Doctor doctor, Speciality speciality, DoctorSchedule doctorSchedule) {
+        this.person = person;
+        this.doctor = doctor;
+        this.speciality = speciality;
+        this.doctorSchedule = doctorSchedule;
+        this.appointmentStatus = "CONFIRMADA";
+        this.appointmentObservation = "Sin observaciones";
     }
 
-    public static Appointment create(String date, String time, String address){
+    public static Appointment create(Person person, Doctor doctor, Speciality speciality, DoctorSchedule doctorSchedule) {
         return new Appointment(
-                date,
-                time,
-                address
+                person,
+                doctor,
+                speciality,
+                doctorSchedule
         );
     }
 
-    public void addPerson(Person person){
-        this.person = person;
-    }
-
-    public void addDoctor(Doctor doctor){
-        this.doctor = doctor;
-    }
-
-    public void addSpeciality(Speciality speciality){
-        this.speciality = speciality;
+    public void updateStatusAndObservation(String appointmentStatus, String appointmentObservation) {
+        this.appointmentStatus = appointmentStatus;
+        this.appointmentObservation = appointmentObservation;
     }
 }
