@@ -4,6 +4,7 @@ import com.base64.gamesback.auth.user.dto.DoctorScheduleRequest;
 import com.base64.gamesback.auth.user.dto.DoctorScheduleResponse;
 import com.base64.gamesback.auth.user.dto.DoctorScheduleUpdateRequest;
 import com.base64.gamesback.auth.user.entity.DoctorSchedule;
+import com.base64.gamesback.common.object.SearchByCriteria;
 
 import java.util.List;
 import java.util.Set;
@@ -17,5 +18,5 @@ public interface DoctorScheduleService {
 
     DoctorSchedule getDoctorScheduleById(UUID doctorScheduleId);
 
-    List<DoctorScheduleResponse> getDoctorScheduleByDoctorId(UUID doctorId);
+    List<DoctorScheduleResponse> getDoctorScheduleByDoctorId(UUID doctorId, SearchByCriteria search);
 }

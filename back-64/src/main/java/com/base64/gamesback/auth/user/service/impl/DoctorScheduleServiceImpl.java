@@ -8,7 +8,13 @@ import com.base64.gamesback.auth.user.entity.DoctorSchedule;
 import com.base64.gamesback.auth.user.repository.DoctorScheduleRepository;
 import com.base64.gamesback.auth.user.service.DoctorScheduleService;
 import com.base64.gamesback.auth.user.service.DoctorService;
+import com.base64.gamesback.common.criteria.Criteria;
+import com.base64.gamesback.common.criteria.Filter;
+import com.base64.gamesback.common.criteria.Filters;
+import com.base64.gamesback.common.criteria.Order;
 import com.base64.gamesback.common.exception_handler.ResourceNotFoundException;
+import com.base64.gamesback.common.object.SearchByCriteria;
+import com.base64.gamesback.common.parse.ParseFilters;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -53,7 +59,19 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
     }
 
     @Override
-    public List<DoctorScheduleResponse> getDoctorScheduleByDoctorId(UUID doctorId) {
-        return doctorScheduleRepository.getDoctorScheduleByDoctorId(doctorId);
+    public List<DoctorScheduleResponse> getDoctorScheduleByDoctorId(UUID doctorId, SearchByCriteria search) {
+        List<Filter> filters = ParseFilters.getFilters(search.filters());
+        Order order = Order.fromValues(search.orderBy(), search.orderType());
+        if (!order.hasOrder()) {
+            order = Order.desc("start_datetime");
+        }
+
+        Criteria criteria = new Criteria(
+                new Filters(filters),
+                order,
+                search.limit(),
+                search.offset()
+        );
+        return doctorScheduleRepository.getDoctorScheduleByDoctorId(doctorId, criteria);
     }
 }

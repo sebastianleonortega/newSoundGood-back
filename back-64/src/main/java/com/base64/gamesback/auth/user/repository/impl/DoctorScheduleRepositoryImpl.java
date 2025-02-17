@@ -6,6 +6,8 @@ import com.base64.gamesback.auth.user.entity.DoctorSchedule;
 import com.base64.gamesback.auth.user.entity.DoctorSchedule_;
 import com.base64.gamesback.auth.user.entity.Doctor_;
 import com.base64.gamesback.auth.user.repository.DoctorScheduleRepositoryCustom;
+import com.base64.gamesback.common.criteria.Criteria;
+import com.base64.gamesback.common.criteria.CriteriaPredicate;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -22,11 +24,11 @@ public class DoctorScheduleRepositoryImpl implements DoctorScheduleRepositoryCus
     private EntityManager manager;
 
     @Override
-    public List<DoctorScheduleResponse> getDoctorScheduleByDoctorId(UUID doctorId) {
+    public List<DoctorScheduleResponse> getDoctorScheduleByDoctorId(UUID doctorId, Criteria criteria) {
         CriteriaBuilder cb = manager.getCriteriaBuilder();
-        List<DoctorScheduleResponse> result =null;
+        List<DoctorScheduleResponse> result = null;
 
-        try{
+        try {
             CriteriaQuery<DoctorScheduleResponse> cq = cb.createQuery(DoctorScheduleResponse.class);
             Root<DoctorSchedule> root = cq.from(DoctorSchedule.class);
             Join<DoctorSchedule, Doctor> doctorScheduleDoctorJoin = root.join(DoctorSchedule_.doctor, JoinType.INNER);
@@ -41,9 +43,10 @@ public class DoctorScheduleRepositoryImpl implements DoctorScheduleRepositoryCus
                     )
             );
             cq.where(cb.equal(doctorScheduleDoctorJoin.get(Doctor_.doctorId), doctorId));
-            TypedQuery<DoctorScheduleResponse> query = manager.createQuery(cq);
+            CriteriaPredicate<DoctorSchedule, DoctorScheduleResponse> predicate = new CriteriaPredicate<>(cb);
+            TypedQuery<DoctorScheduleResponse> query = manager.createQuery(predicate.convert(cq, criteria, root));
             result = query.getResultList();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             log.error("error en la consulta criteria getDoctorScheduleByDoctorId {}", ex.getMessage());
         }
         return result;

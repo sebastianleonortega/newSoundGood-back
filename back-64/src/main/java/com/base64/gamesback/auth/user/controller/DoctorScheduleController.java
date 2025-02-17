@@ -3,6 +3,8 @@ package com.base64.gamesback.auth.user.controller;
 import com.base64.gamesback.auth.user.dto.*;
 import com.base64.gamesback.auth.user.service.DoctorScheduleService;
 import com.base64.gamesback.auth.user.service.TestService;
+import com.base64.gamesback.common.object.SearchByCriteria;
+import com.base64.gamesback.common.parse.ParseFilters;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
@@ -10,9 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.io.Serializable;
+import java.util.*;
 
 @RestController
 @RequestMapping("/doctor_schedule")
@@ -35,8 +36,15 @@ public class DoctorScheduleController {
     @GetMapping("/{doctor_id}")
     @Operation(description = "Get doctor schedules")
     @ApiResponse(responseCode = "200", description = "success")
-    public ResponseEntity<List<DoctorScheduleResponse>> getDoctorSchedulesByDoctor(@Valid @PathVariable("doctor_id") UUID doctorId) {
-        return new ResponseEntity<>(doctorScheduleService.getDoctorScheduleByDoctorId(doctorId), HttpStatus.OK);
+    public ResponseEntity<List<DoctorScheduleResponse>> getDoctorSchedulesByDoctor(@RequestParam Map<String, Serializable> params, @Valid @PathVariable("doctor_id") UUID doctorId) {
+        SearchByCriteria search = new SearchByCriteria(
+                ParseFilters.parseFilters(params),
+                Optional.ofNullable((String) params.get("order_by")),
+                Optional.ofNullable((String) params.get("order")),
+                ParseFilters.serializableToOptionalInteger(params.get("limit")),
+                ParseFilters.serializableToOptionalInteger(params.get("offset"))
+        );
+        return new ResponseEntity<>(doctorScheduleService.getDoctorScheduleByDoctorId(doctorId, search), HttpStatus.OK);
     }
 
     @PutMapping("/")
