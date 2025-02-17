@@ -60,9 +60,9 @@ public class UserController {
         return new ResponseEntity<>(userService.getUserPatientById(userId), HttpStatus.OK);
     }
 
-    @GetMapping("/doctor/")
-    public ResponseEntity<List<UserDoctorResponse>> getAllUsersDoctor() {
-        return new ResponseEntity<>(userService.getAllUsersDoctor(), HttpStatus.OK);
+    @GetMapping("/doctor/speciality/{speciality_id}")
+    public ResponseEntity<List<UserDoctorResponse>> getAllUsersDoctor(@Valid @PathVariable("speciality_id") UUID specialityId) {
+        return new ResponseEntity<>(userService.getAllUsersDoctor(specialityId), HttpStatus.OK);
     }
 
     @GetMapping("/doctor_page")

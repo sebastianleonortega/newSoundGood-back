@@ -145,8 +145,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDoctorResponse> getAllUsersDoctor() {
-        return userRepository.getAllUserDoctors();
+    public List<UserDoctorResponse> getAllUsersDoctor(UUID specialityId) {
+        return userRepository.getAllUserDoctors(specialityId);
     }
 
     @Override

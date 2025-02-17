@@ -139,7 +139,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     }
 
     @Override
-    public List<UserDoctorResponse> getAllUserDoctors() {
+    public List<UserDoctorResponse> getAllUserDoctors(UUID specialityId) {
         CriteriaBuilder cb = manager.getCriteriaBuilder();
         List<UserDoctorResponse> result = null;
 
@@ -150,6 +150,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
             Join<User, Doctor> userDoctorJoin = root.join(User_.doctor, JoinType.INNER);
             Join<Doctor, DocumentType> doctorDocumentTypeJoin = userDoctorJoin.join(Doctor_.documentType, JoinType.INNER);
             Join<Doctor, GenderType> doctorGenderTypeJoin = userDoctorJoin.join(Doctor_.genderType, JoinType.INNER);
+            Join<Doctor, Speciality> doctorSpecialityJoin = userDoctorJoin.join(Doctor_.speciality, JoinType.INNER);
 
             cq.select(cb.construct(
                     UserDoctorResponse.class,
@@ -172,6 +173,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                     userDoctorJoin.get(Doctor_.longitude)
             ));
             cq.distinct(true);
+            cq.where(cb.equal(doctorSpecialityJoin.get(Speciality_.specialityId), specialityId));
 
             TypedQuery<UserDoctorResponse> query = manager.createQuery(cq);
             List<UserDoctorResponse> userDoctorResponse = query.getResultList();

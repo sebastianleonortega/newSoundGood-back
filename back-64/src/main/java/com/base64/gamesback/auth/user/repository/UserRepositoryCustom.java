@@ -15,7 +15,7 @@ public interface UserRepositoryCustom {
 
     UserPatientResponse getUserPatientById(UUID userId);
 
-    List<UserDoctorResponse> getAllUserDoctors();
+    List<UserDoctorResponse> getAllUserDoctors(UUID specialityId);
 
     Page<UserDoctorResponse> getAllUserDoctorsPage(Criteria criteria, Long totalRows);
 

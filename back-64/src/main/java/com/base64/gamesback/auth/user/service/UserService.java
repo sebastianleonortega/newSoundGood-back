@@ -28,7 +28,7 @@ public interface UserService {
 
     UserDoctorResponse getUserDoctorById(UUID userId);
 
-    List<UserDoctorResponse> getAllUsersDoctor();
+    List<UserDoctorResponse> getAllUsersDoctor(UUID specialityId);
 
     Page<UserDoctorResponse> getAllUsersDoctorPage(SearchByCriteria search);
 
