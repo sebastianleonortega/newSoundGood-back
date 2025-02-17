@@ -1,6 +1,5 @@
 package com.base64.gamesback.auth.user.entity;
 
-import jakarta.persistence.metamodel.SetAttribute;
 import jakarta.persistence.metamodel.SingularAttribute;
 import jakarta.persistence.metamodel.StaticMetamodel;
 
@@ -14,7 +13,7 @@ public abstract class DoctorSchedule_ {
 
     public static volatile SingularAttribute<DoctorSchedule, UUID> doctorScheduleId;
     public static volatile SingularAttribute<DoctorSchedule, Doctor> doctor;
-    public static volatile SetAttribute<DoctorSchedule, LocalDateTime> startDateTime;
-    public static volatile SingularAttribute<DoctorSchedule, LocalDateTime> endDateTime;
+    public static volatile SingularAttribute<DoctorSchedule, LocalDateTime> startDate;
+    public static volatile SingularAttribute<DoctorSchedule, LocalDateTime> endDate;
     public static volatile SingularAttribute<DoctorSchedule, Boolean> available;
 }

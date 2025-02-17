@@ -37,8 +37,8 @@ public class DoctorScheduleRepositoryImpl implements DoctorScheduleRepositoryCus
                     cb.construct(
                             DoctorScheduleResponse.class,
                             root.get(DoctorSchedule_.doctorScheduleId),
-                            root.get(DoctorSchedule_.startDateTime),
-                            root.get(DoctorSchedule_.endDateTime),
+                            root.get(DoctorSchedule_.startDate),
+                            root.get(DoctorSchedule_.endDate),
                             root.get(DoctorSchedule_.available)
                     )
             );

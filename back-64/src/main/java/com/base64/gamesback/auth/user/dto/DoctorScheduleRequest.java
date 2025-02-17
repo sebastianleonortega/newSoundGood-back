@@ -14,10 +14,10 @@ import java.util.UUID;
 public class DoctorScheduleRequest {
 
     @NotNull
-    @JsonProperty(value = "start_datetime")
-    private LocalDateTime startDateTime;
+    @JsonProperty(value = "start_date")
+    private LocalDateTime startDate;
 
     @NotNull
-    @JsonProperty(value = "end_datetime")
-    private LocalDateTime endDateTime;
+    @JsonProperty(value = "end_date")
+    private LocalDateTime endDate;
 }

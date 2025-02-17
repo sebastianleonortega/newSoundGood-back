@@ -10,24 +10,22 @@ import java.util.UUID;
 @Getter
 public class DoctorScheduleResponse {
 
-    @JsonProperty(value = "doctor_schedule")
+    @JsonProperty(value = "doctor_schedule_id")
     private UUID doctorScheduleId;
 
-    @NotNull
-    @JsonProperty(value = "start_datetime")
-    private LocalDateTime startDateTime;
+    @JsonProperty(value = "start_date")
+    private LocalDateTime startDate;
 
-    @NotNull
-    @JsonProperty(value = "end_datetime")
-    private LocalDateTime endDateTime;
+    @JsonProperty(value = "end_date")
+    private LocalDateTime endDate;
 
     @JsonProperty(value = "available")
     private boolean available;
 
-    public DoctorScheduleResponse(UUID doctorScheduleId, LocalDateTime startDateTime, LocalDateTime endDateTime, boolean available) {
+    public DoctorScheduleResponse(UUID doctorScheduleId, LocalDateTime startDate, LocalDateTime endDate, boolean available) {
         this.doctorScheduleId = doctorScheduleId;
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.available = available;
     }
 }

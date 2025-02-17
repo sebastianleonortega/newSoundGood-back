@@ -21,10 +21,11 @@ public abstract class Appointment_ {
 
     public static volatile SingularAttribute<Appointment, UUID> appointmentId;
     public static volatile SingularAttribute<Appointment, String> appointmentStatus;
+    public static volatile SingularAttribute<Appointment, String> appointmentObservation;
     public static volatile SingularAttribute<Appointment, Person> person;
     public static volatile SingularAttribute<Appointment, Doctor> doctor;
-    public static volatile SetAttribute<Appointment, Speciality> speciality;
-    public static volatile SetAttribute<Appointment, DoctorSchedule> doctorSchedule;
+    public static volatile SingularAttribute<Appointment, Speciality> speciality;
+    public static volatile SingularAttribute<Appointment, DoctorSchedule> doctorSchedule;
     public static volatile SingularAttribute<Appointment, LocalDateTime> createdAt;
     public static volatile SingularAttribute<Appointment, LocalDateTime> updateAt;
 

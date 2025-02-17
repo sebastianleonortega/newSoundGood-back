@@ -41,7 +41,7 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
         doctorScheduleRepository.deleteAll(doctorScheduleRepository.getDoctorSchedulesByDoctor(doctor));
 
         List<DoctorSchedule> doctorSchedules = doctorScheduleRequests.stream()
-                .map(request -> new DoctorSchedule(doctor, request.getStartDateTime(), request.getEndDateTime()))
+                .map(request -> new DoctorSchedule(doctor, request.getStartDate(), request.getEndDate()))
                 .collect(Collectors.toList());
         doctorScheduleRepository.saveAll(doctorSchedules);
     }
@@ -63,7 +63,7 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
         List<Filter> filters = ParseFilters.getFilters(search.filters());
         Order order = Order.fromValues(search.orderBy(), search.orderType());
         if (!order.hasOrder()) {
-            order = Order.desc("start_datetime");
+            order = Order.desc("start_date");
         }
 
         Criteria criteria = new Criteria(
