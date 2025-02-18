@@ -25,7 +25,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
             " p.name as personName, p.last_name as personLastName, p.document as personDocument, p.phone as personPhone, p.address as personAddress, p.email as personEmail, " +
             " s.name as specialityName, ds.start_date as appointmentStart, ds.end_date as appointmentEnd " +
             " FROM main.appointment a inner join main.doctor d on a.doctor_id = d.user_id inner join main.speciality s on a.speciality_id = s.speciality_id " +
-            " inner join main.person p on a.person_id = p.user_id WHERE a.appointment_id = :appointmentId", nativeQuery = true)
+            " inner join main.doctor_schedule ds on ds.doctor_id = d.user_id inner join main.person p on a.person_id = p.user_id WHERE a.appointment_id = :appointmentId", nativeQuery = true)
     AppointmentDataResponse getAppointmentsByAppointmentId(@Param("appointmentId") UUID appointmentId);
 
     @Query(value = "SELECT a.appointment_id as appointmentId, a.appointment_status as appointmentStatus, a.appointment_observation as appointmentObservation, " +
