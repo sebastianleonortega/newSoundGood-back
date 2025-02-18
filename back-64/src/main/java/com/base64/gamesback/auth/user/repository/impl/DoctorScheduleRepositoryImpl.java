@@ -42,9 +42,11 @@ public class DoctorScheduleRepositoryImpl implements DoctorScheduleRepositoryCus
                             root.get(DoctorSchedule_.available)
                     )
             );
-            cq.where(cb.equal(doctorScheduleDoctorJoin.get(Doctor_.doctorId), doctorId));
+
+            Predicate search = cb.equal(doctorScheduleDoctorJoin.get(Doctor_.doctorId), doctorId);
+//            cq.where(cb.equal(doctorScheduleDoctorJoin.get(Doctor_.doctorId), doctorId));
             CriteriaPredicate<DoctorSchedule, DoctorScheduleResponse> predicate = new CriteriaPredicate<>(cb);
-            TypedQuery<DoctorScheduleResponse> query = manager.createQuery(predicate.convert(cq, criteria, root));
+            TypedQuery<DoctorScheduleResponse> query = manager.createQuery(predicate.convertSearchAndFilters(cq, criteria, root, search));
             result = query.getResultList();
         } catch (Exception ex) {
             log.error("error en la consulta criteria getDoctorScheduleByDoctorId {}", ex.getMessage());
