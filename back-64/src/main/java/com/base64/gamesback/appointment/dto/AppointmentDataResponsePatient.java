@@ -31,6 +31,12 @@ public interface AppointmentDataResponsePatient {
     @JsonProperty("doctor_image")
     String getDoctorImage();
 
+    @JsonProperty("latitude")
+    String getLatitude();
+
+    @JsonProperty("longitude")
+    String getLongitude();
+
     @JsonProperty("speciality_name")
     String getSpecialityName();
 

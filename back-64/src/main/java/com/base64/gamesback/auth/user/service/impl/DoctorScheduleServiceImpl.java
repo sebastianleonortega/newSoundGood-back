@@ -15,9 +15,11 @@ import com.base64.gamesback.common.criteria.Order;
 import com.base64.gamesback.common.exception_handler.ResourceNotFoundException;
 import com.base64.gamesback.common.object.SearchByCriteria;
 import com.base64.gamesback.common.parse.ParseFilters;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -38,8 +40,6 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
     @Override
     public void registerDoctorSchedule(UUID doctorId, Set<DoctorScheduleRequest> doctorScheduleRequests) {
         Doctor doctor = doctorService.getDoctorById(doctorId);
-        doctorScheduleRepository.deleteAll(doctorScheduleRepository.getDoctorSchedulesByDoctor(doctor));
-
         List<DoctorSchedule> doctorSchedules = doctorScheduleRequests.stream()
                 .map(request -> new DoctorSchedule(doctor, request.getStartDate(), request.getEndDate()))
                 .collect(Collectors.toList());
@@ -60,6 +60,7 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
 
     @Override
     public List<DoctorScheduleResponse> getDoctorScheduleByDoctorId(UUID doctorId, SearchByCriteria search) {
+        this.updateAvailabilityByDate();
         List<Filter> filters = ParseFilters.getFilters(search.filters());
         Order order = Order.fromValues(search.orderBy(), search.orderType());
         if (!order.hasOrder()) {
@@ -73,5 +74,9 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
                 search.offset()
         );
         return doctorScheduleRepository.getDoctorScheduleByDoctorId(doctorId, criteria);
+    }
+
+    private void updateAvailabilityByDate(){
+        doctorScheduleRepository.markUnavailablePastSchedules(LocalDateTime.now());
     }
 }
