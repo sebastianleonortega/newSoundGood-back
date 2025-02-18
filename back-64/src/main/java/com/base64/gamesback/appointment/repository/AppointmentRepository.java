@@ -29,7 +29,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
         @Query(value = "SELECT a.appointment_id as appointmentId, a.appointment_status as appointmentStatus, a.appointment_observation as appointmentObservation, " +
                 " d.name as doctorName, d.last_name as doctorLastName, d.address as doctorAddress, d.phone as doctorPhone, d.email as doctorEmail, d.image as doctorImage, " +
                 " s.name as specialityName, " +
-                " ds.start_datetime as appoinmentStart, ds.end_datetime as appoinmentEnd " +
+                " ds.start_date as appoinmentStart, ds.end_date as appoinmentEnd " +
                 " FROM main.appointment a inner join main.doctor d on a.doctor_id = d.user_id inner join main.speciality s on a.speciality_id = s.speciality_id " +
                 " inner join main.doctor_schedule ds on ds.doctor_id = d.user_id inner join main.person p on a.person_id = p.user_id where p.user_id = :personId", nativeQuery = true)
         List<AppointmentDataResponsePatient> getAppointmentsByPersonId(@Param("personId") UUID personId);
@@ -37,7 +37,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
         @Query(value = "SELECT a.appointment_id as appointmentId, a.appointment_status as appointmentStatus, a.appointment_observation as appointmentObservation, " +
                 " p.name as personName, p.last_name as personLastName, p.document as personDocument, p.phone as personPhone, p.address as personAddress, p.email as personEmail, " +
                 " s.name as specialityName, " +
-                " ds.start_datetime as appoinmentStart, ds.end_datetime as appoinmentEnd " +
+                " ds.start_date as appoinmentStart, ds.end_date as appoinmentEnd " +
                 " FROM main.appointment a inner join main.doctor d on a.doctor_id = d.user_id inner join main.speciality s on a.speciality_id = s.speciality_id " +
                 " inner join main.doctor_schedule ds on ds.doctor_id = d.user_id inner join main.person p on a.person_id = p.user_id WHERE d.user_id = :doctorId", nativeQuery = true)
         List<AppointmentDataResponseDoctor> getAppointmentsByDoctorId(@Param("doctorId") UUID doctorId);
