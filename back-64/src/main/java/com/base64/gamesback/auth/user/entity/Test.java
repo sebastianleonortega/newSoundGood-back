@@ -29,17 +29,25 @@ public class Test {
     @CreationTimestamp
     private LocalDateTime testDate;
 
-    @Column(name = "result", nullable = false, length = 20)
-    private String result;
+    @Column(name = "result_left")
+    private String resultLeft;
 
-    public Test(Person person, String testType, String result) {
+    @Column(name = "result_right")
+    private String resultRight;
+
+    @Column(name = "result_numeric")
+    private String resultNumeric;
+
+    public Test(Person person, String testType, String resultLeft, String resultRight, String resultNumeric) {
         this.person = person;
         this.testType = testType;
-        this.result = result;
+        this.resultLeft = resultLeft;
+        this.resultRight = resultRight;
+        this.resultNumeric = resultNumeric;
     }
 
-    public static Test create(Person person, String testType, String result) {
-        return new Test(person, testType, result);
+    public static Test create(Person person, String testType, String resultLeft, String resultRight, String resultNumeric) {
+        return new Test(person, testType, resultLeft, resultRight, resultNumeric);
     }
 }
 

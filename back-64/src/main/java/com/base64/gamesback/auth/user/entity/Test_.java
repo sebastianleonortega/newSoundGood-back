@@ -14,6 +14,8 @@ public abstract class Test_ {
     public static volatile SingularAttribute<Test, Person> person;
     public static volatile SingularAttribute<Test, String> testType;
     public static volatile SingularAttribute<Test, LocalDateTime> testDate;
-    public static volatile SingularAttribute<Test, String> result;
+    public static volatile SingularAttribute<Test, String> resultLeft;
+    public static volatile SingularAttribute<Test, String> resultRight;
+    public static volatile SingularAttribute<Test, String> resultNumeric;
 
 }

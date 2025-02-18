@@ -10,7 +10,8 @@ import com.base64.gamesback.auth.user.service.TestService;
 import com.base64.gamesback.common.exception_handler.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class TestServiceImpl implements TestService {
@@ -26,7 +27,7 @@ public class TestServiceImpl implements TestService {
     @Override
     public void registerTestToPerson(TestRequest testRequest) {
         Person person = personService.getPersonById(testRequest.getPersonId());
-        Test test = Test.create(person, testRequest.getTestType(), testRequest.getResult());
+        Test test = Test.create(person, testRequest.getTestType(), testRequest.getResultLeft(), testRequest.getResultRight(), testRequest.getResultNumeric());
         testRepository.save(test);
     }
 

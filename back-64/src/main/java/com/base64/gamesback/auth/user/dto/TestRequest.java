@@ -18,8 +18,13 @@ public class TestRequest {
     @JsonProperty(value = "test_type", required = true)
     private String testType;
 
-    @NotBlank
-    @JsonProperty(value = "result", required = true)
-    private String result;
+    @JsonProperty(value = "result_left")
+    private String resultLeft;
+
+    @JsonProperty(value = "result_right")
+    private String resultRight;
+
+    @JsonProperty(value = "result_numeric")
+    private String resultNumeric;
 }
 
