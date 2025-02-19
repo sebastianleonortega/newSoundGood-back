@@ -108,6 +108,7 @@ public class User {
 
     public void resetCodeVerification(){
         this.codeVerification = null;
+        this.createCodeVerification = null;
     }
 
     public void updateLoginAttempts(int attempts){
