@@ -16,6 +16,9 @@ public interface AppointmentDataResponsePatient {
     @JsonProperty("appointment_observation")
     String getAppointmentObservation();
 
+    @JsonProperty("doctor_id")
+    UUID getDoctorId();
+
     @JsonProperty("doctor_name")
     String getDoctorName();
 
