@@ -60,6 +60,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         user.updateLoginAttempts(0);
+        user.resetCodeVerification();
         user.addCodeVerification(this.generateCodeVerification(user));
         user.updateQuantityResentEmail(0);
         userServiceShared.saveUser(user);
