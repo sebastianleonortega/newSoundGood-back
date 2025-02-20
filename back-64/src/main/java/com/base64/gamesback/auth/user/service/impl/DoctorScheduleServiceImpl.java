@@ -38,8 +38,8 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
     public void registerDoctorSchedule(UUID doctorId, DoctorScheduleRequest doctorScheduleRequest) {
 
         Doctor doctor = doctorService.getDoctorById(doctorId);
-        if(doctorScheduleRepository.findByStartDateAndEndDateAndDoctor(doctorScheduleRequest.getStartDate(), doctorScheduleRequest.getEndDate(), doctor)){
-            throw new IllegalStateException("El horario ya se encuentra registrado para este día");
+        if(doctorScheduleRepository.existsDoctorScheduleByStartDateAndEndDateAndDoctor(doctorScheduleRequest.getStartDate(), doctorScheduleRequest.getEndDate(), doctor)){
+            throw new IllegalArgumentException("El horario ya se encuentra registrado para este día");
         }
 
         DoctorSchedule doctorSchedule = DoctorSchedule.create(doctor, doctorScheduleRequest.getStartDate(), doctorScheduleRequest.getEndDate());
