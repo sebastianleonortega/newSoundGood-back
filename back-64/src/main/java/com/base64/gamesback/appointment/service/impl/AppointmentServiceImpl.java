@@ -67,7 +67,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     public void updateAppointment(AppointmentUpdateRequest appointmentUpdateRequest) {
         Appointment appointment = this.getAppointmentById(appointmentUpdateRequest.getAppointmentId());
         appointment.updateStatusAndObservation(appointmentUpdateRequest.getAppointmentStatus(), appointmentUpdateRequest.getAppointmentObservation());
-        if(appointmentUpdateRequest.getAppointmentStatus().equalsIgnoreCase("CANCELADA")){
+        if(appointmentUpdateRequest.getAppointmentStatus().equalsIgnoreCase("CANCELADA") && !appointment.getDoctorSchedule().getEndDate().isBefore(LocalDateTime.now())){
             doctorScheduleService.updateDoctorSchedule(new DoctorScheduleUpdateRequest(appointment.getDoctorSchedule().getDoctorScheduleId(), true));
         }
         appointmentRepository.save(appointment);

@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -38,7 +39,7 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
     public void registerDoctorSchedule(UUID doctorId, DoctorScheduleRequest doctorScheduleRequest) {
 
         Doctor doctor = doctorService.getDoctorById(doctorId);
-        if(doctorScheduleRepository.existsDoctorScheduleByStartDateAndEndDateAndDoctor(doctorScheduleRequest.getStartDate(), doctorScheduleRequest.getEndDate(), doctor)){
+        if (doctorScheduleRepository.existsDoctorScheduleByStartDateAndEndDateAndDoctor(doctorScheduleRequest.getStartDate(), doctorScheduleRequest.getEndDate(), doctor)) {
             throw new IllegalArgumentException("El horario ya se encuentra registrado para este día");
         }
 
@@ -77,6 +78,14 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
     }
 
     private void updateAvailabilityByDate() {
-        doctorScheduleRepository.markUnavailablePastSchedules(LocalDateTime.now());
+        List<DoctorSchedule> doctorSchedules = doctorScheduleRepository.findAll().stream()
+                .peek(doctorSchedule -> {
+                    if (doctorSchedule.getEndDate().isBefore(LocalDateTime.now())) {
+                        doctorSchedule.changeAvailable(false);
+                    }
+                })
+                .collect(Collectors.toList());
+        doctorScheduleRepository.saveAll(doctorSchedules);
     }
+
 }
