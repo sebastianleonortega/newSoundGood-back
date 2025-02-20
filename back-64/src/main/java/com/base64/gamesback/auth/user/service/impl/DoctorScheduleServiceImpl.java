@@ -49,7 +49,7 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
     @Override
     public void updateDoctorSchedule(DoctorScheduleUpdateRequest doctorScheduleUpdateRequest) {
         DoctorSchedule doctorSchedule = this.getDoctorScheduleById(doctorScheduleUpdateRequest.getDoctorScheduleId());
-        doctorSchedule.changeAvailable(doctorSchedule.isAvailable());
+        doctorSchedule.changeAvailable(doctorScheduleUpdateRequest.isAvailable());
         doctorScheduleRepository.save(doctorSchedule);
     }
 

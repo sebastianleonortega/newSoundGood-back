@@ -14,8 +14,10 @@ import com.base64.gamesback.auth.user.service.PersonService;
 import com.base64.gamesback.common.exception_handler.ResourceNotFoundException;
 import com.base64.gamesback.speciality.entity.Speciality;
 import com.base64.gamesback.speciality.service.SpecialityService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -71,10 +73,13 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentRepository.save(appointment);
     }
 
+    @Transactional
     @Override
     public void deleteAppointment(UUID appointmentId) {
         Appointment appointment = this.getAppointmentById(appointmentId);
-        doctorScheduleService.updateDoctorSchedule(new DoctorScheduleUpdateRequest(appointment.getDoctorSchedule().getDoctorScheduleId(), true));
+        if(appointment.getDoctorSchedule().getEndDate().isBefore(LocalDateTime.now())){
+            doctorScheduleService.updateDoctorSchedule(new DoctorScheduleUpdateRequest(appointment.getDoctorSchedule().getDoctorScheduleId(), true));
+        }
         appointmentRepository.delete(appointment);
     }
 
