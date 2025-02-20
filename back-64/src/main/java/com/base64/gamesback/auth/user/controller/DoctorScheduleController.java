@@ -28,7 +28,7 @@ public class DoctorScheduleController {
     @PostMapping("/{doctor_id}")
     @Operation(description = "Create doctor schedule")
     @ApiResponse(responseCode = "201", description = "Created")
-    public ResponseEntity<HttpStatus> createDoctorSchedule(@Valid @RequestBody Set<DoctorScheduleRequest> request, @Valid @PathVariable("doctor_id") UUID doctorId) {
+    public ResponseEntity<HttpStatus> createDoctorSchedule(@Valid @RequestBody DoctorScheduleRequest request, @Valid @PathVariable("doctor_id") UUID doctorId) {
         doctorScheduleService.registerDoctorSchedule(doctorId, request);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

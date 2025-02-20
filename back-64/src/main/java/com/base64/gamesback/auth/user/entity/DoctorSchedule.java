@@ -41,6 +41,10 @@ public class DoctorSchedule {
         this.available = true;
     }
 
+    public static DoctorSchedule create(Doctor doctor, LocalDateTime startDate, LocalDateTime endDate){
+        return new DoctorSchedule(doctor, startDate, endDate);
+    }
+
     public void changeAvailable(boolean available) {
         this.available = available;
     }

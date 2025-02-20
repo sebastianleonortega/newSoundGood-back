@@ -20,4 +20,6 @@ public interface DoctorScheduleRepository extends JpaRepository<DoctorSchedule, 
     @Query("UPDATE DoctorSchedule ds SET ds.available = false WHERE ds.endDate < :currentDate")
     void markUnavailablePastSchedules(@Param("currentDate") LocalDateTime currentDate);
 
+    Boolean findByStartDateAndEndDateAndDoctor(LocalDateTime startDate, LocalDateTime endDate, Doctor doctor);
+
 }

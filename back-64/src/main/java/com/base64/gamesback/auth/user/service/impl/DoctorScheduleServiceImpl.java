@@ -15,15 +15,12 @@ import com.base64.gamesback.common.criteria.Order;
 import com.base64.gamesback.common.exception_handler.ResourceNotFoundException;
 import com.base64.gamesback.common.object.SearchByCriteria;
 import com.base64.gamesback.common.parse.ParseFilters;
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -38,12 +35,15 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
     }
 
     @Override
-    public void registerDoctorSchedule(UUID doctorId, Set<DoctorScheduleRequest> doctorScheduleRequests) {
+    public void registerDoctorSchedule(UUID doctorId, DoctorScheduleRequest doctorScheduleRequest) {
+
         Doctor doctor = doctorService.getDoctorById(doctorId);
-        List<DoctorSchedule> doctorSchedules = doctorScheduleRequests.stream()
-                .map(request -> new DoctorSchedule(doctor, request.getStartDate(), request.getEndDate()))
-                .collect(Collectors.toList());
-        doctorScheduleRepository.saveAll(doctorSchedules);
+        if(doctorScheduleRepository.findByStartDateAndEndDateAndDoctor(doctorScheduleRequest.getStartDate(), doctorScheduleRequest.getEndDate(), doctor)){
+            throw new IllegalStateException("El horario ya se encuentra registrado para este día");
+        }
+
+        DoctorSchedule doctorSchedule = DoctorSchedule.create(doctor, doctorScheduleRequest.getStartDate(), doctorScheduleRequest.getEndDate());
+        doctorScheduleRepository.save(doctorSchedule);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
         return doctorScheduleRepository.getDoctorScheduleByDoctorId(doctorId, criteria);
     }
 
-    private void updateAvailabilityByDate(){
+    private void updateAvailabilityByDate() {
         doctorScheduleRepository.markUnavailablePastSchedules(LocalDateTime.now());
     }
 }

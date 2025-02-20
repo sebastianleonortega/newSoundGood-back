@@ -7,12 +7,11 @@ import com.base64.gamesback.auth.user.entity.DoctorSchedule;
 import com.base64.gamesback.common.object.SearchByCriteria;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 public interface DoctorScheduleService {
 
-    void registerDoctorSchedule(UUID doctorId, Set<DoctorScheduleRequest> doctorScheduleRequests);
+    void registerDoctorSchedule(UUID doctorId, DoctorScheduleRequest doctorScheduleRequest);
 
     void updateDoctorSchedule(DoctorScheduleUpdateRequest doctorScheduleUpdateRequest);
 
