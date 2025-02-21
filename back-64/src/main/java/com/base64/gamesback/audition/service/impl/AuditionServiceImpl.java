@@ -56,7 +56,7 @@ public class AuditionServiceImpl implements AuditionService {
             default -> "audio_default";
         };
 
-        String audioFilePath = "static/audio/" + audioFileName + ".mp3";
+        String audioFilePath = "src/main/resources/static/audio/" + audioFileName + ".mp3";
         return new ClassPathResource(audioFilePath);
     }
 
@@ -72,7 +72,7 @@ public class AuditionServiceImpl implements AuditionService {
             default -> "audio_default";
         };
 
-        String audioRightPath = "static/audio/" + audioRight + ".mp3";
+        String audioRightPath = "src/main/resources/static/audio/" + audioRight + ".mp3";
         return new ClassPathResource(audioRightPath);
     }
 
@@ -87,7 +87,7 @@ public class AuditionServiceImpl implements AuditionService {
             case 6 -> "150hz";
             default -> "audio_default";
         };
-        String audioLeftPath = "static/audio/" + audioLeft + ".mp3";
+        String audioLeftPath = "src/main/resources/static/audio/" + audioLeft + ".mp3";
         return new ClassPathResource(audioLeftPath);
     }
 }

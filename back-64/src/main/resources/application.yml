@@ -1,5 +1,6 @@
 server:
-  port: 8010
+  port: 8155
+  address: 0.0.0.0
 spring:
   mail:
     host: smtp.gmail.com
@@ -14,13 +15,13 @@ spring:
             enable: true
             required: true
   datasource:
-    url: jdbc:postgresql://localhost:5432/sound-good
+    url: jdbc:postgresql://3.141.52.158:5432/soundgood
     username: postgres
-    password: 2408
+    password: Admin.$12
   jpa:
     database: POSTGRESQL
     generate-ddl: true
-    hibernate.ddl-auto: update
+    hibernate.ddl-auto: none
     show-sql: true
     open-in-view: true
     properties:
@@ -42,4 +43,4 @@ security:
     ttlMillis: 3600000
 settings:
   url:
-    front: http://localhost:4200
+    front: https://front-sound-good.vercel.app/
