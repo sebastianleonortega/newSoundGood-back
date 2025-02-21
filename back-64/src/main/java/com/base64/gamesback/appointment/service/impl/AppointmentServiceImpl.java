@@ -67,7 +67,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     public void updateAppointment(AppointmentUpdateRequest appointmentUpdateRequest) {
         Appointment appointment = this.getAppointmentById(appointmentUpdateRequest.getAppointmentId());
         appointment.updateStatusAndObservation(appointmentUpdateRequest.getAppointmentStatus(), appointmentUpdateRequest.getAppointmentObservation());
-        if(appointmentUpdateRequest.getAppointmentStatus().equalsIgnoreCase("CANCELADA") && !appointment.getDoctorSchedule().getEndDate().isBefore(LocalDateTime.now())){
+        if(!appointmentUpdateRequest.getAppointmentStatus().equalsIgnoreCase("ATENDIDA") && appointment.getDoctorSchedule().getEndDate().isAfter(LocalDateTime.now())){
             doctorScheduleService.updateDoctorSchedule(new DoctorScheduleUpdateRequest(appointment.getDoctorSchedule().getDoctorScheduleId(), true));
         }
         appointmentRepository.save(appointment);
@@ -77,7 +77,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public void deleteAppointment(UUID appointmentId) {
         Appointment appointment = this.getAppointmentById(appointmentId);
-        if(appointment.getDoctorSchedule().getEndDate().isBefore(LocalDateTime.now())){
+        if(appointment.getDoctorSchedule().getEndDate().isAfter(LocalDateTime.now())){
             doctorScheduleService.updateDoctorSchedule(new DoctorScheduleUpdateRequest(appointment.getDoctorSchedule().getDoctorScheduleId(), true));
         }
         appointmentRepository.delete(appointment);
